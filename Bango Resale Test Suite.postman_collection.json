@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "bbb01bc3-a230-42a8-9f7c-e9d79be40250",
+		"name": "Bango Resale Test Suite",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Reseller API Methods",
+			"item": [
+				{
+					"name": "Create Entitlement",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{NEEDS TO BE DEFINED}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"entitlementId\": null,\r\n   \"activationCode\": null,\r\n   \"customerIdentifier\": \"exmaple - 123\", <!-- mandatory-->\r\n   \"productKey\": \"{NEEDS TO BE DEFINED}\", <!-- mandatory-->\r\n   \"entitlementDisplayName\": \"{NEEDS TO BE DEFINED}\",\r\n   \"offerKey\": null,\r\n   \"merchantAccountKey\": \"{NEEDS TO BE DEFINED}\", <!-- mandatory-->\r\n   \"dateExpiry\": null,\r\n   \"notificationUrl\": \"{NEEDS TO BE DEFINED}\" <!-- mandatory-->\r\n}"
+						},
+						"url": {
+							"raw": "https://resale.api.bango.net/v1/entitlement",
+							"protocol": "https",
+							"host": [
+								"resale",
+								"api",
+								"bango",
+								"net"
+							],
+							"path": [
+								"v1",
+								"entitlement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Entitlement",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{NEEDS TO BE DEFINED}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://resale.api.bango.net/v1/entitlement/{{Entitlement}}",
+							"protocol": "https",
+							"host": [
+								"resale",
+								"api",
+								"bango",
+								"net"
+							],
+							"path": [
+								"v1",
+								"entitlement",
+								"{{Entitlement}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Entitlement Report",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{NEEDS TO BE DEFINED}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customerIdentifier\": \"\", <!-- mandatory-->\r\n    \"status\": \"ACTIVE\"\r\n}"
+						},
+						"url": {
+							"raw": "https://resale.api.bango.net/v1/entitlement/report",
+							"protocol": "https",
+							"host": [
+								"resale",
+								"api",
+								"bango",
+								"net"
+							],
+							"path": [
+								"v1",
+								"entitlement",
+								"report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Entitlement",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{NEEDS TO BE DEFINED}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"entitlementId\": \"\", <!-- mandatory-->\r\n    \"productKey\": \"\",\r\n    \"entitlementDisplayName\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "https://resale.api.bango.net/v1/entitlement",
+							"protocol": "https",
+							"host": [
+								"resale",
+								"api",
+								"bango",
+								"net"
+							],
+							"path": [
+								"v1",
+								"entitlement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Entitlement",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{NEEDS TO BE DEFINED}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"cancelReasonCategory\": \"CUSTOMER_CANCELLED\", <!-- mandatory-->\r\n    \"cancelReasonCode\": \"NOT_RENEWED\", <!-- mandatory-->\r\n    \"cancelReasonDescription\": \"The user has not renewed their subscription\" <!-- mandatory-->\r\n}"
+						},
+						"url": {
+							"raw": "https://resale.api.bango.net/v1/entitlement/cancel/{{entitlementId}}",
+							"protocol": "https",
+							"host": [
+								"resale",
+								"api",
+								"bango",
+								"net"
+							],
+							"path": [
+								"v1",
+								"entitlement",
+								"cancel",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Revoke Entitlement",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{NEEDS TO BE DEFINED}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"revokeReasonCategory\": \"REVOKED\", <!-- mandatory-->\r\n    \"revokeReasonCode\": \"ACCOUNT_TERMINATED\", <!-- mandatory-->\r\n    \"revokeReasonDescription\": \"The user has deleted their account\" <!-- mandatory-->\r\n}"
+						},
+						"url": {
+							"raw": "https://resale.api.bango.net/v1/entitlement/revoke/{{entitlementId}}",
+							"protocol": "https",
+							"host": [
+								"resale",
+								"api",
+								"bango",
+								"net"
+							],
+							"path": [
+								"v1",
+								"entitlement",
+								"revoke",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Suspend Entitlement",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{NEEDS TO BE DEFINED}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"reasonCategory\": \"ACTIVATION_ROLLBACK\", <!-- mandatory-->\r\n    \"reasonCode\": \"CUSTOMER_PAYMENT_DEFAULT\", <!-- mandatory-->\r\n    \"reasonDescription\": \"Customer has defaulted payment.\" <!-- mandatory-->\r\n}"
+						},
+						"url": {
+							"raw": "https://resale.api.bango.net/v1/entitlement/suspend/{{entitlementId}}",
+							"protocol": "https",
+							"host": [
+								"resale",
+								"api",
+								"bango",
+								"net"
+							],
+							"path": [
+								"v1",
+								"entitlement",
+								"suspend",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resume Entitlement",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{NEEDS TO BE DEFINED}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://resale.api.bango.net/v1/entitlement/resume/{{entitlementId}}",
+							"protocol": "https",
+							"host": [
+								"resale",
+								"api",
+								"bango",
+								"net"
+							],
+							"path": [
+								"v1",
+								"entitlement",
+								"resume",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "6e2f044c-5bc7-4e48-a8db-0c9bab55bb97",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "87cad474-f015-437a-8844-0aee9b496d43",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
