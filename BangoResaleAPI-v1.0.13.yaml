@@ -128,7 +128,6 @@ paths:
             dateLastUpdated: '2017-01-28T14:30:05Z'
             dateSuspended: 'null'
             dateResumed: 'null'
-            notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
             extensionData: {
               price: "9.99",
               currencyIso3: "GBP",
@@ -231,7 +230,6 @@ paths:
             dateLastUpdated: "2017-01-28T14:30:05Z"
             dateSuspended: 'null'
             dateResumed: 'null'
-            notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
             extensionData: {
               price: "9.99",
               currencyIso3: "GBP",
@@ -269,7 +267,6 @@ paths:
             dateLastUpdated: "2017-01-28T14:15:03Z"
             dateSuspended: 'null'
             dateResumed: 'null'
-            notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
             extensionData: {
               price: "9.99",
               currencyIso3: "GBP",
@@ -380,7 +377,6 @@ paths:
             dateLastUpdated: "2017-01-28T14:30:05Z"
             dateSuspended: 'null'
             dateResumed: 'null'
-            notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
             extensionData: {
               price: "9.99",
               currencyIso3: "GBP",
@@ -418,7 +414,6 @@ paths:
             dateLastUpdated: '2017-01-28T14:30:05Z'
             dateSuspended: 'null'
             dateResumed: 'null'
-            notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
             extensionData: {
               price: "9.99",
               currencyIso3: "GBP",
@@ -529,7 +524,6 @@ paths:
             dateExpiry: 'null'
             dateEnded: '2017-02-15T09:30:05Z'
             dateLastUpdated: '2017-02-15T09:30:05Z'
-            notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
             extensionData: {
               price: "9.99",
               currencyIso3: "GBP",
@@ -635,7 +629,6 @@ paths:
             dateExpiry: 'null'
             dateEnded: 'null'
             dateLastUpdated: '2017-01-28T14:30:05Z'
-            notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
             extensionData: {
               price: "9.99",
               currencyIso3: "GBP",
@@ -671,7 +664,6 @@ paths:
             dateExpiry: 'null'
             dateEnded: 'null'
             dateLastUpdated: '2017-01-28T14:15:03Z'
-            notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
             extensionData: {
               price: "9.99",
               currencyIso3: "GBP",
@@ -789,7 +781,6 @@ paths:
             dateExpiry: 'null'
             dateEnded: '2017-02-15T09:30:05Z'
             dateLastUpdated: '2017-02-15T09:30:05Z'
-            notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
             extensionData: {
               price: "9.99",
               currencyIso3: "GBP",
@@ -896,7 +887,6 @@ paths:
             dateLastUpdated: '2017-02-15T09:30:05Z'
             dateSuspended: '2019-03-15T09:30:05Z'
             dateResumed: 'null'
-            notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
             extensionData: {
               price: "9.99",
               currencyIso3: "GBP",
@@ -1010,7 +1000,6 @@ paths:
             dateLastUpdated: '2017-02-15T09:30:05Z'
             dateSuspended: 'null'
             dateResumed: 'null'
-            notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
             extensionData: {
               price: "9.99",
               currencyIso3: "GBP",
@@ -1117,7 +1106,6 @@ paths:
                 dateLastUpdated: '2017-02-15T09:30:05Z'
                 dateSuspended: 'null'
                 dateResumed: 'null'
-                notificationUrl: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
                 extensionData: {
                   price: "9.99",
                   currencyIso3: "GBP",
@@ -1410,14 +1398,6 @@ definitions:
         description: >-
           Date and time when the entitlement was resumed, in UTC ISO 8601.
           format (yyyy-MM-ddThh:mm:ssZ)
-      notificationUrl:
-        type: string
-        format: url
-        description: >-
-          URL where a POST notification will be sent after successful
-          subscription creation. The body of the POST request will contain the
-          entitlement information in EntitlementGetResponse format.
-        example: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
       extensionData:
         type: object
         description: Accepts a dynamic list of key-value pairs to cover custom data needs
@@ -1507,14 +1487,6 @@ definitions:
         description: >-
           Date and time when the entitlement was resumed, in UTC ISO 8601.
           format (yyyy-MM-ddThh:mm:ssZ)
-      notificationUrl:
-        type: string
-        format: url
-        description: >-
-          URL where a POST notification will be sent after successful
-          subscription creation. The body of the POST request will contain the
-          entitlement information in EntitlementGetResponse format.
-        example: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
       extensionData:
         type: object
         additionalProperties:
@@ -1723,14 +1695,6 @@ definitions:
           description: >-
             Date and time when the entitlement was resumed, in UTC ISO 8601.
             format (yyyy-MM-ddThh:mm:ssZ)
-        notificationUrl:
-          type: string
-          format: url
-          description: >-
-            URL where a POST notification will be sent after successful
-            subscription creation. The body of the POST request will contain the
-            entitlement information in EntitlementGetResponse format.
-          example: "https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f"
         extensionData:
           type: object
           additionalProperties:
