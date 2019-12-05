@@ -1,0 +1,287 @@
+swagger: '2.0'
+info:
+  version: "V1.0"
+  title: 'Resale Merchant - Merchant initiated requests'
+  description: >-
+    Requests sent by merchant to Bango to either receive information about Entitlement(s) or to update Bango on Entitlement information.
+# host: resale.merchant.api.bango.net
+schemes: 
+  - https
+securityDefinitions:
+  BasicAuth:
+    type: basic
+  OAuth2:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: https://resale.oauth.bango.net/authorize
+    tokenUrl: https://resale.oauth.bango.net/token
+  AWSToken:
+    type: apiKey
+    name: AWSTokenAuthorization
+    in: header
+produces:
+  - application/json
+paths:
+  /entitlement/logevent:
+    post:
+      summary: Log Entitlement Event
+      description: |
+        Merchant can send in logs about Entitlement status change or any additional information. Reseller would be notified on any status change information. Additional information would be logged against the entitlement in the system.
+      parameters:
+        - name: entitlementLogEventBody
+          in: body
+          description: The log event body JSON.
+          schema:
+            $ref: '#/definitions/LogEvent'
+          required: true
+      tags:
+        - 'Incoming Requests'
+      responses:
+        '200':
+          description: Event updated successfully
+          schema:
+            $ref: '#/definitions/LogEventResponse'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/BadRequest'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Unauthorized'
+        '404':
+          description: Entitlement not found
+          schema:
+            $ref: '#/definitions/NotFound'
+        '429':
+          description: Too many requests
+          schema:
+            $ref: '#/definitions/TooManyRequests'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/InteralServerError'
+        '503':
+          description: Service unavailable
+          schema:
+            $ref: '#/definitions/ServiceUnavailable'
+  /entitlement/{merchantEntitlementId}:
+    get:
+      summary: GET Entitlement
+      description: |
+        Entitlement information for the requested unique Entitlement Identifier would be returned to be Merchant.
+      parameters:
+        - name: merchantEntitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          type: string
+          format: uuid
+      tags:
+        - 'Incoming Requests'
+      responses:
+        '200':
+          description: Entitlement data
+          schema:
+            $ref: '#/definitions/EntitlementGetResponse'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/BadRequest'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Unauthorized'
+        '404':
+          description: Entitlement not found
+          schema:
+            $ref: '#/definitions/NotFound'
+        '429':
+          description: Too many requests
+          schema:
+            $ref: '#/definitions/TooManyRequests'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/InteralServerError'
+        '503':
+          description: Service unavailable
+          schema:
+            $ref: '#/definitions/ServiceUnavailable'
+definitions:
+  LogEvent:
+    type: object
+    properties:
+      entitlementId:
+        type: string
+        description: Entitlement unique identifier - Bango identifier
+      merchantEntitlementId:
+        type: string
+        description: Entitlement unique identifier - Merchant's entitlement identifier
+      success:
+        type: boolean
+        description: Informs if the current event provided by the merchant was successful
+      eventCode:
+        type: string
+        description: Type of the event
+        example: "ACTIVATION_SUCCESS"
+      eventDescription:
+        type: string
+        description: Provides more information about the current event
+      productId:
+        type: string
+        description: The identifier for the merchant service the user wants access to.
+      timestamp:
+        type: string
+        format: date
+        description: >-
+          Date and time when the entitlement event happeneded, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+      merchantExtensionData:
+        type: object
+        additionalProperties:
+          type: string
+          description: A dynamic list of additional data about the entitlement 
+  LogEventResponse:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "OK"
+      responseMessage:
+        type: string
+        example: "Success"
+      status:
+        type: string
+        description: Status of the entitlement
+        example: "ACTIVE"
+      url:
+        type: string
+        description: Redirection URL, if any
+        example: "https://redirection-url.com/ForLogEvent"
+  BadRequest:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "BAD_REQUEST"
+      responseMessage:
+        type: string
+        example: "Invalid request"
+  Unauthorized:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "UNAUTHORIZED"
+      responseMessage:
+        type: string
+        example: "Invalid access credential."
+  NotFound:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "NOT_FOUND"
+      responseMessage:
+        type: string
+        example: "Entitlement not found"
+  TooManyRequests:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "TOO_MANY_REQUESTS"
+      responseMessage:
+        type: string
+        example: "Request limit reached. Please try again later"
+  InteralServerError:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "INTERNAL_ERROR"
+      responseMessage:
+        type: string
+        example: "The server encountered an unexpected condition which prevented it from fulfilling the request"
+  ServiceUnavailable:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "SERVICE_UNAVAILABLE"
+      responseMessage:
+        type: string
+        example: "The server is undergoing maintenance and is not available. Please, try again later"
+  EntitlementGetResponse:
+    type: object
+    properties:
+      responseCode:
+        type: string
+      responseMessage:
+        type: string
+      requestId:
+        type: string
+        description: Bango unique identifier representing an entitlement.
+      customerId:
+        type: string
+        description: User unique identifier.
+      productId:
+        type: string
+        description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
+      status:
+        type: string
+        description: >-
+          Entitlement status. Possible values are:
+            - "ACTIVE": The entitlement has been successfully activated
+            - "CANCELLED": The entitlement has been cancelled.
+            - "REVOKED": The entitlement has been revoked. This usually happens on fraud and user contract termination cases
+            - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
+            - "EXPIRED": The time window for the user to finalize the activation process has expired
+            - "FAILED": The entitlement failed
+            - "ACTIVATION_FAILED": The entitlement activation failed
+            - "ACTIVATION_EXPIRED": The entitlement activation expired
+            - "ACTIVATION_ALREADY_SUBSCRIBED": The user is already subscribed to the entitlement product and the merchant rejected the entitlement activation
+            - "ACTIVATION_REJECTED": The product provider rejected the activation for an unspecified reason
+      dateCreated:
+        type: string
+        format: date
+        description: >-
+          Date and time when the entitlement was created, in UTC ISO 8601 format
+          (yyyy-MM-ddThh:mm:ssZ)
+      dateActivated:
+        type: string
+        format: date
+        description: >-
+          Date and time when the entitlement was activated, in UTC ISO 8601
+          format (yyyy-MM-ddThh:mm:ssZ)
+      dateExpiry:
+        type: string
+        format: date
+        description: >-
+          Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+          (yyyy-MM-ddThh:mm:ssZ)
+      dateEnded:
+        type: string
+        format: date
+        description: >-
+          Date and time when the entitlement ended due to cancellation or
+          revoke, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+      dateLastUpdated:
+        type: string
+        format: date
+        description: >-
+          Date and time when the entitlement was last modified, in UTC ISO 8601
+          format (yyyy-MM-ddThh:mm:ssZ)
+      dateSuspended:
+        type: string
+        format: date
+        description: >-
+          Date and time when the entitlement was suspended, in UTC ISO 8601. Null if status is not Suspended.
+          format (yyyy-MM-ddThh:mm:ssZ)
+      dateResumed:
+        type: string
+        format: date
+        description: >-
+          Date and time when the entitlement was suspended, in UTC ISO 8601. Null if status is not Suspended.
+          format (yyyy-MM-ddThh:mm:ssZ)
+host: resale.merchant.bango.com
