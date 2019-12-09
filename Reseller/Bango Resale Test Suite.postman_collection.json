@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bbb01bc3-a230-42a8-9f7c-e9d79be40250",
+		"_postman_id": "1fc8f3c1-599a-4604-a962-c2f5cf1cd519",
 		"name": "Bango Resale Test Suite",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -223,7 +223,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"revokeReasonCategory\": \"REVOKED\", <!-- mandatory-->\r\n    \"revokeReasonCode\": \"ACCOUNT_TERMINATED\", <!-- mandatory-->\r\n    \"revokeReasonDescription\": \"The user has deleted their account\" <!-- mandatory-->\r\n}"
+							"raw": "{\r\n\t\"cancelReasonCategory\": \"REVOKED\", <!-- mandatory-->\r\n    \"cancelReasonCode\": \"ACCOUNT_TERMINATED\", <!-- mandatory-->\r\n    \"cancelReasonDescription\": \"The user has deleted their account\" <!-- mandatory-->\r\n}"
 						},
 						"url": {
 							"raw": "https://resale.api.bango.net/v1/entitlement/revoke/{{entitlementId}}",
@@ -328,7 +328,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -352,5 +353,6 @@
 				]
 			}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
