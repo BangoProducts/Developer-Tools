@@ -1,0 +1,314 @@
+---
+swagger: "2.0"
+info:
+  description: |
+    Provide supporting operations for Bango Resale API
+
+    Changelog
+    * 1.0.1: Initial draft
+    * 1.0.2: Updated with new POST method
+    * 1.0.3: Updated resource URLs and moved customerIdentifier to header
+    * 1.0.4: Updated examples to match schema
+  version: 1.0.4
+  title: Bango Resale Supporting API
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
+security:
+- basicAuth: []
+paths:
+  /reseller/{resellerIdentifier}/products:
+    get:
+      summary: Get eligible products for this reseller's customer
+      description: Get eligible products for this reseller's customer
+      parameters:
+      - name: Authorization
+        in: header
+        description: Basic Authentication 
+        required: true
+        type: string
+      - name: X-RequestIdentifier
+        in: header
+        description: Request unique identifier. If present, this id will be used for idempotency
+        required: false
+        type: string
+      - name: X-CustomerIdentifier
+        in: header
+        description: Customer unique identifier for the reseller
+        required: false
+        type: string
+      - name: resellerIdentifier
+        in: path
+        description: Reseller unique identifier
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+          examples:
+            responseCode: OK
+            responseMessage: Success
+            eligibleProducts:
+              one:
+                productIdentifier: prod-BM-Free-id-1
+                productRank: 0
+                productStatus: NONE
+                productName: BANGO_MUSIC_FREE
+                productDescription: Probably the coolest music in the world
+                productLogoURL: https://bangomusic.xyz/small-logo.jpg
+                productTermsURL: https://bangomusic.xyz/free-terms.html
+                productPrice: £0.00
+                productOfferType: BUNDLE
+                productActivationUrl: https://bangomusic.xyz/activate
+              two:
+                productIdentifier: prod-BM-Paid-id-2
+                productRank: 0
+                productStatus: SELECTED
+                productName: BANGO_MUSIC_PAID
+                productDescription: Definitely the coolest music in the world
+                productLogoURL: https://bangomusic.xyz/smaell-logo.jpg
+                productTermsURL: https://bangomusic.xyz/paid-terms.html
+                productPrice: £5.00 per month
+                productOfferType: ADD-ON
+                productActivationUrl: https://bangomusic.xyz/activate
+          schema:
+            $ref: '#/definitions/GetEligibleProductsResponse'
+        400:
+          description: Bad request
+          examples:
+            responseCode: BAD_REQUEST
+            responseMessage: Invalid request
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        401:
+          description: Unauthorized
+          examples:
+            responseCode: UNAUTHORIZED
+            responseMessage: Invalid access credential.
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        404:
+          description: Customer not found
+          examples:
+            responseCode: NOT_FOUND
+            responseMessage: Customer not found
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        429:
+          description: Too many requests
+          examples:
+            responseCode: TOO_MANY_REQUESTS
+            responseMessage: Request limit reached. Please try again later
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        500:
+          description: Unexpected error
+          examples:
+            responseCode: INTERNAL_ERROR
+            responseMessage: The server encountered an unexpected condition which prevented it from fulfilling the request
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        502:
+          description: Unexpected error
+          examples:
+            responseCode: ERROR
+            responseMessage: The server received an invalid response from the upstream server
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        503:
+          description: Service unavailable
+          examples:
+            responseCode: SERVICE_UNAVAILABLE
+            responseMessage: The server is undergoing maintenance and is not available. Please, try again later.
+          schema:
+            $ref: '#/definitions/ResponseObject'
+    post:
+      summary: Select eligible product for this reseller's customer
+      description: Select eligible product for this reseller's customer
+      parameters:
+      - name: Authorization
+        in: header
+        description: Basic Authentication 
+        required: true
+        type: string
+      - name: X-RequestIdentifier
+        in: header
+        description: Request unique identifier. If present, this id will be used for idempotency
+        required: false
+        type: string
+      - name: X-CustomerIdentifier
+        in: header
+        description: Customer unique identifier for the reseller
+        required: false
+        type: string
+      - name: resellerIdentifier
+        in: path
+        description: Reseller unique identifier
+        required: true
+        type: string
+      - in: body
+        name: selectedProductInfo
+        description: Customer selected product information
+        required: false
+        schema:
+          $ref: '#/definitions/ProductInfo'
+      responses:
+        200:
+          description: Success
+          examples:
+            responseCode: OK
+            responseMessage: Success
+            productActivationURL:
+            - https://bangomusic.xyz/activation/874f423f25dc
+          schema:
+            $ref: '#/definitions/SelectEligibleProductResponse'
+        400:
+          description: Bad request
+          examples:
+            responseCode: BAD_REQUEST
+            responseMessage: Invalid request
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        401:
+          description: Unauthorized
+          examples:
+            responseCode: UNAUTHORIZED
+            responseMessage: Invalid access credential.
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        404:
+          description: Customer not found
+          examples:
+            responseCode: NOT_FOUND
+            responseMessage: Customer not found
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        429:
+          description: Too many requests
+          examples:
+            responseCode: TOO_MANY_REQUESTS
+            responseMessage: Request limit reached. Please try again later
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        500:
+          description: Unexpected error
+          examples:
+            responseCode: INTERNAL_ERROR
+            responseMessage: The server encountered an unexpected condition which prevented it from fulfilling the request
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        502:
+          description: Unexpected error
+          examples:
+            responseCode: ERROR
+            responseMessage: The server received an invalid response from the upstream server
+          schema:
+            $ref: '#/definitions/ResponseObject'
+        503:
+          description: Service unavailable
+          examples:
+            responseCode: SERVICE_UNAVAILABLE
+            responseMessage: The server is undergoing maintenance and is not available. Please, try again later.
+          schema:
+            $ref: '#/definitions/ResponseObject'
+securityDefinitions:
+  basicAuth:
+    type: basic
+definitions:
+  ProductInfo:
+    type: object
+    properties:
+      productIdentifier:
+        type: string
+        description: Assigned productIdentifier reference
+      productRank:
+        type: integer
+        description: Reseller preferred rank of this offer (0 is highest) (optional)
+      productStatus:
+        type: string
+        description: Status of the product with reseller. (optional) Supported values are ACTIVE, SELECTED, NONE)
+      productName:
+        type: string
+        description: Display name for this productIdentifier (optional)
+      productDescription:
+        type: string
+        description: Display description for this productIdentifier (optional)
+      productLogoURL:
+        type: string
+        description: URL to display logo for this productIdentifier (optional)
+      productTermsURL:
+        type: string
+        description: URL to display Terms and Conditions for this productIdentifier (optional)
+      productPrice:
+        type: string
+        description: Display price as a string for this productIdentifier (optional)
+      productOfferType:
+        type: string
+        description: Display type of reseller offer for this productIdentifier (optional)
+      productActivationUrl:
+        type: string
+        description: Activation Url provided by the merchant for customer sign-up (optional)
+  GetEligibleProductsResponse:
+    type: object
+    properties:
+      responseCode:
+        type: string
+      responseMessage:
+        type: string
+      eligibleProducts:
+        type: array
+        description: Array of eligible products for this customer
+        items:
+          $ref: '#/definitions/ProductInfo'
+  SelectEligibleProductResponse:
+    type: object
+    properties:
+      responseCode:
+        type: string
+      responseMessage:
+        type: string
+      productActivationURL:
+        type: string
+        description: Product activation URL for this customer
+  ResponseObject:
+    type: object
+    properties:
+      responseCode:
+        type: string
+      responseMessage:
+        type: string
+parameters:
+  X-RequestIdentifier:
+    name: X-RequestIdentifier
+    in: header
+    description: Request unique identifier. If present, this id will be used for idempotency
+    required: false
+    type: string
+  X-CustomerIdentifier:
+    name: X-CustomerIdentifier
+    in: header
+    description: Customer unique identifier for the reseller
+    required: true
+    type: string
+  resellerIdentifier:
+    name: resellerIdentifier
+    in: path
+    description: Reseller unique identifier
+    required: true
+    type: string
+  merchantKey:
+    name: merchantKey
+    in: query
+    description: Merchant unique identifier
+    required: false
+    type: string
+  selectedProductInfo:
+    in: body
+    name: selectedProductInfo
+    description: Customer selected product information
+    required: false
+    schema:
+      $ref: '#/definitions/ProductInfo'
