@@ -1252,10 +1252,6 @@ definitions:
             - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
             - "EXPIRED": The time window for the user to finalize the activation process has expired.
             - "FAILED": The entitlement failed
-            - "ACTIVATION_FAILED": The entitlement activation failed
-            - "ACTIVATION_EXPIRED": The entitlement activation expired
-            - "ACTIVATION_ALREADY_SUBSCRIBED": The user is already subscribed to the entitlement product and the merchant rejected the entitlement activation
-            - "ACTIVATION_REJECTED": The product provider rejected the activation for an unspecified reason
       dateCreated:
         type: string
         format: date
@@ -1343,10 +1339,6 @@ definitions:
             - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
             - "EXPIRED": The time window for the user to finalize the activation process has expired
             - "FAILED": The entitlement failed
-            - "ACTIVATION_FAILED": The entitlement activation failed
-            - "ACTIVATION_EXPIRED": The entitlement activation expired
-            - "ACTIVATION_ALREADY_SUBSCRIBED": The user is already subscribed to the entitlement product and the merchant rejected the entitlement activation
-            - "ACTIVATION_REJECTED": The product provider rejected the activation for an unspecified reason
       dateCreated:
         type: string
         format: date
@@ -1508,10 +1500,6 @@ definitions:
             - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
             - "EXPIRED": The time window for the user to finalize the activation process has expired
             - "FAILED": The entitlement failed
-            - "ACTIVATION_FAILED": The entitlement activation failed
-            - "ACTIVATION_EXPIRED": The entitlement activation expired
-            - "ACTIVATION_ALREADY_SUBSCRIBED": The user is already subscribed to the entitlement product and the merchant rejected the entitlement activation
-            - "ACTIVATION_REJECTED": The product provider rejected the activation for an unspecified reason
         example: "ACTIVE"
   EntitlementReportResponse:
     type: array
@@ -1553,10 +1541,6 @@ definitions:
               - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
               - "EXPIRED": The time window for the user to finalize the activation process has expired
               - "FAILED": The entitlement failed
-              - "ACTIVATION_FAILED": The entitlement activation failed
-              - "ACTIVATION_EXPIRED": The entitlement activation expired
-              - "ACTIVATION_ALREADY_SUBSCRIBED": The entitlement activation was already used and is no longer valid
-              - "ACTIVATION_REJECTED": The product provider rejected the activation for an unspecified reason
         dateCreated:
           type: string
           format: date
@@ -1659,6 +1643,7 @@ definitions:
           - "bundleId": a string identifier for the bundle which the OTT service is part of.
           - "country": the end-users country.
           - "region": the end-users region within their country.
+          - "brand": the brand of which the user originated from.
 
     example:
       channelType: "WEB_PROMOTION"
@@ -1667,6 +1652,7 @@ definitions:
       bundleId: "BundleABC123"
       country: "United Kingdom"
       region: "East Anglia"
+      brand: "BrandABC"
       
   ExtraEntitlementInfo:
     type: object
