@@ -213,7 +213,7 @@ paths:
           schema:
             $ref: '#/definitions/ResponseObject'
         '201':
-          description: Suspend request created
+          description: Resume request created
           schema:
             $ref: '#/definitions/RequestCreated'
         '400':
@@ -277,7 +277,7 @@ paths:
           schema:
             $ref: '#/definitions/EntitlementTerminateResponse'
         '201':
-          description: Suspend request created
+          description: Terminate request created
           schema:
             $ref: '#/definitions/RequestCreated'
         '400':
