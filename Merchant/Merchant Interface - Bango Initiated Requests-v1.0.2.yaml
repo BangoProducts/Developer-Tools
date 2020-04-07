@@ -389,10 +389,6 @@ definitions:
             - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
             - "EXPIRED": The time window for the user to finalize the activation process has expired.
             - "FAILED": The entitlement failed
-            - "ACTIVATION_FAILED": The entitlement activation failed
-            - "ACTIVATION_EXPIRED": The entitlement activation expired
-            - "ACTIVATION_ALREADY_SUBSCRIBED": The user is already subscribed to the entitlement product and the merchant rejected the entitlement activation
-            - "ACTIVATION_REJECTED": The product provider rejected the activation for an unspecified reason
       dateCreated:
         type: string
         format: date
@@ -463,6 +459,10 @@ definitions:
         type: string
         description: Entitlement product unique identifier. For example, "30_DAYS_MUSIC".
         example: "30_DAYS_MUSIC"
+      offerId:
+        type: string
+        description: The offer given to the user for the merchant service. For example, "FREE_FOR_6_MONTHS".
+        example: "FREE_FOR_6_MONTHS"
       extensionData:
         $ref: '#/definitions/ExtensionData'
   EntitlementCreateResponse:
