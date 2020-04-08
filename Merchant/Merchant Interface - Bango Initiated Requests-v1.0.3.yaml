@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: 1.0.3
-  title: 'Resale Merchant Interactions - requests to Merchant'
+  title: 'Resale Merchant - Client API'
   description: >-
     Standard requests sent to merchants and expected response.
 # host: resale.merchant.api.bango.net
