@@ -22,7 +22,7 @@ securityDefinitions:
 produces:
   - application/json
 paths:
-  /entitlement/logevent:
+  /v1/entitlement/logevent:
     post:
       summary: Log Entitlement Event
       description: |
@@ -65,7 +65,7 @@ paths:
           description: Service unavailable
           schema:
             $ref: '#/definitions/ServiceUnavailable'
-  /entitlement/{merchantEntitlementId}:
+  /v1/entitlement/{merchantEntitlementId}:
     get:
       summary: GET Entitlement
       description: |
