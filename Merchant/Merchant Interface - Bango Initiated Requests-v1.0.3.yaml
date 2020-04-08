@@ -213,7 +213,7 @@ paths:
           schema:
             $ref: '#/definitions/ResponseObject'
         '201':
-          description: Resume request created
+          description: Suspend request created
           schema:
             $ref: '#/definitions/RequestCreated'
         '400':
@@ -277,7 +277,7 @@ paths:
           schema:
             $ref: '#/definitions/EntitlementTerminateResponse'
         '201':
-          description: Terminate request created
+          description: Suspend request created
           schema:
             $ref: '#/definitions/RequestCreated'
         '400':
@@ -361,7 +361,7 @@ definitions:
         description: 'Unique identifier used on activation'
         example: "6e37a4b5-8cb9-465b-88a9-ad5eb02596be"
         format: uuid
-      customerId:
+      bangoUserId:
         type: string
         description: Unique user identifier, as identified by Bango
         example: "1549053185"
@@ -462,7 +462,7 @@ definitions:
     type: object
     required:
       - requestId
-      - customerId
+      - bangoUserId
       - resellerId
       - productId
     properties:
@@ -470,7 +470,7 @@ definitions:
         type: string
         description: Unique identifier representing a specific entitlement.
         example: "a25100b8-4e0c-4e37-b921-cac9cb1e930f"
-      customerId:
+      bangoUserId:
         type: string
         description: Unique identifier representing a specific customer of the reseller.
         example: null
@@ -708,11 +708,11 @@ definitions:
   CheckEligibilityRequest:
     type: object
     required:
-      - customerId
+      - bangoUserId
       - resellerId
       - productId
     properties:
-      customerId:
+      bangoUserId:
         type: string
         description: Unique identifier representing a specific customer of the reseller.
         example: sampleuser@example.com
