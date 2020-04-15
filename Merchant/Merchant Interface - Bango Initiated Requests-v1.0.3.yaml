@@ -227,7 +227,7 @@ paths:
         '202':
           description: Resume request accepted
           schema:
-            $ref: '#/definitions/RequestCreated'
+            $ref: '#/definitions/RequestAccepted'
         '400':
           description: Bad request
           schema:
