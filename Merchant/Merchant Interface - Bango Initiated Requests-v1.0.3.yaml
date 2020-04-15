@@ -276,10 +276,10 @@ paths:
           description: Entitlement terminated successfully
           schema:
             $ref: '#/definitions/EntitlementTerminateResponse'
-        '201':
-          description: Suspend request created
+        '202':
+          description: Terminate request accepted
           schema:
-            $ref: '#/definitions/RequestCreated'
+            $ref: '#/definitions/RequestAccepted'
         '400':
           description: Bad request
           schema:
@@ -656,6 +656,17 @@ definitions:
       responseCode:
         type: string
         example: "CLIENT_ACTION_REQUIRED"
+      responseMessage:
+        type: string
+        example: "Request created and queued."
+      merchantExtensionData:
+        $ref: '#/definitions/MerchantExtensionData'
+  RequestAccepted:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "ACCEPTED"
       responseMessage:
         type: string
         example: "Request created and queued."
