@@ -110,6 +110,10 @@ paths:
           description: Request created and queued.
           schema:
             $ref: '#/definitions/RequestCreated'
+        '202':
+          description: Request created and queued.
+          schema:
+            $ref: '#/definitions/RequestAccepted'
         '400':
           description: Bad request
           schema:
@@ -161,6 +165,10 @@ paths:
           description: Suspend request created
           schema:
             $ref: '#/definitions/RequestCreated'
+        '202':
+          description: Suspend request accepted
+          schema:
+            $ref: '#/definitions/RequestAccepted'
         '400':
           description: Bad request
           schema:
@@ -213,7 +221,11 @@ paths:
           schema:
             $ref: '#/definitions/ResponseObject'
         '201':
-          description: Suspend request created
+          description: Resume request created
+          schema:
+            $ref: '#/definitions/RequestCreated'
+        '202':
+          description: Resume request accepted
           schema:
             $ref: '#/definitions/RequestCreated'
         '400':
