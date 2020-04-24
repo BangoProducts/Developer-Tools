@@ -46,7 +46,7 @@ paths:
           required: true
           type: string
       tags:
-        - "Incoming Requests"
+        - "Server API"
       responses:
         '200':
           description: Echo request successful.
@@ -118,7 +118,7 @@ paths:
           type: string
           format: uuid
       tags:
-        - 'Incoming Requests'
+        - 'Server API'
       responses:
         '200':
           description: Entitlement data
@@ -175,7 +175,7 @@ paths:
             $ref: '#/definitions/EntitlementUpdate'
           required: true
       tags:
-        - 'Incoming Requests'
+        - 'Server API'
       responses:
         '200':
           description: Entitlement updated successfully
@@ -281,7 +281,7 @@ paths:
             $ref: '#/definitions/EntitlementTerminate'
           required: true
       tags:
-        - 'Incoming Requests'
+        - 'Server API'
       responses:
         '200':
           description: Entitlement terminated successfully
@@ -387,7 +387,7 @@ paths:
             $ref: '#/definitions/EntitlementActivate'
           required: true
       tags:
-        - 'Incoming Requests'
+        - 'Server API'
       responses:
         '200':
           description: Entitlement activated successfully
