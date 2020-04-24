@@ -10,15 +10,6 @@ schemes:
 securityDefinitions:
   BasicAuth:
     type: basic
-  OAuth2:
-    type: oauth2
-    flow: accessCode
-    authorizationUrl: https://resale.oauth.bango.net/authorize
-    tokenUrl: https://resale.oauth.bango.net/token
-  AWSToken:
-    type: apiKey
-    name: AWSTokenAuthorization
-    in: header
 produces:
   - application/json
 paths:
