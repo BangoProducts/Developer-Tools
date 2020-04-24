@@ -10,10 +10,11 @@ schemes:
 securityDefinitions:
   BasicAuth:
     type: basic
+
 produces:
   - application/json
 paths:
-  /v1/echo/{echoRequestId}:
+  /v1/merchant/echo/{echoRequestId}:
     post:
       summary: Service echo
       operationId: echo
