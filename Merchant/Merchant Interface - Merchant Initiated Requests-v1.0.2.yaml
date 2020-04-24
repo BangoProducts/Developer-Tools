@@ -13,7 +13,7 @@ securityDefinitions:
 produces:
   - application/json
 paths:
-  /v1/merchant/echo/{echoRequestId}:
+  /v1/echo/{echoRequestId}:
     post:
       summary: Service echo
       operationId: echo
