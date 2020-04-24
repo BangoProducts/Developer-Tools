@@ -45,8 +45,7 @@ paths:
           description: Echo request identifier.
           required: true
           type: string
-      tags:
-        - "Server API"
+      
       responses:
         '200':
           description: Echo request successful.
@@ -117,8 +116,7 @@ paths:
           required: true
           type: string
           format: uuid
-      tags:
-        - 'Server API'
+      
       responses:
         '200':
           description: Entitlement data
@@ -174,8 +172,7 @@ paths:
           schema:
             $ref: '#/definitions/EntitlementUpdate'
           required: true
-      tags:
-        - 'Server API'
+      
       responses:
         '200':
           description: Entitlement updated successfully
@@ -280,8 +277,7 @@ paths:
           schema:
             $ref: '#/definitions/EntitlementTerminate'
           required: true
-      tags:
-        - 'Server API'
+      
       responses:
         '200':
           description: Entitlement terminated successfully
@@ -386,8 +382,8 @@ paths:
           schema:
             $ref: '#/definitions/EntitlementActivate'
           required: true
-      tags:
-        - 'Server API'
+      
+        
       responses:
         '200':
           description: Entitlement activated successfully
