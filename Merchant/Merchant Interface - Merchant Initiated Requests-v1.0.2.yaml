@@ -4,17 +4,16 @@ info:
   title: 'Resale Merchant - Server API'
   description: >-
     Requests sent by merchant to Bango to either receive information about Entitlement(s) or to update Bango on Entitlement information.
-host: resale.api.bango.net
+##host: resale.api.bango.net
 schemes: 
   - https
 securityDefinitions:
   BasicAuth:
     type: basic
-
 produces:
   - application/json
 paths:
-  /v1/echo/{echoRequestId}:
+  /v1/merchant/echo/{echoRequestId}:
     post:
       summary: Service echo
       operationId: echo
@@ -38,7 +37,7 @@ paths:
           required: true
           type: string
       tags:
-        - "Server API"
+        - "Incoming Requests"
       responses:
         '200':
           description: Echo request successful.
@@ -110,7 +109,7 @@ paths:
           type: string
           format: uuid
       tags:
-        - "Server API"
+        - 'Incoming Requests'
       responses:
         '200':
           description: Entitlement data
@@ -167,7 +166,7 @@ paths:
             $ref: '#/definitions/EntitlementUpdate'
           required: true
       tags:
-        - "Server API"
+        - 'Incoming Requests'
       responses:
         '200':
           description: Entitlement updated successfully
@@ -273,7 +272,7 @@ paths:
             $ref: '#/definitions/EntitlementTerminate'
           required: true
       tags:
-        - "Server API"
+        - 'Incoming Requests'
       responses:
         '200':
           description: Entitlement terminated successfully
@@ -378,9 +377,8 @@ paths:
           schema:
             $ref: '#/definitions/EntitlementActivate'
           required: true
-      
       tags:
-        - "Server API" 
+        - 'Incoming Requests'
       responses:
         '200':
           description: Entitlement activated successfully
@@ -523,6 +521,16 @@ definitions:
       responseMessage:
         type: string
         example: "The server is undergoing maintenance and is not available. Please, try again later"
+  InvalidState:
+    type: object
+    description: "The Bango Platform didn't process the request because the entitlement is not in correct state."
+    properties:
+      responseCode:
+        type: string
+        example: "INVALID_STATE"
+      responseMessage:
+        type: string
+        example: "Operation invalid for the current state of the entitlement."
   EntitlementActivate:
     type: object
     required:
