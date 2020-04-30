@@ -12,9 +12,8 @@ securityDefinitions:
     type: basic
   OAuth2:
     type: oauth2
-    flow: accessCode
-    authorizationUrl: https://resale.oauth.bango.net/authorize
-    tokenUrl: https://resale.oauth.bango.net/token
+    flow: application
+    tokenUrl: https://oauth.merchant.com/token
   AWSToken:
     type: apiKey
     name: AWSTokenAuthorization
@@ -44,7 +43,7 @@ paths:
             $ref: '#/definitions/EntitlementCreate'
           required: true
       tags:
-        - 'Client API'
+        - 'Create Entitlement'
       responses:
         '200':
           description: Entitlement created successfully.
@@ -100,7 +99,7 @@ paths:
             $ref: '#/definitions/EntitlementUpdate'
           required: true
       tags:
-        - 'Client API'
+        - 'Update Entitlement'
       responses:
         '200':
           description: Entitlement updated successfully.
@@ -155,7 +154,7 @@ paths:
           type: string
           format: uuid
       tags:
-        - 'Client API'
+        - 'Suspend Entitlement'
       responses:
         '200':
           description: Entitlement suspended successfully
@@ -214,7 +213,7 @@ paths:
           type: string
           format: uuid
       tags:
-        - 'Client API'
+        - 'Resume Entitlement'
       responses:
         '200':
           description: Entitlement resumed successfully
@@ -282,7 +281,7 @@ paths:
             $ref: '#/definitions/EntitlementTerminate'
           required: false
       tags:
-        - 'Client API'
+        - 'Terminate Entitlement'
       responses:
         '200':
           description: Entitlement terminated successfully
@@ -338,7 +337,7 @@ paths:
             $ref: '#/definitions/CheckEligibilityRequest'
           required: true
       tags:
-        - 'Client API'
+        - 'Check User Eligibility'
       responses:
         '200':
           description: Valid User eligibility response
@@ -367,6 +366,10 @@ paths:
 definitions:
   EntitlementUpdate:
     type: object
+    required:
+      - merchantEntitlementId
+      - bangoUserId
+      - productId
     properties:
       merchantEntitlementId:
         type: string
@@ -536,6 +539,8 @@ definitions:
         $ref: '#/definitions/MerchantExtensionData'
   EntitlementTerminate:
     type: object
+    required:
+      - immediate
     description: "To determine if the termination is effective immediatly."
     properties:
       immediate:
