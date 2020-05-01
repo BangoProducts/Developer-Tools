@@ -2,9 +2,10 @@ swagger: '2.0'
 info:
   version: 1.0.3
   title: 'Resale Merchant - Client API'
-  description: >-
-    Standard requests sent to merchants and expected response.
-# host: resale.merchant.api.bango.net
+  description: |
+    Changelog
+    * 1.0.3: Initial release
+# host: merchant.com
 schemes: 
   - https
 securityDefinitions:
@@ -48,11 +49,11 @@ paths:
         '200':
           description: Entitlement created successfully.
           schema:
-            $ref: '#/definitions/EntitlementCreateSimpleResponse'
+            $ref: '#/definitions/EntitlementCreate200Response'
         '202':
           description: An action is required to be performed by the client
           schema:
-            $ref: '#/definitions/EntitlementCreateResponse'
+            $ref: '#/definitions/EntitlementCreate202Response'
         '400':
           description: Bad request
           schema:
@@ -110,7 +111,7 @@ paths:
           schema:
             $ref: '#/definitions/RequestCreated'
         '202':
-          description: Request created and queued.
+          description: Request accepted.
           schema:
             $ref: '#/definitions/RequestAccepted'
         '400':
@@ -161,11 +162,11 @@ paths:
           schema:
             $ref: '#/definitions/ResponseObject'
         '201':
-          description: Suspend request created
+          description: Request created and queued.
           schema:
             $ref: '#/definitions/RequestCreated'
         '202':
-          description: Suspend request accepted
+          description: Request accepted.
           schema:
             $ref: '#/definitions/RequestAccepted'
         '400':
@@ -220,11 +221,11 @@ paths:
           schema:
             $ref: '#/definitions/ResponseObject'
         '201':
-          description: Resume request created
+          description: Request created and queued.
           schema:
             $ref: '#/definitions/RequestCreated'
         '202':
-          description: Resume request accepted
+          description: Request accepted.
           schema:
             $ref: '#/definitions/RequestAccepted'
         '400':
@@ -259,10 +260,9 @@ paths:
     post:
       summary: Terminate Entitlement
       description: |
-        Request sent to merchant to end an Entitlement. The body contains a flag called "IMMEDIATE" that marks if the request is for a HARD / SOFT termination.
-          - Hard Termination ends the Entitlement effective immediately. Status of the Entitlement would be set to REVOKED.
-          - Soft Termination ends the Entitlement naturally, allowing it to complete the billing lifecycle. Status of the Entitlement would be set to CANCELLED.
-          Expected responses as defined below.
+        Request sent to merchant to end an entitlement. The body contains a flag called "IMMEDIATE" that marks if the request is for a HARD / SOFT termination.
+          - Immediate = true is an instruction for the merchant to terminate the entitlement effective immediately.
+          - Immediate = false is an instruction for the merchant to terminate the entitlement at the end of it's current billing lifecycle.
       parameters:
         - name: X-RequestIdentifier
           in: header
@@ -288,7 +288,7 @@ paths:
           schema:
             $ref: '#/definitions/EntitlementTerminateResponse'
         '202':
-          description: Terminate request accepted
+          description: Request accepted
           schema:
             $ref: '#/definitions/RequestAccepted'
         '400':
@@ -319,7 +319,7 @@ paths:
     post:
       summary: Check user eligibility
       description: >-
-        Request that is sent to the merchant to check if the user is eligible to create an Entitlement for the product provided in the request.
+        Request that is sent to the merchant to check if the user is eligible to create an entitlement for the product provided in the request.
       operationId: checkeligibility
       consumes:
         - application/json
@@ -488,15 +488,15 @@ definitions:
       bangoUserId:
         type: string
         description: Unique identifier representing a specific customer of the reseller.
-        example: null
+        example: "1549053185"
       resellerId:
         type: string
         description: Unique reseller identifier as agreed with the merchant
-        example: "1549053185"
+        example: "RESELLER_XYZ"
       productId:
         type: string
-        description: Entitlement product unique identifier. For example, "30_DAYS_MUSIC".
-        example: "30_DAYS_MUSIC"
+        description: Entitlement product unique identifier. For example, "BangoMusic".
+        example: "BangoMusic"
       offerId:
         type: string
         description: The offer given to the user for the merchant service. For example, "FREE_FOR_6_MONTHS".
@@ -505,7 +505,7 @@ definitions:
         $ref: '#/definitions/ExtensionData'
       extraInformation:
         $ref: '#/definitions/ExtraInformation'  
-  EntitlementCreateResponse:
+  EntitlementCreate202Response:
     type: object
     required:
       - merchantEntitlementId
@@ -522,11 +522,12 @@ definitions:
         example: "https://merchant-website.com/new-entitlement/activation-url"
       expiryTime:
         type: string
+        format: date-time
         description: The expiry date for when the URL will no longer be active
         example: "2020-01-28T14:15:03Z"
       merchantExtensionData:
         $ref: '#/definitions/MerchantExtensionData'
-  EntitlementCreateSimpleResponse:
+  EntitlementCreate200Response:
     type: object
     required:
       - merchantEntitlementId
@@ -578,7 +579,7 @@ definitions:
         example: "Success"
       terminationDate:
         type: string
-        format: date
+        format: date-time
         description: >-
           Date and time when the entitlement was or will be terminated, in UTC ISO 8601.
           format (yyyy-MM-ddThh:mm:ssZ)
@@ -686,7 +687,7 @@ definitions:
         example: "ACCEPTED"
       responseMessage:
         type: string
-        example: "Request created and queued."
+        example: "Request accepted"
       merchantExtensionData:
         $ref: '#/definitions/MerchantExtensionData'
   ExtensionData:
@@ -743,15 +744,15 @@ definitions:
       bangoUserId:
         type: string
         description: Unique identifier representing a specific customer of the reseller.
-        example: sampleuser@example.com
+        example: "1549053185"
       resellerId:
         type: string
         description: Unique reseller identifier as agreed with the merchant
-        example: "1549053185"
+        example: "RESELLER_XYZ"
       productId:
         type: string
-        description: Entitlement product unique identifier. For example, "30_DAYS_MUSIC".
-        example: "30_DAYS_MUSIC"
+        description: Entitlement product unique identifier. For example, "BangoMusic".
+        example: "BangoMusic"
   CheckEligibilityResponse:
     type: object
     properties:
