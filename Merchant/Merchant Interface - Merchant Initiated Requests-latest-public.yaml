@@ -90,7 +90,7 @@ paths:
         - 'Get entitlement'
       responses:
         '200':
-          description: Entitlement data
+          description: Entitlement retrieved successfully
           schema:
             $ref: '#/definitions/EntitlementGetResponse'
         '400':
