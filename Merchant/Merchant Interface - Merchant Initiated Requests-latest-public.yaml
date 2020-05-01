@@ -1,0 +1,787 @@
+swagger: '2.0'
+info:
+  version: "V1.0.2"
+  title: 'Resale Merchant - Server API'
+  description: |
+    Changelog
+    * 1.0.2: Initial release
+    
+##host: resale.api.bango.net
+schemes: 
+  - https
+securityDefinitions:
+  BasicAuth:
+    type: basic
+produces:
+  - application/json
+paths:
+  /v1/echo/{echoRequestId}:
+    post:
+      summary: Service echo
+      operationId: echo
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization for the request being made. See securityDefinitions. 
+          type: string
+          required: true
+        - name: X-RequestIdentifier
+          in: header
+          description: Request unique identifier. If present, this id will be used for idempotency.
+          type: string
+        - name: echoRequestId
+          in: path
+          description: Echo request identifier.
+          required: true
+          type: string
+      tags:
+        - "Echo"
+      responses:
+        '200':
+          description: Echo request successful.
+          schema:
+              $ref: '#/definitions/EchoResponse'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/BadRequest'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Unauthorized'
+        '429':
+          description: Too many requests
+          schema:
+            $ref: '#/definitions/TooManyRequests'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+        '503':
+          description: Service unavailable
+          schema:
+            $ref: '#/definitions/ServiceUnavailable'
+  /v1/merchant/entitlement/{merchantEntitlementId}:
+    get:
+      summary: Retrieve an entitlement
+      description: |
+        Entitlement information for the requested unique Entitlement Identifier would be returned to be Merchant.
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization for the request being made. See securityDefinitions. 
+          type: string
+          required: true
+        - name: X-RequestIdentifier
+          in: header
+          description: Request unique identifier. If present, this id will be used for idempotency.
+          type: string
+        - name: merchantEntitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          type: string
+          format: uuid
+      tags:
+        - 'Get entitlement'
+      responses:
+        '200':
+          description: Entitlement data
+          schema:
+            $ref: '#/definitions/EntitlementGetResponse'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/BadRequest'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Unauthorized'
+        '404':
+          description: Entitlement not found
+          schema:
+            $ref: '#/definitions/NotFound'
+        '429':
+          description: Too many requests
+          schema:
+            $ref: '#/definitions/TooManyRequests'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+        '503':
+          description: Service unavailable
+          schema:
+            $ref: '#/definitions/ServiceUnavailable'
+    patch:
+      summary: Update an entitlement
+      description: |
+        Update an entitlement
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization for the request being made. See securityDefinitions. 
+          type: string
+          required: true
+        - name: X-RequestIdentifier
+          in: header
+          description: Request unique identifier. If present, this id will be used for idempotency.
+          type: string
+        - name: merchantEntitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          type: string
+          format: uuid
+        - name: entitlementUpdateBody
+          in: body
+          description: The entitlement activation JSON.
+          schema:
+            $ref: '#/definitions/EntitlementUpdate'
+          required: true
+      tags:
+        - 'Patch entitlement'
+      responses:
+        '200':
+          description: Entitlement updated successfully
+          schema:
+            $ref: '#/definitions/EntitlementResponse'
+
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/BadRequest'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Unauthorized'
+        '403':
+          description: No active entitlement routes available for this request where found
+          schema:
+            $ref: '#/definitions/NotAvailable'
+        '404':
+          description: Entitlement not found
+          schema:
+            $ref: '#/definitions/NotFound'
+        '409':
+          description: Operation invalid for the current state of the entitlement.
+          schema:
+            $ref: '#/definitions/InvalidState'
+
+        '429':
+          description: Too many requests
+          schema:
+            $ref: '#/definitions/TooManyRequests' 
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+        '503':
+          description: Service unavailable
+          schema:
+            $ref: '#/definitions/ServiceUnavailable'
+  /v1/merchant/entitlement/activate/{merchantEntitlementId}:
+    post:
+      summary: Activate an entitlement
+      description: |
+        Activate an entitlement
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization for the request being made. See securityDefinitions. 
+          type: string
+          required: true
+        - name: X-RequestIdentifier
+          in: header
+          description: Request unique identifier. If present, this id will be used for idempotency.
+          type: string
+        - name: merchantEntitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          type: string
+          format: uuid
+        - name: entitlementActivateBody
+          in: body
+          description: The entitlement activation JSON.
+          schema:
+            $ref: '#/definitions/EntitlementActivate'
+          required: true
+      tags:
+        - 'Activate entitlement'
+      responses:
+        '200':
+          description: Entitlement activated successfully
+          schema:
+            $ref: '#/definitions/EntitlementActivateResponse'
+          examples:
+            responseCode: 'OK'
+            responseMessage: 'Success'
+            requestId: '981a55a5-b3a4-46dc-9fac-a86227b26344'
+            merchantEntitlementId: 'a25100b8-4e0c-4e37-b921-cac9cb1e930f'
+            bangoUserId: '1549053185'
+            resellerId: 'RESELLER_XYZ'
+            productId: '30_DAYS_MUSIC'
+            offerId: 'FREE_FOR_6_MONTHS'
+            status: 'TERMINATED'
+            merchantExtensionData: {
+            }
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/BadRequest'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Unauthorized'
+        '403':
+          description: No active entitlement routes available for this request where found
+          schema:
+            $ref: '#/definitions/NotAvailable'
+        '404':
+          description: Entitlement not found
+          schema:
+            $ref: '#/definitions/NotFound'
+        '409':
+          description: Operation invalid for the current state of the entitlement.
+          schema:
+            $ref: '#/definitions/InvalidState'
+        '429':
+          description: Too many requests
+          schema:
+            $ref: '#/definitions/TooManyRequests'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+          examples:
+            responseCode: INTERNAL_ERROR
+        '503':
+          description: Service unavailable
+          schema:
+            $ref: '#/definitions/ServiceUnavailable'
+  /v1/merchant/entitlement/terminate/{merchantEntitlementId}:
+    post:
+      summary: Terminate an entitlement
+      description: |
+        Terminate an entitlement
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization for the request being made. See securityDefinitions. 
+          type: string
+          required: true
+        - name: X-RequestIdentifier
+          in: header
+          description: Request unique identifier. If present, this id will be used for idempotency.
+          type: string
+        - name: merchantEntitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          type: string
+          format: uuid
+        - name: entitlementTerminateBody
+          in: body
+          description: The entitlement terminate JSON.
+          schema:
+            $ref: '#/definitions/EntitlementTerminate'
+          required: true
+      tags:
+        - 'Terminate entitlement'
+      responses:
+        '200':
+          description: Entitlement terminated successfully
+          schema:
+            $ref: '#/definitions/EntitlementTerminateResponse'
+          examples:
+            responseCode: 'OK'
+            responseMessage: 'Success'
+            requestId: '981a55a5-b3a4-46dc-9fac-a86227b26344'
+            merchantEntitlementId: 'a25100b8-4e0c-4e37-b921-cac9cb1e930f'
+            bangoUserId: '1549053185'
+            resellerId: 'RESELLER_XYZ'
+            productId: '30_DAYS_MUSIC'
+            offerId: 'FREE_FOR_6_MONTHS'
+            status: 'TERMINATED'
+            merchantExtensionData: {
+            }
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/BadRequest'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Unauthorized'
+        '403':
+          description: No active entitlement routes available for this request where found
+          schema:
+            $ref: '#/definitions/NotAvailable'
+        '404':
+          description: Entitlement not found
+          schema:
+            $ref: '#/definitions/NotFound'
+        '409':
+          description: Operation invalid for the current state of the entitlement.
+          schema:
+            $ref: '#/definitions/InvalidState'
+        '429':
+          description: Too many requests
+          schema:
+            $ref: '#/definitions/TooManyRequests'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+        '503':
+          description: Service unavailable
+          schema:
+            $ref: '#/definitions/ServiceUnavailable'
+
+definitions:
+  EchoResponse:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "OK"
+      responseMessage:
+        type: string
+        example: "Success"
+      echo:
+        type: string
+        example: "a25100b8-4e0c-4e37-b921-cac9cb1e930f"
+  BadRequest:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "BAD_REQUEST"
+      responseMessage:
+        type: string
+        example: "Invalid request"
+  Unauthorized:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "UNAUTHORIZED"
+      responseMessage:
+        type: string
+        example: "You have not provided adequate credentials to access this resource."
+  NotAvailable:
+    type: object
+    description: "The Bango Platform didn't create the entitlement as the service described in the request is either not enabled for you to use, or has been temporarily disabled due to service issues. Contact Bango Support for more information."
+    properties:
+      responseCode:
+        type: string
+        example: "NOT_AVAILABLE"
+      responseMessage:
+        type: string
+        example: "No active entitlement routes found."
+  NotFound:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "NOT_FOUND"
+      responseMessage:
+        type: string
+        example: "Entitlement not found"
+  TooManyRequests:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "TOO_MANY_REQUESTS"
+      responseMessage:
+        type: string
+        example: "Request limit reached. Please try again later"
+  InternalServerError:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "INTERNAL_ERROR"
+      responseMessage:
+        type: string
+        example: "The server encountered an unexpected condition which prevented it from fulfilling the request"
+  ServiceUnavailable:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "SERVICE_UNAVAILABLE"
+      responseMessage:
+        type: string
+        example: "The server is undergoing maintenance and is not available. Please, try again later"
+  InvalidState:
+    type: object
+    description: "The Bango Platform didn't process the request because the entitlement is not in correct state."
+    properties:
+      responseCode:
+        type: string
+        example: "INVALID_STATE"
+      responseMessage:
+        type: string
+        example: "Operation invalid for the current state of the entitlement."
+  EntitlementActivate:
+    type: object
+    required:
+      - activatedDate
+    properties:
+      activatedDate:
+        type: string
+        format: date-time
+        description:  >-
+          Date when the entitlement was activated.
+        example: "2019-10-14T15:34:49Z"
+      
+      merchantExtensionData:
+        type: object
+  EntitlementUpdate:
+    type: object
+    required:
+     - merchantEntitlementId
+    properties:
+      productId:
+        type: string
+        example: '60_DAYS_MUSIC'
+      merchantExtensionData:
+        type: object
+  EntitlementTerminate:
+    type: object
+    required:
+      - immediate
+      - terminatedDate
+    properties:
+      terminatedDate:
+        type: string
+        format: date-time
+        description:  >-
+          Date when the entitlement was terminated.
+        example: "2019-10-14T15:34:49Z"
+      reasonCategory:
+        type: string
+        description:  >-
+          Code representing the entitlement terminate reason. This code can be any value, but we recommend you use one of the following codes:
+            - "CUSTOMER_CANCELLED"
+            - "REVOKED"
+            - "CUSTOMER_CHANGED"
+            - "ACTIVATION_ROLLBACK"
+        example: "ACTIVATION_ROLLBACK"
+      reasonCode:
+        type: string
+        description:  >-
+          Code representing the entitlement terminate reason. This code can be any value, but we recommend you use one of the following codes:
+            - "FRAUD": The user has not renewed the subscription
+            - "ACCOUNT_TERMINATED": The user is no longer a customer
+            - "SECURITY": For security reasons, access to this entitlement has been terminated
+            - "OTHER": Other
+        example: "FRAUD"
+      reasonDescription:
+        type: string
+        description: Description of the entitlement revoke reason
+        example: "Personal data stolen"
+      merchantExtensionData:
+        type: object
+  EntitlementGetResponse:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "OK"
+      responseMessage:
+        type: string
+        example: 'Success'
+      requestId:
+        type: string
+        description: Bango unique identifier representing an entitlement.
+        example: '981a55a5-b3a4-46dc-9fac-a86227b26344'
+      bangoUserId:
+        type: string
+        description: User unique identifier.
+        example: '1549053185'
+      productId:
+        type: string
+        description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
+        example: '30_DAYS_MUSIC'
+      offerId:
+        type: string
+        description: 'The offer given to the user for the merchant service. For example, "FREE_FOR_6_MONTHS".'  
+        example: 'FREE_FOR_6_MONTHS'
+      status:
+        type: string
+        example: 'ACTIVE'
+        description: >-
+          Entitlement status. Possible values are:
+            - "ACTIVE": The entitlement has been successfully activated
+            - "REVOKED": The entitlement has been ended.
+            - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
+            - "SUSPENDED": The entitlement has been suspended.
+            - "FAILED": The entitlement failed
+      dateCreated:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was created, in UTC ISO 8601 format
+          (yyyy-MM-ddThh:mm:ssZ)
+      dateActivated:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was activated, in UTC ISO 8601
+          format (yyyy-MM-ddThh:mm:ssZ)
+      dateExpiry:
+        type: string
+        format: date-time
+        description: >-
+          Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+          (yyyy-MM-ddThh:mm:ssZ)
+        example:  
+      dateEnded:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement ended due to termination, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+        example:
+      dateSuspended:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was suspended, in UTC ISO 8601. Null if status is not Suspended.
+          format (yyyy-MM-ddThh:mm:ssZ)
+        example:
+      dateResumed:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was suspended, in UTC ISO 8601. Null if status is not Suspended.
+          format (yyyy-MM-ddThh:mm:ssZ)
+        example:
+  EntitlementResponse:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "OK"
+      responseMessage:
+        type: string
+        example: 'Success'
+      requestId:
+        type: string
+        description: Bango unique identifier representing an entitlement.
+        example: '981a55a5-b3a4-46dc-9fac-a86227b26344'
+      bangoUserId:
+        type: string
+        description: User unique identifier.
+        example: '1549053185'
+      productId:
+        type: string
+        description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
+        example: '60_DAYS_MUSIC'
+      offerId:
+        type: string
+        description: 'The offer given to the user for the merchant service. For example, "FREE_FOR_6_MONTHS".'  
+        example: 'FREE_FOR_6_MONTHS'
+      status:
+        type: string
+        example: 'ACTIVE'
+        description: >-
+          Entitlement status. Possible values are:
+            - "ACTIVE": The entitlement has been successfully activated
+            - "REVOKED": The entitlement has been ended.
+            - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
+            - "SUSPENDED": The entitlement has been suspended.
+            - "FAILED": The entitlement failed
+      dateCreated:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was created, in UTC ISO 8601 format
+          (yyyy-MM-ddThh:mm:ssZ)
+      dateActivated:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was activated, in UTC ISO 8601
+          format (yyyy-MM-ddThh:mm:ssZ)
+      dateExpiry:
+        type: string
+        format: date-time
+        description: >-
+          Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+          (yyyy-MM-ddThh:mm:ssZ)
+        example:  
+      dateEnded:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement ended due to termination, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+        example:
+      dateSuspended:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was suspended, in UTC ISO 8601. Null if status is not Suspended.
+          format (yyyy-MM-ddThh:mm:ssZ)
+        example:
+      dateResumed:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was suspended, in UTC ISO 8601. Null if status is not Suspended.
+          format (yyyy-MM-ddThh:mm:ssZ)
+        example:
+  EntitlementActivateResponse:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "OK"
+      responseMessage:
+        type: string
+        example: 'Success'
+      requestId:
+        type: string
+        description: Bango unique identifier representing an entitlement.
+        example: '981a55a5-b3a4-46dc-9fac-a86227b26344'
+      bangoUserId:
+        type: string
+        description: User unique identifier.
+        example: '1549053185'
+      productId:
+        type: string
+        description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
+        example: '30_DAYS_MUSIC'
+      offerId:
+        type: string
+        description: 'The offer given to the user for the merchant service. For example, "FREE_FOR_6_MONTHS".'  
+        example: 'FREE_FOR_6_MONTHS'
+      status:
+        type: string
+        example: 'ACTIVE'
+        description: >-
+          Entitlement status. Possible values are:
+            - "ACTIVE": The entitlement has been successfully activated
+            - "REVOKED": The entitlement has been ended.
+            - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
+            - "SUSPENDED": The entitlement has been suspended.
+            - "FAILED": The entitlement failed
+      dateCreated:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was created, in UTC ISO 8601 format
+          (yyyy-MM-ddThh:mm:ssZ)
+      dateActivated:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was activated, in UTC ISO 8601
+          format (yyyy-MM-ddThh:mm:ssZ)
+      dateExpiry:
+        type: string
+        format: date-time
+        description: >-
+          Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+          (yyyy-MM-ddThh:mm:ssZ)
+        example:  
+      dateEnded:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement ended due to termination, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+        example:
+      dateSuspended:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was suspended, in UTC ISO 8601. Null if status is not Suspended.
+          format (yyyy-MM-ddThh:mm:ssZ)
+        example:
+      dateResumed:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was suspended, in UTC ISO 8601. Null if status is not Suspended.
+          format (yyyy-MM-ddThh:mm:ssZ)
+        example:
+  EntitlementTerminateResponse:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: "OK"
+      responseMessage:
+        type: string
+        example: 'Success'
+      requestId:
+        type: string
+        description: Bango unique identifier representing an entitlement.
+        example: '981a55a5-b3a4-46dc-9fac-a86227b26344'
+      bangoUserId:
+        type: string
+        description: User unique identifier.
+        example: '1549053185'
+      productId:
+        type: string
+        description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
+        example: '30_DAYS_MUSIC'
+      offerId:
+        type: string
+        description: 'The offer given to the user for the merchant service. For example, "FREE_FOR_6_MONTHS".'  
+        example: 'FREE_FOR_6_MONTHS'
+      status:
+        type: string
+        example: 'REVOKED'
+        description: >-
+          Entitlement status. Possible values are:
+            - "ACTIVE": The entitlement has been successfully activated
+            - "REVOKED": The entitlement has been ended.
+            - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
+            - "SUSPENDED": The entitlement has been suspended.
+            - "FAILED": The entitlement failed
+      dateCreated:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was created, in UTC ISO 8601 format
+          (yyyy-MM-ddThh:mm:ssZ)
+      dateActivated:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was activated, in UTC ISO 8601
+          format (yyyy-MM-ddThh:mm:ssZ)
+      dateExpiry:
+        type: string
+        format: date-time
+        description: >-
+          Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+          (yyyy-MM-ddThh:mm:ssZ)
+        example:  
+      dateEnded:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement ended due to termination, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+      dateSuspended:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was suspended, in UTC ISO 8601. Null if status is not Suspended.
+          format (yyyy-MM-ddThh:mm:ssZ)
+        example:
+      dateResumed:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was suspended, in UTC ISO 8601. Null if status is not Suspended.
+          format (yyyy-MM-ddThh:mm:ssZ)
+        example:
