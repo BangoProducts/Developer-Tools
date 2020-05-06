@@ -159,10 +159,6 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/Unauthorized'
-        '403':
-          description: No active entitlement routes available for this request where found
-          schema:
-            $ref: '#/definitions/NotAvailable'
         '404':
           description: Entitlement not found
           schema:
@@ -238,10 +234,6 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/Unauthorized'
-        '403':
-          description: No active entitlement routes available for this request where found
-          schema:
-            $ref: '#/definitions/NotAvailable'
         '404':
           description: Entitlement not found
           schema:
@@ -318,10 +310,6 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/Unauthorized'
-        '403':
-          description: No active entitlement routes available for this request where found
-          schema:
-            $ref: '#/definitions/NotAvailable'
         '404':
           description: Entitlement not found
           schema:
