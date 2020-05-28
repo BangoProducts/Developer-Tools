@@ -510,7 +510,6 @@ definitions:
     required:
       - merchantEntitlementId
       - activationUrl
-      - expiry
     properties:
       merchantEntitlementId:
         type: string
