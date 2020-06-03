@@ -1,10 +1,14 @@
 swagger: '2.0'
 info:
-  version: 1.0.3
+  version: "1.0.4"
   title: 'Resale Merchant - Client API'
   description: |
     Changelog
     * 1.0.3: Initial release
+    * 1.0.4:
+      * Adding extensionData to PatchEntitlement
+      * Adding offerId and customerIdentifier to CheckEligibility
+      * Adding the support for a 201 created response for Create Entitlement
 # host: merchant.com
 schemes: 
   - https
@@ -47,9 +51,13 @@ paths:
         - 'Create Entitlement'
       responses:
         '200':
-          description: Entitlement created successfully.
+          description: Entitlement created and activated successfully.
           schema:
             $ref: '#/definitions/EntitlementCreate200Response'
+        '201':
+          description: Entitlement created.
+          schema:
+            $ref: '#/definitions/EntitlementCreate201Response'
         '202':
           description: An action is required to be performed by the client
           schema:
@@ -57,7 +65,7 @@ paths:
         '400':
           description: Bad request
           schema:
-            $ref: '#/definitions/BadRequest'
+           $ref: '#/definitions/BadRequest'
         '401':
           description: Unauthorized
           schema:
@@ -117,7 +125,7 @@ paths:
         '400':
           description: Bad request
           schema:
-            $ref: '#/definitions/BadRequest'
+           $ref: '#/definitions/BadRequest'
         '401':
           description: Unauthorized
           schema:
@@ -221,8 +229,8 @@ paths:
           schema:
             $ref: '#/definitions/ResponseObject'
         '201':
-          description: Request created and queued.
-          schema:
+         description: Request created and queued.
+         schema:
             $ref: '#/definitions/RequestCreated'
         '202':
           description: Request accepted.
@@ -510,6 +518,7 @@ definitions:
     required:
       - merchantEntitlementId
       - activationUrl
+      - expiry
     properties:
       merchantEntitlementId:
         type: string
@@ -527,6 +536,17 @@ definitions:
       merchantExtensionData:
         $ref: '#/definitions/MerchantExtensionData'
   EntitlementCreate200Response:
+    type: object
+    required:
+      - merchantEntitlementId
+    properties:
+      merchantEntitlementId:
+        type: string
+        description: Unique identifier representing the entitlement as identified by the merchant. Value must be URL friendly.
+        example: "a25100b8-4e0c-4e37-b921-cac9cb1e930f"
+      merchantExtensionData:
+        $ref: '#/definitions/MerchantExtensionData'
+  EntitlementCreate201Response:
     type: object
     required:
       - merchantEntitlementId
@@ -737,13 +757,18 @@ definitions:
     type: object
     required:
       - bangoUserId
+      - customerIdentifier
       - resellerId
       - productId
     properties:
       bangoUserId:
         type: string
-        description: Unique identifier representing a specific customer of the reseller.
+        description: Unique identifier which Bango holds that representing a specific customer of the reseller.
         example: "1549053185"
+      customerIdentifier:
+        type: string
+        description: Unique identifier representing a specific customer of the reseller.
+        example: "abc@email.co.uk"
       resellerId:
         type: string
         description: Unique reseller identifier as agreed with the merchant
@@ -752,6 +777,10 @@ definitions:
         type: string
         description: Entitlement product unique identifier. For example, "BangoMusic".
         example: "BangoMusic"
+      offerId:
+        type: string
+        description: Entitlement offer unique identifier. For example, "6_MONTHS_ON_US".
+        example: "6_MONTHS_ON_US"
   CheckEligibilityResponse:
     type: object
     properties:
@@ -768,3 +797,8 @@ definitions:
           Reason for the eligibility response. This is not a mandatory value to be sent by the merchant. Examples:
             - "User has an existing subscription"
         example: "User is eligible for this Entitlement"
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+# basePath: /BangoProducts/MerchantInterface_Client_API/1.0.3
+# Added by API Auto Mocking Plugin
+basePath: /BangoProducts/MerchantInterface_Client_API/1.0.4
