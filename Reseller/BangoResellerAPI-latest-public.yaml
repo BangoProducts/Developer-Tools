@@ -11,8 +11,12 @@ info:
     * 1.0.15
       * Removing support for ACTIVATION_ status'
       * Extended extraInformation to include communicationInformation and source objects
-  version: 1.0.15
-##host: resale.api.bango.net
+    * 1.0.16:
+      * Added CheckEligibility method
+      * Adding the support for a 201 created response for Create Entitlement
+      * Adding serviceFlow parameter to extraInformation source object
+  version: "1.0.16"
+## host: resale.api.bango.net
 schemes:
   - https
 securityDefinitions:
@@ -33,11 +37,6 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: Authorization
-          in: header
-          description: Your Bango Resale API credentials encoded for HTTP Basic Authentication. 
-          type: string
-          required: true
         - name: X-RequestIdentifier
           in: header
           description: Request unique identifier. If present, this id will be used for idempotency.
@@ -107,11 +106,6 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: Authorization
-          in: header
-          description: Your Bango Resale API credentials encoded for HTTP Basic Authentication. 
-          type: string
-          required: true
         - name: X-RequestIdentifier
           in: header
           description: Request unique identifier. If present, this id will be used for idempotency.
@@ -129,6 +123,10 @@ paths:
           description: Entitlement created and activated successfully.
           schema:
             $ref: '#/definitions/EntitlementCreate200Response'
+        '201':
+          description: Entitlement created
+          schema:
+            $ref: '#/definitions/EntitlementCreate201Response'
         '202':
           description: Entitlement created successfully, now pending activation
           schema:
@@ -196,11 +194,6 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: Authorization
-          in: header
-          description: Your Bango Resale API credentials encoded for HTTP Basic Authentication.
-          type: string
-          required: true
         - name: X-RequestIdentifier
           in: header
           description: Request unique identifier. If present, this id will be used for idempotency.
@@ -281,11 +274,6 @@ paths:
       description: |
         Get information about an entitlement.
       parameters:
-        - name: Authorization
-          in: header
-          description: Your Bango Resale API credentials encoded for HTTP Basic Authentication.
-          type: string
-          required: true
         - name: X-RequestIdentifier
           in: header
           description: Request unique identifier. If present, this id will be used for idempotency.
@@ -355,11 +343,6 @@ paths:
       description: |
         Get a list of entitlements for a customerIdentifier, matching specific criteria
       parameters:
-        - name: Authorization
-          in: header
-          description: Your Bango Resale API credentials encoded for HTTP Basic Authentication. 
-          type: string
-          required: true
         - name: X-RequestIdentifier
           in: header
           description: Request unique identifier. If present, this id will be used for idempotency.
@@ -422,11 +405,6 @@ paths:
       description: |
         Suspend an entitlement. This operation can only be performed on entitlements that are in ACTIVE status.
       parameters:
-        - name: Authorization
-          in: header
-          description: Your Bango Resale API credentials encoded for HTTP Basic Authentication. 
-          type: string
-          required: true
         - name: X-RequestIdentifier
           in: header
           description: Request unique identifier. If present, this id will be used for idempotency.
@@ -510,11 +488,6 @@ paths:
       description: |
         Resume an entitlement. This operation can only be performed on entitlements that are in SUSPENDED status
       parameters:
-        - name: Authorization
-          in: header
-          description: Your Bango Resale API credentials encoded for HTTP Basic Authentication. 
-          type: string
-          required: true
         - name: X-RequestIdentifier
           in: header
           description: Request unique identifier. If present, this id will be used for idempotency.
@@ -598,11 +571,6 @@ paths:
       description: |
         Cancel an entitlement
       parameters:
-        - name: Authorization
-          in: header
-          description: Your Bango Resale API credentials encoded for HTTP Basic Authentication. 
-          type: string
-          required: true
         - name: X-RequestIdentifier
           in: header
           description: Request unique identifier. If present, this id will be used for idempotency.
@@ -690,11 +658,6 @@ paths:
       description: |
         Revoke an entitlement
       parameters:
-        - name: Authorization
-          in: header
-          description: Your Bango Resale API credentials encoded for HTTP Basic Authentication.
-          type: string
-          required: true
         - name: X-RequestIdentifier
           in: header
           description: Request unique identifier. If present, this id will be used for idempotency.
@@ -775,6 +738,74 @@ paths:
             responseMessage: >-
               The server is undergoing maintenance and is not available. Please,
               try again later
+  /v1/entitlement/checkeligibility:
+    post:
+      summary: Check user eligibility
+      description: >-
+        Check if the user is eligible to create an entitlement for the product provided in the request with the merchant.
+      operationId: checkeligibility
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: Request unique identifier. If present, this id will be used for idempotency.
+          type: string
+        - name: entitlement
+          in: body
+          description: The entitlement JSON you want to create
+          schema:
+            $ref: '#/definitions/CheckEligibility'
+          required: true
+      tags:
+        - 'Check user eligibility '
+      responses:
+        '200':
+          description: User eligibility check successful
+          schema:
+            $ref: '#/definitions/CheckEligibilityResponse'
+        '400':
+          description: Invalid API request
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            responseCode: BAD_REQUEST
+            responseMessage: Invalid request
+        '401':
+          description: IP address or access credentials are invalid
+          schema:
+            $ref: '#/definitions/Unauthorized'
+          examples:
+            responseCode: UNAUTHORIZED
+            responseMessage: Invalid access credential.
+        '429':
+          description: Request limit reached
+          schema:
+            $ref: '#/definitions/TooManyRequests'
+          examples:
+            responseCode: TOO_MANY_REQUESTS
+            responseMessage: Request limit reached. Please try again later
+        '500':
+          description: Unexpected server issue
+          schema:
+            $ref: '#/definitions/InternalServerError'
+          examples:
+            responseCode: INTERNAL_ERROR
+            responseMessage: >-
+              The server encountered an unexpected condition which prevented it
+              from fulfilling the request
+        '503':
+          description: Bango Platform undergoing maintenance
+          schema:
+            $ref: '#/definitions/ServiceUnavailable'
+          examples:
+            responseCode: SERVICE_UNAVAILABLE
+            responseMessage: >-
+              The server is undergoing maintenance and is not available. Please,
+              try again later
+    
 
   
 definitions:
@@ -835,7 +866,6 @@ definitions:
           additionalCustomData2: "additionalCustomDataValue2"
           additionalCustomData3: "additionalCustomDataValue3"
       extraInformation:
-        type: object
         $ref: '#/definitions/ExtraEntitlementInfo'
   EntitlementUpdate:
     type: object
@@ -1091,6 +1121,110 @@ definitions:
       status:
         type: string
         example: "ACTIVE"
+        description: >-
+          Entitlement status. Possible values are:
+            - "ACTIVE": The entitlement has been successfully activated
+            - "CANCELLED": The entitlement has been cancelled.
+            - "REVOKED": The entitlement has been revoked. This usually happens on fraud and user contract termination cases.
+            - "SUSPENDED": The entitlement has been suspended.
+            - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
+            - "FAILED": The entitlement failed
+      extensionData:
+        type: object
+        description: Accepts a dynamic list of key-value pairs to cover custom data needs
+        additionalProperties:
+          type: string
+      parameters:
+        type: object
+      extraInformation:
+        $ref: '#/definitions/ExtraEntitlementInfo'
+  EntitlementCreate201Response:
+    type: object
+    properties:
+      entitlementId:
+        type: string
+        description: Unique identifier representing a specific entitlement.
+        example: "a25100b8-4e0c-4e37-b921-cac9cb1e930f"
+      customerIdentifier:
+        type: string
+        description: User unique identifier.
+        example: "4407123456789"
+      productKey:
+        type: string
+        description: 'Entitlement  product unique identifier. For example, "BangoMusic".'
+        example: "BangoMusic"
+      entitlementDisplayName:
+        type: string
+        description: 'Entitlement display name. For example, "30 days Bango music".'
+        example: "30 days Bango music"
+      offerKey:
+        type: string
+        description: 'Entitlement offer. For example, "BUNDLE".'
+        example:
+      merchantAccountKey:
+        type: string
+        description: 'Merchant unique identifier. For example, "BANGO".'
+        example: "BANGO"
+      activationCode:
+        type: string
+        description: Code or token use for the entitlement activation.
+        example:
+      dateCreated:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was created, in UTC ISO 8601 format
+          (yyyy-MM-ddThh:mm:ssZ)
+      dateActivated:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was activated, in UTC ISO 8601
+          format (yyyy-MM-ddThh:mm:ssZ)
+        example: "0001-01-01T00:00:00Z"
+      dateEnded:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement ended due to cancellation or
+          revoke, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+        example: "0001-01-01T00:00:00Z"
+      dateExpiry:
+        type: string
+        format: date-time
+        description: >-
+          Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+          (yyyy-MM-ddThh:mm:ssZ)
+        example: "0001-01-01T00:00:00Z"
+      dateFailed:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement failed, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+        example: "0001-01-01T00:00:00Z"
+      dateSuspended:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was suspended, in UTC ISO 8601.
+          format (yyyy-MM-ddThh:mm:ssZ)
+        example:    
+      dateResumed:
+        type: string
+        format: date-time
+        description: >-
+          Date and time when the entitlement was resumed, in UTC ISO 8601.
+          format (yyyy-MM-ddThh:mm:ssZ)
+        example:
+      responseCode:
+        type: string
+        example: "CREATED"
+      responseMessage:
+        type: string
+        example: "Entitlement Created"
+      status:
+        type: string
+        example: "PENDING"
         description: >-
           Entitlement status. Possible values are:
             - "ACTIVE": The entitlement has been successfully activated
@@ -2227,6 +2361,45 @@ definitions:
           type: string
       extraInformation:
         $ref: '#/definitions/ExtraEntitlementInfo'
+  CheckEligibility:
+    type: object
+    required:
+      - customerIdentifier
+      - productKey
+      - merchantAccountKey
+    properties:
+      customerIdentifier:
+        type: string
+        description: User unique identifier.
+        example: "4407123456789"
+      merchantAccountKey:
+        type: string
+        description: 'Merchant unique identifier. For example, "BANGO".'
+        example: "BANGO"
+      productKey:
+        type: string
+        description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
+        example: "BangoMusic"
+      offerKey:
+        type: string
+        description: 'Entitlement offer unique identifier. For example, "6_MONTHS_ON_US".'
+        example: "6_MONTHS_ON_US"  
+  CheckEligibilityResponse:
+    type: object
+    properties:
+      responseCode:
+        type: string
+        example: OK
+      responseMessage:
+        type: string
+        example: Success
+      eligible:
+        type: boolean
+        example: true
+      reason:
+        type: string
+        example: "User is eligible for this Entitlement"
+        
 
   ClientDevice:
     type: object
@@ -2280,6 +2453,7 @@ definitions:
           - "country": the end-users country.
           - "region": the end-users region within their country.
           - "brand": the brand of which the user originated from.
+          - "serviceFlow": the service flow for which the request originated. If not passed Bango will treat this as Activation
 
     example:
       channelType: "WEB_PROMOTION"
@@ -2289,6 +2463,8 @@ definitions:
       country: "United Kingdom"
       region: "East Anglia"
       brand: "BrandABC"
+      serviceFlow: "Creation"
+      
   ExtraEntitlementInfo:
     type: object
     
@@ -2391,3 +2567,8 @@ definitions:
       responseMessage:
         type: string
         example: "Operation invalid for the current state of the entitlement."
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+# basePath: /BangoProducts/Reseller-API/1.0.15
+# Added by API Auto Mocking Plugin
+basePath: /BangoProducts/Reseller-API/1.0.16
