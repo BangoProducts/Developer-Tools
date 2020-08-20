@@ -26,7 +26,13 @@ info:
     * 1.0.17:
       * Updating API spec to be OpenAPI3
       * Adding patchReason functionality to patch entitlement method
-  version: "1.0.17-oas3"
+    * 1.0.18:
+      * Adding ExternalEntitlementId to the create and patch request
+      * Adding ExternalEntitlementId to the responses
+      * Adding the new GET call in v1/entitlement to retrieve Entitlement information using ExternalEntitlementId.
+    * 1.0.19:
+      * Adding the PatchAndResume option in Resume calls
+  version: "1.0.19-oas3"
 security:
   - basic: []
 paths:
@@ -161,6 +167,7 @@ paths:
                     responseCode: OK
                     responseMessage: Success
                     status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -216,6 +223,7 @@ paths:
                     responseCode: CREATED
                     responseMessage: Entitlement Created
                     status: PENDING
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -271,6 +279,7 @@ paths:
                     responseCode: CLIENT_ACTION_REQUIRED
                     responseMessage: An action is required to be performed by the client.
                     status: PENDING
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -419,6 +428,7 @@ paths:
                   notificationUrl: https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
                   offerKey: BUNDLE
                   dateExpiry: "2021-06-22T17:35:38.929Z"
+                  externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                   extensionData: 
                     additionalProp1: string
                     additionalProp2: string
@@ -492,6 +502,7 @@ paths:
                     responseCode: OK
                     responseMessage: Subscription updated successfully
                     status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -547,6 +558,7 @@ paths:
                     responseCode: CLIENT_ACTION_REQUIRED
                     responseMessage: An action is required to be performed by the client.
                     status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -597,6 +609,7 @@ paths:
                     responseCode: ACCEPTED
                     responseMessage: Update request accepted by merchant.
                     status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -744,11 +757,176 @@ paths:
                 value:
                   entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
                   customerIdentifier: "4407987654321"
+              ExternalEntitlementIdUpdate:
+                value:
+                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
+                  externalEntitlementId: "c843678f-d45a-49f4-868d-2bbc445b2c2e"
         description: The entitlement JSON you want to update
         required: true
+    get:
+      summary: Get entitlement from ExternalEntitlementId
+      description: |
+        Get information about an entitlement using external entitlement id.
+      operationId: get
+      parameters:
+      - name: X-RequestIdentifier
+        in: header
+        description: >-
+          Request unique identifier. If present, this id will be used for
+          idempotency.
+        schema:
+          type: string
+      - name: ExternalEntitlementId
+        in: header
+        description: >-
+          Unique identifier provided for the Entitlement by the Reseller. Mandatory in GET calls using ExternalEntitlementId.
+        schema:
+          type: string
+        example: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+      tags:
+        - Get entitlement
+      responses:
+        '200':
+          description: Entitlement retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                OK:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: 4407123456789
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.929Z"
+                    dateActivated: "2020-06-22T17:36:01Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: OK
+                    responseMessage: Subscription updated successfully
+                    status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+        '400':
+          description: Invalid API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidAPIRequest:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                NotSupported:
+                  value:
+                    responseCode: OPERATION_NOT_SUPPORTED
+                    responseMessage: Operation not supported for entitlement route.
+        '401':
+          description: IP address or access credentials are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Unauthorized:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: You have not provided adequate credentials to access this resource.
+                MessageSigningNoKey:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: No valid key found.
+                MessageSigningMissingContent:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature or header content is missing.
+                MessageSigningInvalidSignature:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature is invalid.
+        '404':
+          description: Entitlement not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                NotFound:
+                  value:
+                    responseCode: NOT_FOUND
+                    responseMessage: Entitlement Not Found
+        '429':
+          description: Request limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                TooManyRequests:
+                  value:
+                    responseCode: TOO_MANY_REQUESTS
+                    responseMessage: Request limit reached. Please try again later.
+        '500':
+          description: Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InternalError:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: 
+        '503':
+          description: Bango Platform undergoing maintenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                ServiceUnavailable:
+                  value:
+                    responseCode: SERVICE_UNAVAILABLE
+                    responseMessage: 
   '/v1/entitlement/{entitlementId}':
     get:
-      summary: Get entitlement
+      summary: Get entitlement from BangoEntitlementId
       description: |
         Get information about an entitlement.
       parameters:
@@ -795,6 +973,7 @@ paths:
                     responseCode: OK
                     responseMessage: Success
                     status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -1059,6 +1238,7 @@ paths:
                     responseCode: OK
                     responseMessage: Subscription suspended successfully
                     status: SUSPENDED
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -1155,7 +1335,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
               examples:
-                TooManyRequests:
+                InvalidState:
                   value:
                     responseCode: INVALID_STATE
                     responseMessage: Operation invalid for the current state of the entitlement.
@@ -1242,6 +1422,7 @@ paths:
                     responseCode: OK
                     responseMessage: Resume request pending
                     status: SUSPENDED
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -1286,6 +1467,10 @@ paths:
                   value:
                     responseCode: OPERATION_NOT_SUPPORTED
                     responseMessage: Operation not supported for entitlement route.
+                IncorrectProductKey:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid product key
         '401':
           description: IP address or access credentials are invalid
           content:
@@ -1338,7 +1523,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
               examples:
-                TooManyRequests:
+                InvalidState:
                   value:
                     responseCode: INVALID_STATE
                     responseMessage: Operation invalid for the current state of the entitlement.
@@ -1375,6 +1560,19 @@ paths:
                   value:
                     responseCode: SERVICE_UNAVAILABLE
                     responseMessage:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementResume'
+            examples:    
+              StandardResume:
+                value:
+              PatchAndResume:
+                value:
+                  resumeType: "PatchAndResume"
+                  productKey: BangoMusic2
+        description: See examples for use cases
   '/v1/entitlement/cancel/{entitlementId}':
     post:
       summary: Cancel an entitlement
@@ -1424,6 +1622,7 @@ paths:
                     responseCode: OK
                     responseMessage: Success
                     status: CANCELLED
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -1479,6 +1678,7 @@ paths:
                     responseCode: ACCEPTED
                     responseMessage: Termination request accepted by merchant.
                     status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -1661,6 +1861,7 @@ paths:
                     responseCode: OK
                     responseMessage: Success
                     status: REVOKED
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -1716,6 +1917,7 @@ paths:
                     responseCode: ACCEPTED
                     responseMessage: Termination request accepted by merchant.
                     status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
                       additionalProp2: string
@@ -1967,7 +2169,7 @@ paths:
 servers:
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/BangoProducts/Reseller-API/1.0.17-oas3
+    url: https://virtserver.swaggerhub.com/BangoProducts/Reseller-API/1.0.19-oas3
 components:
   securitySchemes:
     basic:
@@ -2022,6 +2224,12 @@ components:
             Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
             (yyyy-MM-ddThh:mm:ssZ)
           example: null
+        externalEntitlementId:
+          type: string
+          description: |-
+            External identifier for the Entitlement from the Reseller.
+          example: >-
+            124130d2-2cbc-45a1-ab9b-dfa8b67a2e63
         extensionData:
           type: object
           additionalProperties:
@@ -2087,7 +2295,12 @@ components:
           description: |-
             Accepts the defined enums.
             - "RemoveDateExpiry": allows for the dateExpiry to be removed
-          
+        externalEntitlementId:
+          type: string
+          description: |-
+            External identifier for the Entitlement from the Reseller.
+          example: >-
+            124130d2-2cbc-45a1-ab9b-dfa8b67a2e63
         extensionData:
           type: object
           additionalProperties:
@@ -2157,6 +2370,20 @@ components:
         cancelReasonDescription:
           type: string
           description: Description of the entitlement cancel or revoke reason.
+    EntitlementResume:
+      type: object
+      description: >-
+        Differentiates the different types of Resume action possible on the Entitlement.
+      properties:
+        resumeType:
+          type: string
+          description: |-
+            Accepts the defined enums.
+            - "PatchProductKey": allows for the Entitlement to be patched for new product key before the Entitlement is resumed.
+        productKey:
+          type: string
+          description: |-
+            The product key to which the Entitlement should be updated to.
     CheckEligibility:
       type: object
       required:
@@ -2284,6 +2511,12 @@ components:
               - "SUSPENDED": The entitlement has been suspended.
               - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
               - "FAILED": The entitlement failed
+        externalEntitlementId:
+          type: string
+          description: |-
+            External identifier for the Entitlement from the Reseller.
+          example: >-
+            124130d2-2cbc-45a1-ab9b-dfa8b67a2e63
         extensionData:
           type: object
           description: Accepts a dynamic list of key-value pairs to cover custom data needs
@@ -2399,6 +2632,12 @@ components:
                     - "SUSPENDED": The entitlement has been suspended.
                     - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
                     - "FAILED": The entitlement failed
+              externalEntitlementId:
+                type: string
+                description: |-
+                  External identifier for the Entitlement from the Reseller.
+                example: >-
+                  124130d2-2cbc-45a1-ab9b-dfa8b67a2e63
               extensionDataList:
                 type: object
                 additionalProperties:
