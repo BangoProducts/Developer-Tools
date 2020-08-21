@@ -1,0 +1,1128 @@
+openapi: 3.0.1
+info:
+    title: Bango Subscriptions API
+    version: 1.2.0
+    description: |-
+        Manage user subscriptions to products and services.
+
+        ### Change log
+
+        - 1.2.0:
+            - Move to OpenAPI 3.0.1 and refactor
+            - Synchronize with API behavior
+        - 1.1.0:
+            - Remove `billingPolicy`, `useRequestedDateForBilling` from `DELETE /subscription/{subscriptionId}/cancel`
+        - 1.0.0:
+            - Add `merchantAccountKey` to `POST` and `GET`
+        - 0.0.1:
+            - Initial release
+    contact:
+        name: Bango Support
+        url: 'https://bango.com'
+        email: support@bango.com
+    termsOfService: 'https://bango.com/privacy'
+
+externalDocs:
+    description: Bango developer documentation
+    url: https://developer.bango.com
+
+tags:
+    - name: echo
+      description: Service availability
+    - name: subscriptions
+      description: Subscription management
+
+servers:
+- url: https://virtserver.swaggerhub.com/BangoProducts/Subscriptions-API/1.2.0
+
+security:
+- basicAuth: []
+
+paths:
+    /echo/{echoRequestId}:
+        post:
+            operationId: post-echo
+            summary: Service availability check
+            description: |-
+                Optional. Use this endpoint to check authentication, authorization, and service availability.
+
+                The `echoRequestId` in the request URL path is returned in the response body as the `echo` property.
+            tags:
+            - echo
+            parameters:
+            -   $ref: '#/components/parameters/IdempotencyHeader'
+            -   name: echoRequestId
+                in: path
+                description: Arbitrary identifier, included in the response body as the `echo` property.
+                required: true
+                schema:
+                    type: string
+            responses:
+                200:
+                    description: Echo response, including the `echoRequestId` from the request path.
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    - $ref: '#/components/schemas/SuccessResponse'
+                                    - $ref: '#/components/schemas/Echo'
+                400:
+                    $ref: '#/components/responses/ErrorBadRequest'
+                401:
+                    $ref: '#/components/responses/ErrorUnauthorized'
+                429:
+                    $ref: '#/components/responses/ErrorTooManyRequests'
+                500:
+                    $ref: '#/components/responses/ErrorUnexpected'
+                503:
+                    $ref: '#/components/responses/ErrorUnavailable'
+
+    /subscription:
+        post:
+            tags:
+            - subscriptions
+            summary: Create a subscription
+            description: |-
+                Use this endpoint to create a subscription for a user in the Bango Platform.
+
+                You must supply the user's Bango User ID and currency in the request body, as well as the merchant account key for the provider of the product or service, the product name, and the plan name.
+
+                You must set the `entitlementStartDate` and the `billingStartDate` to valid dates.
+
+                The subscription is set to state `ACTIVE` if `entitlementStartDate` is set to today's date, or set to a date in the past. If it is set to a date in the future, the state is `PENDING` and will change automatically to `ACTIVE` at the `entitlementStartDate`.
+            operationId: post-subscription
+            parameters:
+            -   $ref: '#/components/parameters/IdempotencyHeader'
+            requestBody:
+                $ref: '#/components/requestBodies/SubscriptionCreate'
+            responses:
+                200:
+                    description: Subscription created successfully
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    - $ref: '#/components/schemas/SuccessResponse'
+                                    - $ref: '#/components/schemas/Subscription'
+                400:
+                    $ref: '#/components/responses/ErrorBadRequest'
+                401:
+                    $ref: '#/components/responses/ErrorUnauthorized'
+                409:
+                    $ref: '#/components/responses/ErrorConflict'
+                429:
+                    $ref: '#/components/responses/ErrorTooManyRequests'
+                500:
+                    $ref: '#/components/responses/ErrorUnexpected'
+                503:
+                    $ref: '#/components/responses/ErrorUnavailable'
+
+    /subscription/{subscriptionId}:
+        get:
+            tags:
+            - subscriptions
+            summary: Retrieve a subscription by id
+            description: |-
+                Use this endpoint to retrieve all details of a subscription, if you have the unique identifier allocated by Bango for the subscription.
+            operationId: get-subscription-by-id
+            parameters:
+            -   $ref: '#/components/parameters/SubscriptionId'
+            -   $ref: '#/components/parameters/AuditMode'
+            responses:
+                200:
+                    description: Subscription found
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    - $ref: '#/components/schemas/SuccessResponse'
+                                    - $ref: '#/components/schemas/Subscription'
+                400:
+                    $ref: '#/components/responses/ErrorBadRequest'
+                401:
+                    $ref: '#/components/responses/ErrorUnauthorized'
+                404:
+                    $ref: '#/components/responses/ErrorSubscriptionNotFound'
+                429:
+                    $ref: '#/components/responses/ErrorTooManyRequests'
+                500:
+                    $ref: '#/components/responses/ErrorUnexpected'
+                503:
+                    $ref: '#/components/responses/ErrorUnavailable'
+
+        put:
+            tags:
+            - subscriptions
+            summary: Change a subscription's plan
+            description: |-
+                Use this endpoint to change a subscription's plan immediately or at a later date, given the unique identifier allocated by Bango for the subscription. This endpoint returns the updated subscription record.
+
+                To identify the plan, specify both the plan name and the merchant account key for the provider of the product or service.
+
+                Specify the date on which the plan should change by including **either** the `billingPolicy` **or** `requestedDate` parameters.
+            operationId: put-subscription-by-id
+            parameters:
+            -   $ref: '#/components/parameters/IdempotencyHeader'
+            -   $ref: '#/components/parameters/SubscriptionId'
+            requestBody:
+                $ref: '#/components/requestBodies/SubscriptionUpdate'
+            responses:
+                200:
+                    description: Subscription found and updated
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    - $ref: '#/components/schemas/SuccessResponse'
+                                    - $ref: '#/components/schemas/Subscription'
+                400:
+                    $ref: '#/components/responses/ErrorBadRequest'
+                401:
+                    $ref: '#/components/responses/ErrorUnauthorized'
+                409:
+                    $ref: '#/components/responses/ErrorConflict'
+                429:
+                    $ref: '#/components/responses/ErrorTooManyRequests'
+                500:
+                    $ref: '#/components/responses/ErrorUnexpected'
+                503:
+                    $ref: '#/components/responses/ErrorUnavailable'
+
+        delete:
+            tags:
+            - subscriptions
+            summary: Cancel a subscription now or at a future date
+            description: |-
+                Use this endpoint to cancel a subscription now or at a future
+                date, given the unique identifier allocated by Bango for the
+                subscription. This endpoint returns the updated subscription
+                record.
+
+                If set to a future date, API consumers might want to show users
+                that date. In the updated record, use the `cancelledDate` field.
+
+                If you set a future date, either using `requestedDate` or by
+                setting `entitlementPolicy` to `END_OF_TERM`, the subscription
+                remains in state `ACTIVE` and the `cancelledDate` field is set.
+                For these subscriptions, you can undo the cancellation
+                ("uncancel") using `POST
+                /subscription/{subscriptionId}/uncancel`. Subscriptions in state
+                `CANCELLED` may not be uncancelled.
+
+                Note that there is no automatic refund of advance payments if a
+                subscription is cancelled before the next billing date.
+            operationId: delete-subscription-by-id
+            parameters:
+            -   $ref: '#/components/parameters/IdempotencyHeader'
+            -   $ref: '#/components/parameters/SubscriptionId'
+            -   name: requestedDate
+                in: query
+                description: |-
+                    The YYYY-MM-DD UTC date on which the subscription should end.
+
+                    Ignored if `entitlementPolicy` is set.
+
+                    If this date is in the past, equivalent to `entitlementPolicy` `IMMEDIATE`.
+                schema:
+                    type: string
+                    format: date
+            -   name: entitlementPolicy
+                in: query
+                description: IMMEDIATE - is hard cancel, also revoke (user does not have more
+                    access to the service) . END_OF_TERM - is soft cancel (user still has access
+                    for the entire paid period)
+                schema:
+                    type: string
+                    default: IMMEDIATE
+                    enum:
+                    - IMMEDIATE
+                    - END_OF_TERM
+            responses:
+                200:
+                    description: Subscription cancelled
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SuccessResponse'
+                400:
+                    $ref: '#/components/responses/ErrorBadRequest'
+                401:
+                    $ref: '#/components/responses/ErrorUnauthorized'
+                404:
+                    $ref: '#/components/responses/ErrorSubscriptionNotFound'
+                429:
+                    $ref: '#/components/responses/ErrorTooManyRequests'
+                500:
+                    $ref: '#/components/responses/ErrorUnexpected'
+                503:
+                    $ref: '#/components/responses/ErrorUnavailable'
+
+    /subscription/externalKey/{externalKey}:
+        get:
+            tags:
+            - subscriptions
+            summary: Retrieve a subscription by external key
+            description: |-
+                Use this endpoint to retrieve all details of a subscription, if
+                you have the unique custom identifier supplied when creating the
+                subscription.
+            operationId: get-subscription-by-external-key
+            parameters:
+            -   name: externalKey
+                in: path
+                required: true
+                description: The unique custom identifier supplied in the `externalKey` property when creating the subscription
+                schema:
+                    $ref: '#/components/schemas/ExternalKey'
+            -   $ref: '#/components/parameters/AuditMode'
+            responses:
+                200:
+                    description: Subscription found
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    - $ref: '#/components/schemas/SuccessResponse'
+                                    - $ref: '#/components/schemas/Subscription'
+                400:
+                    $ref: '#/components/responses/ErrorBadRequest'
+                401:
+                    $ref: '#/components/responses/ErrorUnauthorized'
+                404:
+                    $ref: '#/components/responses/ErrorSubscriptionNotFound'
+                429:
+                    $ref: '#/components/responses/ErrorTooManyRequests'
+                500:
+                    $ref: '#/components/responses/ErrorUnexpected'
+                503:
+                    $ref: '#/components/responses/ErrorUnavailable'
+
+    /subscription/bangouser/{bangoUserId}:
+        get:
+            tags:
+            - subscriptions
+            summary: Retrieve all subscriptions for a Bango User ID
+            description: |-
+                Use this endpoint to retrieve all details of all subscriptions for a single user, identified by a Bango User Id.
+            operationId: get-subscriptions-by-bango-id
+            parameters:
+            -   name: bangoUserId
+                in: path
+                required: true
+                schema:
+                    $ref: '#/components/schemas/BangoUserId'
+            responses:
+                200:
+                    description: Subscriptions found
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    -   $ref: '#/components/schemas/SuccessResponse'
+                                    -   type: object
+                                        properties:
+                                            subscriptions:
+                                                type: array
+                                                items:
+                                                    $ref: '#/components/schemas/Subscription'
+                                        required:
+                                            - subscriptions
+                400:
+                    $ref: '#/components/responses/ErrorBadRequest'
+                401:
+                    $ref: '#/components/responses/ErrorUnauthorized'
+                404:
+                    $ref: '#/components/responses/ErrorBangoUserIdNotFound'
+                429:
+                    $ref: '#/components/responses/ErrorTooManyRequests'
+                500:
+                    $ref: '#/components/responses/ErrorUnexpected'
+                503:
+                    $ref: '#/components/responses/ErrorUnavailable'
+
+
+    /subscription/{subscriptionId}/uncancel:
+        put:
+            tags:
+            - subscriptions
+            summary: Uncancel a pending cancellation request for a subscription
+            description: |-
+                Use this endpoint to undo a pending cancellation for a subscription. You can only undo subscriptions in state `ACTIVE` with a `cancelledDate` that is not `null`.
+            operationId: put-subscription-uncancel
+            parameters:
+            -   $ref: '#/components/parameters/IdempotencyHeader'
+            -   $ref: '#/components/parameters/SubscriptionId'
+            responses:
+                200:
+                    description: Subscription uncancelled
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SuccessResponse'
+                400:
+                    $ref: '#/components/responses/ErrorBadRequest'
+                401:
+                    $ref: '#/components/responses/ErrorUnauthorized'
+                404:
+                    $ref: '#/components/responses/ErrorSubscriptionNotFound'
+                429:
+                    $ref: '#/components/responses/ErrorTooManyRequests'
+                500:
+                    $ref: '#/components/responses/ErrorUnexpected'
+                503:
+                    $ref: '#/components/responses/ErrorUnavailable'
+
+components:
+    parameters:
+        AuditMode:
+            name: audit
+            in: query
+            schema:
+                type: string
+                default: NONE
+                enum:
+                    - FULL
+                    - MINIMAL
+                    - NONE
+
+        IdempotencyHeader:
+            name: X-RequestIdentifier
+            in: header
+            description: An arbitrary, optional, globally unique identifier for the request. If present, this ID is used for idempotency.
+            schema:
+                type: string
+
+        SubscriptionId:
+            name: subscriptionId
+            in: path
+            required: true
+            description: The unique identifier generated by Bango for a subscription.
+            schema:
+                    $ref: '#/components/schemas/SubscriptionId'
+
+    requestBodies:
+        SubscriptionCreate:
+            description: Data for initializing a subscription.
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            bangoUserId:
+                                $ref: '#/components/schemas/BangoUserId'
+                            userCurrency:
+                                $ref: '#/components/schemas/CurrencyCode'
+                            merchantAccountKey:
+                                $ref: '#/components/schemas/MerchantAccountKey'
+                            productName:
+                                $ref: '#/components/schemas/ProductName'
+                            planName:
+                                $ref: '#/components/schemas/PlanName'
+                            entitlementStartDate:
+                                description: |-
+                                    The YYYY-MM-DD UTC date on which the subscription entitlement starts or started.
+
+                                    Set to today's date or a date in the past to start the subscription entitlement immediately (state becomes `ACTIVE`).
+
+                                    Set to a date in the future to signify a pending subscription: the state starts in state `PENDING` and will transition to `ACTIVE` on that date.
+                                type: string
+                                format: date
+                                example: '2020-08-19'
+                            billingStartDate:
+                                description: |-
+                                    The YYYY-MM-DD UTC date on which the first payment is made for the subscription.
+                                type: string
+                                format: date
+                                example: '2020-08-19'
+                            externalKey:
+                                $ref: '#/components/schemas/ExternalKey'
+                            extensionData:
+                                $ref: '#/components/schemas/ExtensionData'
+                        required:
+                            - bangoUserId
+                            - userCurrency
+                            - merchantAccountKey
+                            - planName
+                            - productName
+                            - entitlementStartDate
+                            - billingStartDate
+
+        SubscriptionUpdate:
+            description: Data for changing a subscription's plan.
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            merchantAccountKey:
+                                $ref: '#/components/schemas/MerchantAccountKey'
+                            planName:
+                                $ref: '#/components/schemas/PlanName'
+                            billingPolicy:
+                                description: When the change of plan becomes effective. (Include either this parameter or `requestedDate` - not both.)
+                                type: string
+                                enum:
+                                - START_OF_TERM
+                                - END_OF_TERM
+                                - IMMEDIATE
+                            requestedDate:
+                                description: When the change of plan becomes effective. (Include either this parameter or `billingPolicy` - not both.)
+                                type: string
+                                format: date
+                            extensionData:
+                                $ref: '#/components/schemas/ExtensionData'
+                        required:
+                            - merchantAccountKey
+                            - planName
+
+
+    responses:
+        ErrorBadRequest:
+            description: Bad request
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            responseCode:
+                                description: Always 'BAD_REQUEST'
+                                type: string
+                                enum: ['BAD_REQUEST']
+                            responseMessage:
+                                type: string
+                                example: Invalid request
+                        required:
+                            - responseCode
+                            - responseMessage
+        ErrorBangoUserIdNotFound:
+            description: Bango User ID not found
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            responseCode:
+                                description: Always 'NOT_FOUND'
+                                type: string
+                                enum: ['NOT_FOUND']
+                            responseMessage:
+                                type: string
+                                example: Bango User Id not found
+                        required:
+                            - responseCode
+                            - responseMessage
+        ErrorConflict:
+            description: Conflict
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            responseCode:
+                                description: Always 'ALREADY_EXISTS'
+                                type: string
+                                enum: ['ALREADY_EXISTS']
+                            responseMessage:
+                                type: string
+                                example: A subscription with the same externalKey already exists
+                        required:
+                            - responseCode
+                            - responseMessage
+        ErrorSubscriptionNotFound:
+            description: Subscription not found
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            responseCode:
+                                description: Always 'NOT_FOUND'
+                                type: string
+                                enum: ['NOT_FOUND']
+                            responseMessage:
+                                type: string
+                                example: Subscription not found
+                        required:
+                            - responseCode
+                            - responseMessage
+        ErrorTooManyRequests:
+            description: Too many requests
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            responseCode:
+                                description: Always 'TOO_MANY_REQUESTS'
+                                type: string
+                                enum: ['TOO_MANY_REQUESTS']
+                            responseMessage:
+                                type: string
+                                example: Request limit reached. Please try again later
+                        required:
+                            - responseCode
+                            - responseMessage
+        ErrorUnauthorized:
+            description: User is not authorized to access the endpoint
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            responseCode:
+                                description: Always 'UNAUTHORIZED'
+                                type: string
+                                enum: ['UNAUTHORIZED']
+                            responseMessage:
+                                type: string
+                                example: Invalid access credential
+                        required:
+                            - responseCode
+                            - responseMessage
+        ErrorUnavailable:
+            description: Service unavailable
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            responseCode:
+                                description: Always 'SERVICE_UNAVAILABLE'
+                                type: string
+                                enum: ['SERVICE_UNAVAILABLE']
+                            responseMessage:
+                                type: string
+                                example: The server is undergoing maintenance and is not available.
+                                    Please, try again later
+                        required:
+                            - responseCode
+                            - responseMessage
+        ErrorUnexpected:
+            description: Unexpected error
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            responseCode:
+                                description: Always 'INTERNAL_ERROR'
+                                type: string
+                                enum: ['INTERNAL_ERROR']
+                            responseMessage:
+                                type: string
+                                example: The server encountered an unexpected condition which
+                                    prevented it from fulfilling the request
+                        required:
+                            - responseCode
+                            - responseMessage
+
+    schemas:
+        AuditLog:
+            type: object
+            properties:
+                changeType:
+                    type: string
+                    example: UPDATE
+                changeDate:
+                    type: string
+                    format: date-time
+                objectType:
+                    type: string
+                    enum:
+                    - SUBSCRIPTION
+                    - ACCOUNT
+                    - ACCOUNT_EMAIL
+                    - BLOCKING_STATES
+                    - BUNDLE
+                    - CUSTOM_FIELD
+                    - INVOICE
+                    - PAYMENT
+                    - TRANSACTION
+                    - INVOICE_ITEM
+                    - INVOICE_PAYMENT
+                    - SUBSCRIPTION_EVENT
+                    - SERVICE_BROADCAST
+                    - PAYMENT_ATTEMPT
+                    - PAYMENT_METHOD
+                    - TAG
+                    - TAG_DEFINITION
+                    - TENANT
+                    - TENANT_KVS
+                objectId:
+                    type: string
+                    format: uuid
+                changedBy:
+                    type: string
+                    example: admin
+                reasonCode:
+                    type: string
+                    example: null
+                comments:
+                    type: string
+                    example: null
+                userToken:
+                    type: string
+                    format: uuid
+                history:
+                    $ref: '#/components/schemas/Entity'
+
+        BangoUserId:
+            description: The Bango user identifier. This is a globally unique, opaque string.
+            type: string
+            example: '1234567890'
+
+        BillingPeriod:
+            description: |-
+                How frequently the user is billed. For the avoidance of doubt:
+
+                - BIWEEKLY = every 2 weeks
+                - BIMESTRIAL = every 2 months
+                - BIANNUAL = every 6 months
+                - BIENNIAL = every 2 years
+            type: string
+            enum:
+                - MONTHLY
+                - DAILY
+                - WEEKLY
+                - BIWEEKLY
+                - THIRTY_DAYS
+                - SIXTY_DAYS
+                - NINETY_DAYS
+                - BIMESTRIAL
+                - QUARTERLY
+                - TRIANNUAL
+                - BIANNUAL
+                - ANNUAL
+                - BIENNIAL
+                - NO_BILLING_PERIOD
+
+        CurrencyCode:
+            description: A three-character ISO 4217 currency code.
+            type: string
+            enum:
+                - AED
+                - AFN
+                - ALL
+                - AMD
+                - ANG
+                - AOA
+                - ARS
+                - AUD
+                - AWG
+                - AZN
+                - BAM
+                - BBD
+                - BDT
+                - BGN
+                - BHD
+                - BIF
+                - BMD
+                - BND
+                - BOB
+                - BRL
+                - BSD
+                - BTC
+                - BTN
+                - BWP
+                - BYR
+                - BZD
+                - CAD
+                - CDF
+                - CHF
+                - CLP
+                - CNY
+                - COP
+                - CRC
+                - CUC
+                - CUP
+                - CVE
+                - CZK
+                - DJF
+                - DKK
+                - DOP
+                - DZD
+                - EGP
+                - ERN
+                - ETB
+                - EUR
+                - FJD
+                - FKP
+                - GBP
+                - GEL
+                - GGP
+                - GHS
+                - GIP
+                - GMD
+                - GNF
+                - GTQ
+                - GYD
+                - HKD
+                - HNL
+                - HRK
+                - HTG
+                - HUF
+                - IDR
+                - ILS
+                - IMP
+                - INR
+                - IQD
+                - IRR
+                - ISK
+                - JEP
+                - JMD
+                - JOD
+                - JPY
+                - KES
+                - KGS
+                - KHR
+                - KMF
+                - KPW
+                - KRW
+                - KWD
+                - KYD
+                - KZT
+                - LAK
+                - LBP
+                - LKR
+                - LRD
+                - LSL
+                - LTL
+                - LVL
+                - LYD
+                - MAD
+                - MDL
+                - MGA
+                - MKD
+                - MMK
+                - MNT
+                - MOP
+                - MRO
+                - MUR
+                - MVR
+                - MWK
+                - MXN
+                - MYR
+                - MZN
+                - NAD
+                - NGN
+                - NIO
+                - NOK
+                - NPR
+                - NZD
+                - OMR
+                - PAB
+                - PEN
+                - PGK
+                - PHP
+                - PKR
+                - PLN
+                - PYG
+                - QAR
+                - RON
+                - RSD
+                - RUB
+                - RWF
+                - SAR
+                - SBD
+                - SCR
+                - SDG
+                - SEK
+                - SGD
+                - SHP
+                - SLL
+                - SOS
+                - SPL
+                - SRD
+                - STD
+                - SVC
+                - SYP
+                - SZL
+                - THB
+                - TJS
+                - TMT
+                - TND
+                - TOP
+                - TRY
+                - TTD
+                - TVD
+                - TWD
+                - TZS
+                - UAH
+                - UGX
+                - USD
+                - UYU
+                - UZS
+                - VEF
+                - VND
+                - VUV
+                - WST
+                - XAF
+                - XCD
+                - XDR
+                - XOF
+                - XPF
+                - YER
+                - ZAR
+                - ZMW
+                - ZWD
+            example: USD
+
+        Echo:
+            type: object
+            properties:
+                echo:
+                    type: string
+                    example: ECHO_TEST
+            required:
+                - echo
+
+        Entity:
+            type: object
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                updatedDate:
+                    type: string
+                    format: date-time
+                createdDate:
+                    type: string
+                    format: date-time
+
+        EventSubscription:
+            type: object
+            properties:
+                eventId:
+                    type: string
+                    format: uuid
+                billingPeriod:
+                    $ref: '#/components/schemas/BillingPeriod'
+                effectiveDate:
+                    type: string
+                    format: date
+                planName:
+                    $ref: '#/components/schemas/PlanName'
+                productName:
+                    $ref: '#/components/schemas/ProductName'
+                priceList:
+                    type: string
+                eventType:
+                    type: string
+                    enum:
+                    - START_BILLING
+                    - START_ENTITLEMENT
+                    - PAUSE_ENTITLEMENT
+                    - PAUSE_BILLING
+                    - RESUME_ENTITLEMENT
+                    - RESUME_BILLING
+                    - PHASE
+                    - CHANGE
+                    - STOP_ENTITLEMENT
+                    - STOP_BILLING
+                    - SERVICE_STATE_CHANGE
+                isBlockedBilling:
+                    type: boolean
+                isBlockedEntitlement:
+                    type: boolean
+                serviceName:
+                    type: string
+                serviceStateName:
+                    type: string
+                phase:
+                    type: string
+                auditLogs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AuditLog'
+
+        ExtensionData:
+            description: Arbitrary key-value pairs, where values are always strings. API consumers can use this to store custom data for the subscription.
+            type: object
+            additionalProperties:
+                type: string
+            example:
+                myCustomField: my-custom-value
+                mySecondCustomField: another-value
+
+        ExternalKey:
+            description: |-
+                An optional unique identifier for the subscription, meaningful to the API consumer. This must be a globally unique, opaque string.
+
+                Use this identifier as an alternative to the `subscriptionId` assigned by Bango.
+
+                When you use the Bango Subscriptions API with the Bango Resale API for resellers, set this value to the Bango Resale entitlement ID.
+            type: string
+            example: 'my-external-identifier'
+
+        MerchantAccountKey:
+            description: The unique identifier for the merchant supplying the product or service. Bango assigns these identifiers
+            type: string
+            example: BANGO_ENTERTAINMENT
+
+        Payment:
+            description: Details of a single payment. For `nextPayment`, this is the next payment scheduled to occur. For `lastPayment`, this is the most recent successful payment.
+            type: object
+            properties:
+                amount:
+                    description: Payment amount as a string.
+                    type: string
+                    example: 9.99
+                currency:
+                    $ref: '#/components/schemas/CurrencyCode'
+                date:
+                    description: The YYYY-MM-DD UTC date on which payment was or will be made.
+                    type: string
+                    format: date
+
+        PhasePrice:
+            description: Pricing information for a phase.
+            type: object
+            properties:
+                planName:
+                    $ref: '#/components/schemas/PlanName'
+                phaseName:
+                    type: string
+                    example: free-trial
+                phaseType:
+                    $ref: '#/components/schemas/PhaseType'
+                fixedPrice:
+                    type: number
+                    example: 0.0
+                recurringPrice:
+                    type: number
+                    example: 0.0
+
+        PhaseType:
+            type: string
+            enum:
+                - TRIAL
+                - DISCOUNT
+                - FIXEDTERM
+                - EVERGREEN
+
+        PlanName:
+            description: The unique identifier for the plan detailing the prices and offer periods associated with the subscription. The product catalog defines these identifiers
+            type: string
+            example: bango-music-3-months-free
+
+        ProductName:
+            description: The unique identifier for the product or service the user is subscribing to. The product catalog defines these identifiers
+            type: string
+            example: bango-music
+
+        Subscription:
+            description: A subscription record in the Bango Platform
+            type: object
+            properties:
+                subscriptionId:
+                    $ref: '#/components/schemas/SubscriptionId'
+                bangoUserId:
+                    $ref: '#/components/schemas/BangoUserId'
+                externalKey:
+                    $ref: '#/components/schemas/ExternalKey'
+                entitlementStartDate:
+                    description: The YYYY-MM-DD UTC date on which the subscription entitlement starts
+                    type: string
+                    format: date
+                    example: '2020-08-19'
+                merchantAccountKey:
+                    $ref: '#/components/schemas/MerchantAccountKey'
+                productName:
+                    $ref: '#/components/schemas/ProductName'
+                extensionData:
+                    $ref: '#/components/schemas/ExtensionData'
+                billingPeriod:
+                    $ref: '#/components/schemas/BillingPeriod'
+                phaseType:
+                    $ref: '#/components/schemas/PhaseType'
+                priceList:
+                    type: string
+                planName:
+                    $ref: '#/components/schemas/PlanName'
+                state:
+                    $ref: '#/components/schemas/SubscriptionState'
+                cancelledDate:
+                    description: If not null, the effective YYYY-MM-DD UTC date of cancellation. Might be a date in the future. If null, the subscription has not been cancelled.
+                    type: string
+                    format: date
+                    nullable: true
+                chargedThroughDate:
+                    description: The YYYY-MM-DD UTC date up to which the subscription has been paid for.
+                    type: string
+                    format: date
+                billingStartDate:
+                    description: The YYYY-MM-DD UTC date on which billing starts or started.
+                    type: string
+                    format: date
+                billingEndDate:
+                    description: If not null, the YYYY-MM-DD UTC date on which billing ends or ended. If null, billing has not ended.
+                    type: string
+                    format: date
+                    nullable: true
+                billCycleDayLocal:
+                    type: integer
+                    format: int32
+                    example: 1
+                nextPayment:
+                    $ref: '#/components/schemas/Payment'
+                lastPayment:
+                    # previous payment, not final payment
+                    $ref: '#/components/schemas/Payment'
+                events:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/EventSubscription'
+                priceOverrides:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PhasePrice'
+                prices:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/PhasePrice'
+                auditLogs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AuditLog'
+
+        SubscriptionId:
+            description: The unique identifier generated by Bango for a subscription. This is a globally unique, opaque string
+            type: string
+            format: uuid
+            example: '123e4567-e89b-12d3-a456-426614174000'
+
+        SubscriptionState:
+            description: |-
+                The current state of a subscription.
+
+                A subscription starts in `ACTIVE` if it's created with `entitlementStartDate` set to today's date or a past date. It starts in `PENDING` if `entitlementStartDate` is set to a future date, and automatically transitions to `ACTIVE` on that date.
+
+                A subscription is `CANCELLED` when the user no longer has access to the product or service. (A subscription scheduled to be cancelled at a future date is still `ACTIVE` until that date, and until then it can be uncancelled.)
+            type: string
+            enum:
+                - ACTIVE
+                - PENDING
+                - CANCELLED
+
+        SuccessResponse:
+            type: object
+            properties:
+                responseCode:
+                    description: Always 'OK'
+                    type: string
+                    enum: ['OK']
+                responseMessage:
+                    type: string
+                    example: Success
+            required:
+                - responseCode
+                - responseMessage
+
+    securitySchemes:
+        basicAuth:
+            type: http
+            scheme: basic
+            description: |-
+                Base64 encoding of username:password as supplied by Bango Support
