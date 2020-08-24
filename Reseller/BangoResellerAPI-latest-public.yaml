@@ -29,9 +29,9 @@ info:
     * 1.0.18:
       * Adding ExternalEntitlementId to the create and patch request
       * Adding ExternalEntitlementId to the responses
-      * Adding the new GET call in v1/entitlement to retrieve Entitlement information using ExternalEntitlementId.
+      * Adding the new GET call in v1/entitlement to retrieve Entitlement information using ExternalEntitlementId
     * 1.0.19:
-      * Adding the PatchAndResume option in Resume calls
+      * Adding the entitlementBenefits functionality to the patch method
   version: "1.0.19-oas3"
 security:
   - basic: []
@@ -701,6 +701,17 @@ paths:
                   value:
                     responseCode: NOT_FOUND
                     responseMessage: Entitlement Not Found
+        '409':
+          description: Entitlement not in the correct state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidState:
+                  value:
+                    responseCode: INVALID_STATE
+                    responseMessage: Operation invalid for the current state of the entitlement.
         '429':
           description: Request limit reached
           content:
@@ -761,6 +772,19 @@ paths:
                 value:
                   entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
                   externalEntitlementId: "c843678f-d45a-49f4-868d-2bbc445b2c2e"
+              SuspendEntitlement:
+                value:
+                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
+                  entitlementBenefits: SUSPENDED
+              ResumeEntitlement:
+                value:
+                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
+                  entitlementBenefits: NORMAL
+              ProductUpdateAndResumeEntitlement:
+                value:
+                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
+                  entitlementBenefits: NORMAL
+                  productKey: BangoMusic2
         description: The entitlement JSON you want to update
         required: true
     get:
@@ -1560,19 +1584,7 @@ paths:
                   value:
                     responseCode: SERVICE_UNAVAILABLE
                     responseMessage:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EntitlementResume'
-            examples:    
-              StandardResume:
-                value:
-              PatchAndResume:
-                value:
-                  resumeType: "PatchAndResume"
-                  productKey: BangoMusic2
-        description: See examples for use cases
+      
   '/v1/entitlement/cancel/{entitlementId}':
     post:
       summary: Cancel an entitlement
@@ -2301,6 +2313,14 @@ components:
             External identifier for the Entitlement from the Reseller.
           example: >-
             124130d2-2cbc-45a1-ab9b-dfa8b67a2e63
+        entitlementBenefits:
+          type: string
+          description: |-
+            ENUM parameter for the Reseller to instruct the type of benefits action needed as part of the update request. This enum is used to suspend and resume entitlements using the update method.
+          enum:
+            - SUSPENDED
+            - NORMAL
+            - DOWNGRADED
         extensionData:
           type: object
           additionalProperties:
@@ -2370,20 +2390,6 @@ components:
         cancelReasonDescription:
           type: string
           description: Description of the entitlement cancel or revoke reason.
-    EntitlementResume:
-      type: object
-      description: >-
-        Differentiates the different types of Resume action possible on the Entitlement.
-      properties:
-        resumeType:
-          type: string
-          description: |-
-            Accepts the defined enums.
-            - "PatchProductKey": allows for the Entitlement to be patched for new product key before the Entitlement is resumed.
-        productKey:
-          type: string
-          description: |-
-            The product key to which the Entitlement should be updated to.
     CheckEligibility:
       type: object
       required:
