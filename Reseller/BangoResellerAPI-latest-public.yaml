@@ -31,7 +31,7 @@ info:
       * Adding ExternalEntitlementId to the responses
       * Adding the new GET call in v1/entitlement to retrieve Entitlement information using ExternalEntitlementId
     * 1.0.19:
-      * Adding the entitlementBenefits functionality to the patch method
+      * Adding the entitlementBenefits functionality to the patch entitlement method
   version: "1.0.19-oas3"
 security:
   - basic: []
@@ -772,15 +772,15 @@ paths:
                 value:
                   entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
                   externalEntitlementId: "c843678f-d45a-49f4-868d-2bbc445b2c2e"
-              SuspendEntitlement:
+              Suspend:
                 value:
                   entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
                   entitlementBenefits: SUSPENDED
-              ResumeEntitlement:
+              Resume:
                 value:
                   entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
                   entitlementBenefits: NORMAL
-              ProductUpdateAndResumeEntitlement:
+              ProductUpdateAndResume:
                 value:
                   entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
                   entitlementBenefits: NORMAL
