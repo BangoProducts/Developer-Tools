@@ -25,6 +25,8 @@ paths:
         description: Request unique identifier. If present, this id will be used for idempotency.
         schema:
           type: string
+      tags:
+       - Identity
       responses:
         "200":
           description: Data about the user retrieved.
@@ -204,6 +206,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TransactionRequest'
+      tags:
+       - Transaction
       responses:
         "200":
           description: Transaction authorized successfully
@@ -307,6 +311,8 @@ paths:
         description: Request unique identifier. If present, this id will be used for idempotency.
         schema:
           type: string
+      tags:
+       - Transaction
       responses:
         "200":
           description: Transaction retrieved successfully
@@ -389,6 +395,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TransactionRequest'
+      tags:
+       - Transaction
       responses:
         "200":
           description: Transaction captured successfully
@@ -503,6 +511,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TransactionRequest'
+      tags:
+       - Transaction
       responses:
         "200":
           description: Transaction updated successfully
