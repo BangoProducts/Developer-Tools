@@ -1,0 +1,822 @@
+openapi: 3.0.0
+info:
+  title: Bango Payment Provider API
+  description: |
+    Changelog
+    * 1.0.1: Initial release
+  version: 1.0.1
+security:
+  - oAuth2ClientCredentials: []
+paths:
+  /user/{userIdentifier}:
+    get:
+      summary: Retrieve data about a user.
+      description: Resource used to retrieve data about a user.
+      operationId: GetUser
+      parameters:
+      - name: userIdentifier
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-RequestIdentifier
+        in: header
+        required: true
+        description: Request unique identifier. If present, this id will be used for idempotency.
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Data about the user retrieved.
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/UserGet'
+              examples:
+                OK:
+                  value:
+                    responseCode: OK
+                    responseMessage: The user was retrieved successfully.
+                    user:
+                      userIdentifier: "987654321"
+                      userStatus: OK
+                      userStatusReason: Active user
+                      userDetails:
+                        USER_TYPE: PRE_PAID
+                        ACCOUNT_NAME: Dan
+                        EMAIL: dan@somenetwork.com
+                      transactionMaxLimit:
+                        amount: 123.99
+                        currency: GBP
+                        merchantKey: GOOGLE
+                      userSpendLimit:
+                        amount: 123.99
+                        currency: GBP
+                        merchantKey: GOOGLE
+                        type: MONTHLY
+                        resetDate: 18-08-2020
+                      ExtensionData:
+                        some: ABC-XYZ
+                        some1: 123-456-789
+                USER_SUSPENDED:
+                  value:
+                    responseCode: OK
+                    responseMessage: The user was retrieved successfully.
+                    user:
+                      userIdentifier: "987654321"
+                      userStatus: USER_SUSPENDED
+                      userStatusReason: User suspended due to suspected fraud
+                      userDetails:
+                        USER_TYPE: PRE_PAID
+                        ACCOUNT_NAME: Dan
+                        EMAIL: dan@somenetwork.com
+                      transactionMaxLimit:
+                        amount: 123.99
+                        currency: GBP
+                        merchantKey: GOOGLE
+                      userSpendLimit:
+                        amount: 123.99
+                        currency: GBP
+                        merchantKey: GOOGLE
+                        type: MONTHLY
+                        resetDate: 18-08-2020
+                      ExtensionData:
+                        some: ABC-XYZ
+                        some1: 123-456-789
+                USER_NOT_ENABLED:
+                  value:
+                    responseCode: OK
+                    responseMessage: The user was retrieved successfully.
+                    user:
+                      userIdentifier: "987654321"
+                      userStatus: USER_NOT_ENABLED
+                      userStatusReason: User not enabled for billing
+                      userDetails:
+                        USER_TYPE: PRE_PAID
+                        ACCOUNT_NAME: Dan
+                        EMAIL: dan@somenetwork.com
+                      transactionMaxLimit:
+                        amount: 123.99
+                        currency: GBP
+                        merchantKey: GOOGLE
+                      userSpendLimit:
+                        amount: 123.99
+                        currency: GBP
+                        merchantKey: GOOGLE
+                        type: MONTHLY
+                        resetDate: 18-08-2020
+                      ExtensionData:
+                        some: ABC-XYZ
+                        some1: 123-456-789
+                CLOSED:
+                  value:
+                    responseCode: OK
+                    responseMessage: The user was retrieved successfully.
+                    user:
+                      userIdentifier: "987654321"
+                      userStatus: CLOSED
+                      userStatusReason: User account closed
+                      userDetails:
+                        USER_TYPE: PRE_PAID
+                        ACCOUNT_NAME: Dan
+                        EMAIL: dan@somenetwork.com
+                      transactionMaxLimit:
+                        amount: 123.99
+                        currency: GBP
+                        merchantKey: GOOGLE
+                      userSpendLimit:
+                        amount: 123.99
+                        currency: GBP
+                        merchantKey: GOOGLE
+                        type: MONTHLY
+                        resetDate: 18-08-2020
+                      ExtensionData:
+                        some: ABC-XYZ
+                        some1: 123-456-789
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                BAD_REQUEST:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                INVALID_USER:
+                  value:
+                    responseCode: INVALID_USER
+                    responseMessage: Invalid User.
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: UNAUTHORIZED
+                responseMessage: Invalid access credentials.
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: NOT_FOUND
+                responseMessage: Invalid user identifier.
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                INTERNAL_ERROR:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: The server encountered an unexpected condition.
+        "503":
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: SERVICE_UNAVAILABLE
+                responseMessage: The server is undergoing maintenance.
+  /transaction:
+    post:
+      summary: Authorize transaction
+      description: Resource used to authorize a transaction.
+      operationId: AuthorizeTransaction
+      parameters:
+      - name: X-RequestIdentifier
+        in: header
+        required: false
+        description: Request unique identifier. If present, this id will be used for idempotency.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+      responses:
+        "200":
+          description: Transaction authorized successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        "202":
+          description: Request accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+              examples:
+                PRICE_NOT_SUPPORTED:
+                  value:
+                    responseCode: PRICE_NOT_SUPPORTED
+                    responseMessage: Price not supported on suggested payment methods.
+                DECLINED:
+                  value:
+                    responseCode: DECLINED
+                    responseMessage: Payment request declined.
+                SPEED_LIMIT:
+                  value:
+                    responseCode: SPEED_LIMIT
+                    responseMessage: Request too soon after the previous one for this user.
+                USER_BARRED:
+                  value:
+                    responseCode: USER_BARRED
+                    responseMessage: The user is not allowed to use this payment method.
+                USER_NOT_ENABLED:
+                  value:
+                    responseCode: USER_NOT_ENABLED
+                    responseMessage: User is not enabled for payments.
+                USER_SPEND_LIMIT:
+                  value:
+                    responseCode: USER_SPEND_LIMIT
+                    responseMessage: The user has hit a spend limit.
+                USER_SUSPENDED:
+                  value:
+                    responseCode: USER_SUSPENDED
+                    responseMessage: The user is temporarily not allowed to use this payment method.
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                BAD_REQUEST:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                INVALID_USER:
+                  value:
+                    responseCode: INVALID_USER
+                    responseMessage: Invalid User.
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: UNAUTHORIZED
+                responseMessage: Invalid access credentials.
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                INTERNAL_ERROR:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: The server encountered an unexpected condition.
+        "503":
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: SERVICE_UNAVAILABLE
+                responseMessage: The server is undergoing maintenance.
+  /transaction/{transactionId}:
+    get:
+      summary: Retrieve data about a transaction.
+      description: Resource used to retrieve data about a transaction.
+      operationId: GetTransaction
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-RequestIdentifier
+        in: header
+        required: false
+        description: Request unique identifier. If present, this id will be used for idempotency.
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Transaction retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionGet'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                BAD_REQUEST:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                INVALID_USER:
+                  value:
+                    responseCode: INVALID_USER
+                    responseMessage: Invalid User.
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: UNAUTHORIZED
+                responseMessage: Invalid access credentials.
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: NOT_FOUND
+                responseMessage: Invalid transaction id.
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                INTERNAL_ERROR:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: The server encountered an unexpected condition.
+        "503":
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: SERVICE_UNAVAILABLE
+                responseMessage: The server is undergoing maintenance.
+    put:
+      summary: Capture transaction
+      description: Resource used to capture a transaction.
+      operationId: CaptureTransaction
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-RequestIdentifier
+        in: header
+        required: false
+        description: Request unique identifier. If present, this id will be used for idempotency.
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+      responses:
+        "200":
+          description: Transaction captured successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        "202":
+          description: Request accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+              examples:
+                DECLINED:
+                  value:
+                    responseCode: DECLINED
+                    responseMessage: Payment request declined.
+                SPEED_LIMIT:
+                  value:
+                    responseCode: SPEED_LIMIT
+                    responseMessage: Request too soon after the previous one for this user.
+                USER_BARRED:
+                  value:
+                    responseCode: USER_BARRED
+                    responseMessage: The user is not allowed to use this payment method.
+                USER_NOT_ENABLED:
+                  value:
+                    responseCode: USER_NOT_ENABLED
+                    responseMessage: User is not enabled for payments.
+                USER_SPEND_LIMIT:
+                  value:
+                    responseCode: USER_SPEND_LIMIT
+                    responseMessage: The user has hit a spend limit.
+                USER_SUSPENDED:
+                  value:
+                    responseCode: USER_SUSPENDED
+                    responseMessage: The user is temporarily not allowed to use this payment method.
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                BAD_REQUEST:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                INVALID_USER:
+                  value:
+                    responseCode: INVALID_USER
+                    responseMessage: Invalid User.
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: UNAUTHORIZED
+                responseMessage: Invalid access credentials.
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: NOT_FOUND
+                responseMessage: Invalid transaction id.
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                INTERNAL_ERROR:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: The server encountered an unexpected condition.
+        "503":
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: SERVICE_UNAVAILABLE
+                responseMessage: The server is undergoing maintenance.
+    
+    patch:
+      summary: Cancel or refund a transaction.
+      description: Resource used to cancel or refund a transaction.
+      operationId: CancelTransaction
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-RequestIdentifier
+        in: header
+        required: false
+        description: Request unique identifier. If present, this id will be used for idempotency.
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+      responses:
+        "200":
+          description: Transaction updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+              examples:
+                REFUNDED:
+                  value:
+                    responseCode: REFUNDED
+                    responseMessage: The transaction was refunded successfully.
+                CANCELLED:
+                  value:
+                    responseCode: CANCELLED
+                    responseMessage: The transaction was cancelled successfully.
+        "202":
+          description: Request accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+              examples:
+                CANT_REFUND:
+                  value:
+                    responseCode: CANT_REFUND
+                    responseMessage: t’s not possible to refund this transaction.
+                ALREADY_REFUNDED:
+                  value:
+                    responseCode: ALREADY_REFUNDED
+                    responseMessage: The transaction has already been refunded.
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                BAD_REQUEST:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                INVALID_USER:
+                  value:
+                    responseCode: INVALID_USER
+                    responseMessage: Invalid User.
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: UNAUTHORIZED
+                responseMessage: Invalid access credentials.
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: NOT_FOUND
+                responseMessage: Invalid transaction id.
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                INTERNAL_ERROR:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: The server encountered an unexpected condition.
+        "503":
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example: 
+                responseCode: SERVICE_UNAVAILABLE
+                responseMessage: The server is undergoing maintenance.
+components:
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: This API uses OAuth 2 with clientCredentials.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.network.com/oauth2/token/
+          scopes: {} 
+  schemas:
+    UserGet:
+      required:
+      - responseCode
+      - responseMessage
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object 
+          properties:
+            user:
+              allOf:
+                - $ref: '#/components/schemas/User'
+    User:
+      required:
+      - userIdentifier
+      - userStatus
+      - userDetails
+      - transactionLimits
+      type: object
+      properties:
+        userIdentifier:
+          type: string
+          example: 987654321
+        userStatus:
+          type: string
+          enum:
+            - OK
+            - USER_SUSPENDED
+            - USER_NOT_ENABLED
+            - USER_BARRED
+            - CLOSED
+          example: SUSPENDED
+        userStatusReason:
+          type: string
+          example: User suspended due to fraud.
+        userDetails:
+          type: object
+          properties:
+            USER_TYPE:
+              type: string
+              enum:
+                - PRE_PAID
+                - POST_PAID
+                - HYBRID
+              example: PRE_PAID
+            ACCOUNT_NAME:
+              type: string
+              example: Dan
+            EMAIL:
+              type: string
+              example: dan@somenetwork.com
+        transactionMaxLimit:
+          type: array
+          items:
+            properties:
+              amount:
+                type: number
+                format: float
+                description: Maximum limit for a single transaction
+                example: 123.99
+              currency:
+                type: string
+                description: Currency in ISO3
+                example: GBP
+              merchantKey:
+                type: string
+                description: Merchant's Unique Key
+                example: GOOGLE
+            required:
+              - amount
+              - currency
+        userSpendLimit:
+          type: array
+          items:
+            properties:
+              amount:
+                type: number
+                format: float
+                description: User spend limit
+                example: 123.99
+              currency:
+                type: string
+                description: Currency in ISO3
+                example: GBP
+              merchantKey:
+                type: string
+                description: Merchant's Unique Key
+                example: GOOGLE
+              type:
+                type: string
+                description: Type of limit
+                enum:
+                  - DAILY
+                  - WEEKLY
+                  - MONTHLY
+                  - YEARLY
+                example: MONTHLY
+              resetDate:
+                type: string
+                example: 18-08-2020
+            required:
+              - amount
+              - currency
+              - type
+        ExtensionData:
+          type: object
+          properties:
+            some:
+              type: string
+              example: ABC-XYZ
+            some1:
+              type: string
+              example: 123-456-789
+    Response:
+      required:
+      - responseCode
+      - responseMessage
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: "OK"
+        responseMessage:
+          type: string
+          example: "Success."
+    TransactionResponse:
+      required:
+        - responseCode
+        - responseMessage
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object 
+          properties:
+            transactionId:
+              type: string
+              example: 123456789
+    TransactionGet:
+      required:
+        - responseCode
+        - responseMessage
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object 
+          properties:
+            transaction:
+              required: 
+                - status
+              allOf:
+                - type: object 
+                  properties:
+                    status:
+                      type: string
+                      example: OK
+                - $ref: '#/components/schemas/TransactionRequest'
+            
+    TransactionRequest:
+      required:
+      - userIdentifier
+      - paymentItem
+      - paymentMethods
+      type: object
+      properties:
+        userIdentifier:
+          type: string
+          example: "987654321"
+        paymentMethods:
+          type: array
+          items:
+            type: string
+            example: OPERATORBILLING
+        externalTransactionId:
+          type: string
+          example: my-tx-id-12345
+        paymentItem:
+          $ref: '#/components/schemas/PaymentItem'
+        extensionData:
+          $ref: '#/components/schemas/ExtensionData'
+    FinancialBreakdown:
+      type: object
+      properties:
+        taxAmount:
+          type: string
+          example: "0"
+    Price:
+      type: object
+      properties:
+        grossAmount:
+          type: string
+          example: "3.99"
+        currencyIso3:
+          type: string
+          example: USD
+        financialBreakdown:
+          $ref: '#/components/schemas/FinancialBreakdown'
+    PaymentItem:
+      type: object
+      properties:
+        itemName:
+          type: string
+          example: My item
+        itemDescription:
+          type: string
+          example: My item description
+        itemCategory:
+          type: string
+          example: "1"
+        externalPaymentItemId:
+          type: string
+          example: abcd-1234
+        price:
+          $ref: '#/components/schemas/Price'
+    ExtensionData:
+      type: object
+      properties:
+        some:
+          type: string
+          example: 123-456-789
+        some1:
+          type: string
+          example: 123-456-789
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/BangoProducts/payment-provider_api/1.0.1
