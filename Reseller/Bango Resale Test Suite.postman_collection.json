@@ -28,7 +28,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"entitlementId\": null,\r\n   \"activationCode\": null,\r\n   \"customerIdentifier\": \"exmaple - 123\", <!-- mandatory-->\r\n   \"productKey\": \"{NEEDS TO BE DEFINED}\", <!-- mandatory-->\r\n   \"entitlementDisplayName\": \"{NEEDS TO BE DEFINED}\",\r\n   \"offerKey\": null,\r\n   \"merchantAccountKey\": \"{NEEDS TO BE DEFINED}\", <!-- mandatory-->\r\n   \"dateExpiry\": null,\r\n   \"notificationUrl\": \"{NEEDS TO BE DEFINED}\" <!-- mandatory-->\r\n}"
+							"raw": "{\r\n   \"customerIdentifier\": \"exmaple - 123\", <!-- mandatory-->\r\n   \"productKey\": \"{NEEDS TO BE DEFINED}\", <!-- mandatory-->\r\n   \"entitlementDisplayName\": \"{NEEDS TO BE DEFINED}\",\r\n   \"offerKey\": null,\r\n   \"merchantAccountKey\": \"{NEEDS TO BE DEFINED}\", <!-- mandatory-->\r\n   \"dateExpiry\": null,\r\n   \"notificationUrl\": \"{NEEDS TO BE DEFINED}\" <!-- mandatory-->\r\n}"
 						},
 						"url": {
 							"raw": "https://resale.api.bango.net/v1/entitlement",
