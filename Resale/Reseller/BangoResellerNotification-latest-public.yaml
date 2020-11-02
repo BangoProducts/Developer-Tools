@@ -18,7 +18,7 @@ servers:
 
 paths: 
 
-  /notification:
+  /:
         post:
             tags:
             - notification
