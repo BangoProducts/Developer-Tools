@@ -1,0 +1,284 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Bango Reseller API Notification
+  description: >
+    Changelog
+
+    * 1.0.0: Initial release
+
+
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/BangoProducts/Bango-Resale-API-Notification/1.0.0
+
+
+
+
+paths: 
+
+  /notification:
+        post:
+            tags:
+            - notification
+            summary: Notification
+            description: |-
+                Used to notify partners of changes to their entitlements. You must provide Bango with a notificationUrl when creating each entitlement
+
+            requestBody:
+                $ref: '#/components/requestBodies/NotificationBody'
+            
+            responses:
+                200:
+                    description: ""
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    - $ref: '#/components/schemas/Success'
+
+    
+    
+components:
+  requestBodies: 
+    NotificationBody:
+      description: Notification body
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Success'
+              - $ref: '#/components/schemas/Entitlement'
+  
+  
+  schemas: 
+  
+    Success:
+            type: object
+            properties:
+                responseCode:
+                    description: Always 'OK'
+                    type: string
+                    enum: ['OK']
+                responseMessage:
+                    type: string
+                    example: Success
+            required:
+                - responseCode
+                - responseMessage
+ 
+ 
+ 
+    Entitlement:
+      type: object
+      required:
+        - entitlementId
+        - customerIdentifier
+        - productKey
+        - merchantAccountKey
+        - status
+        - notificationReason
+        - externalEntitlementId
+        
+      properties:
+        parameters:
+          type: object
+        entitlementId:
+          type: string
+          description: Unique identifier representing a specific entitlement.
+          example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        customerIdentifier:
+          type: string
+          description: User unique identifier.
+          example: '4407123456789'
+        productKey:
+          type: string
+          description: 'Entitlement  product unique identifier. For example, "BangoMusic".'
+          example: BangoMusic
+        entitlementDisplayName:
+          type: string
+          description: 'Entitlement display name. For example, "30 days Bango music".'
+          example: 30 days Bango music
+        offerKey:
+          type: string
+          description: 'Entitlement offer. For example, "BUNDLE".'
+          example: null
+        merchantAccountKey:
+          type: string
+          description: 'Merchant unique identifier. For example, "BANGO".'
+          example: BANGO
+        status:
+          type: string
+          example: ACTIVE
+          description: |-
+            Entitlement status. Possible values are:
+              - "ACTIVE": The entitlement has been successfully activated
+              - "CANCELLED": The entitlement has been cancelled.
+              - "REVOKED": The entitlement has been revoked. This usually happens on fraud and user contract termination cases.
+              - "SUSPENDED": The entitlement has been suspended.
+              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
+              - "FAILED": The entitlement failed
+        activationCode:
+          type: string
+          description: Code or token use for the entitlement activation.
+          example: null
+        dateCreated:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement was created, in UTC ISO 8601
+            format (yyyy-MM-ddThh:mm:ssZ)
+        dateActivated:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement was activated, in UTC ISO 8601
+            format (yyyy-MM-ddThh:mm:ssZ)
+        dateEnded:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement ended due to cancellation or
+            revoke, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+          example: '0001-01-01T00:00:00Z'
+        dateExpiry:
+          type: string
+          format: date-time
+          description: >-
+            Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: '0001-01-01T00:00:00Z'
+        dateFailed:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement failed, in UTC ISO 8601 format
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: '0001-01-01T00:00:00Z'
+        dateSuspended:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement was suspended, in UTC ISO 8601.
+            format (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        dateResumed:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement was resumed, in UTC ISO 8601.
+            format (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        dateLastUpdated:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement was last updated, in UTC ISO 8601.
+            format (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        notificationReason:
+           $ref: '#/components/schemas/Notification'
+        externalEntitlementId:
+          type: string
+          description: |-
+            External identifier for the Entitlement from the Reseller.
+          example: >-
+            124130d2-2cbc-45a1-ab9b-dfa8b67a2e63
+        extensionDataList:
+          type: array
+          items: {}
+        customDataList:
+          type: array
+          items: {}    
+        extensionData:
+          type: object
+          description: Accepts a dynamic list of key-value pairs to cover custom data needs
+          additionalProperties:
+            type: string
+        
+        extraInformation:
+          $ref: '#/components/schemas/ExtraEntitlementInfo'    
+    ClientDevice:
+      type: object
+      additionalProperties:
+        type: string
+        description: >-
+          When the clientDevice object is present the type is a mandatory key.
+          The clientDevice object will only be returned if data has been
+          provided.
+            - "type": the type of the device. For example, "STB", "MOBILE", "DESKTOP", "TABLET"
+            - "id": the unique identifier for the users device
+            - "typeId": the common identifier for the type of device
+            - "modelName": the device model name
+            - "modelNumber": the device model number
+            - "serialNumber": the serial number of the device
+            - "osType": the OS type of the device
+            - "osVersion": the OS version of the device
+            - "macAddress": the mac address of the device
+            - "browser": the browser being used
+      example:
+        type: STB
+        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+        typeId: P49AJFND8NFN23NANGAJG
+        modelName: STB Model X7
+        modelNumber: IAH45IAOF/5
+        serialNumber: JHFJHA43JNFA9393GFD
+        osType: Linux
+        osVersion: 10.3.8
+        macAddress: 4A-0F-99-F2-D3-DD
+        browser: Firefox
+    CommunicationInformation:
+      type: object
+      additionalProperties:
+        type: string
+        description: |-
+          Accepts the defined key-value pairs.
+            - "emailAddress": the end-users email address.
+            - "msisdn": the end-users mobile number in international format.
+      example:
+        emailAddress: 123@abc.co.uk
+        msisdn: '441234567890'
+    Source:
+      type: object
+      additionalProperties:
+        type: string
+        description: |-
+          Accepts the defined key-value pairs.
+            - "channelType": the source channel of the entitlement request.
+            - "campaignRef": the campaign reference that the user clicked on.
+            - "referrer": where the user request originated from.
+            - "bundleId": a string identifier for the bundle which the OTT service is part of.
+            - "country": the end-users country.
+            - "region": the end-users region within their country.
+            - "brand": the brand of which the user originated from.
+            - "serviceFlow": the service flow for which the request originated. Valid values are Creation or Activation. If not passed Bango will treat this as Activation
+      example:
+        channelType: WEB_PROMOTION
+        campaignRef: SUMMER_PROMO
+        referrer: SEARCH_ENGINE
+        bundleId: BundleABC123
+        country: United Kingdom
+        region: East Anglia
+        brand: BrandABC
+        serviceFlow: Creation
+    ExtraEntitlementInfo:
+      type: object
+      properties:
+        clientDevice:
+          $ref: '#/components/schemas/ClientDevice'
+        communicationInformation:
+          $ref: '#/components/schemas/CommunicationInformation'
+        source:
+          $ref: '#/components/schemas/Source'
+    Notification:
+          type: string
+          enum: [ACTIVATION_SUCCESS,TERMINATION_SUCCESS,PRODUCT_UPDATE,SUSPENSION_SUCCESS,RESUMPTION_SUCCESS]  
+          description: |-
+              - "ACTIVATION_SUCCESS": The entitlement has been successfully activated
+              - "TERMINATION_SUCCESS": The entitlement has been successfully terminated
+              - "PRODUCT_UPDATE": The productKey on the entitlement has been successfully updated
+              - "SUSPENSION_SUCCESS": The entitlement has been successfully suspended
+              - "RESUMPTION_SUCCESS": The entitlement has been successfully resumed
+
+  securitySchemes: {}
