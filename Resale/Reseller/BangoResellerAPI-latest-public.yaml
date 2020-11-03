@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Bango Resale API
+  title: Bango Reseller API
   description: >
     Changelog
 
@@ -25,14 +25,16 @@ info:
       * Adding serviceFlow parameter to extraInformation source object
     * 1.0.17:
       * Updating API spec to be OpenAPI3
-      * Adding patchReason functionality to patch entitlement method
     * 1.0.18:
       * Adding ExternalEntitlementId to the create and patch request
       * Adding ExternalEntitlementId to the responses
       * Adding the new GET call in v1/entitlement to retrieve Entitlement information using ExternalEntitlementId
     * 1.0.19:
       * Adding the entitlementBenefits functionality to the patch entitlement method
-  version: "1.0.19-oas3"
+    * 1.0.20: 
+      * Adding dateAutoSuspend functionality to create and patch entitlement methods
+      * Adding dateAutoSuspend parameter to response objects when parameter has a value set
+  version: 1.0.20
 security:
   - basic: []
 paths:
@@ -161,6 +163,7 @@ paths:
                     dateActivated: "2020-06-22T17:35:59.909Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: null
                     dateResumed: null
@@ -273,6 +276,7 @@ paths:
                     dateActivated: "0001-01-01T00:00:00Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: null
                     dateResumed: null
@@ -428,6 +432,7 @@ paths:
                   notificationUrl: https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
                   offerKey: BUNDLE
                   dateExpiry: "2021-06-22T17:35:38.929Z"
+                  dateAutoSuspend: "2020-11-22T10:11:14.289Z"
                   externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                   extensionData: 
                     additionalProp1: string
@@ -496,6 +501,7 @@ paths:
                     dateActivated: "2020-06-22T17:36:01Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: null
                     dateResumed: null
@@ -552,6 +558,7 @@ paths:
                     dateActivated: "2020-06-22T17:36:01Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: null
                     dateResumed: null
@@ -603,6 +610,7 @@ paths:
                     dateActivated: "2020-06-22T17:36:01Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: null
                     dateResumed: null
@@ -755,11 +763,6 @@ paths:
                 value:
                   entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
                   productKey: BangoMusic2
-              DateExpiryRemoval:
-                value:
-                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
-                  patchReason: RemoveDateExpiry
-                  dateExpiry: null
               NotificationUrlUpdate:
                 value:
                   entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
@@ -830,6 +833,7 @@ paths:
                     dateActivated: "2020-06-22T17:36:01Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: null
                     dateResumed: null
@@ -991,6 +995,7 @@ paths:
                     dateActivated: "0001-01-01T00:00:00Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: null
                     dateResumed: null
@@ -1256,6 +1261,7 @@ paths:
                     dateActivated: "2020-06-22T17:35:59.909Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: "2020-06-23T08:14:41.003Z"
                     dateResumed: null
@@ -1440,6 +1446,7 @@ paths:
                     dateActivated: "2020-06-22T17:35:59.909Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: "2020-06-23T08:14:41.003Z"
                     dateResumed: null
@@ -1628,6 +1635,7 @@ paths:
                     dateActivated: "2020-06-22T17:35:59.909Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: null
                     dateResumed: null
@@ -1684,6 +1692,7 @@ paths:
                     dateActivated: "0001-01-01T00:00:00Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: null
                     dateResumed: null
@@ -1867,6 +1876,7 @@ paths:
                     dateActivated: "2020-06-22T17:35:59.909Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: null
                     dateResumed: null
@@ -1923,6 +1933,7 @@ paths:
                     dateActivated: "0001-01-01T00:00:00Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
                     dateSuspended: null
                     dateResumed: null
@@ -2181,7 +2192,7 @@ paths:
 servers:
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/BangoProducts/Reseller-API/1.0.19-oas3
+    url: https://virtserver.swaggerhub.com/BangoProducts/Reseller-API/1.0.20
 components:
   securitySchemes:
     basic:
@@ -2234,6 +2245,13 @@ components:
           format: date
           description: >-
             Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        dateAutoSuspend:
+          type: string
+          format: date
+          description: >-
+            Entitlement auto-suspension date in UTC ISO 8601 format. Null if no auto-suspension
             (yyyy-MM-ddThh:mm:ssZ)
           example: null
         externalEntitlementId:
@@ -2293,6 +2311,13 @@ components:
             Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
             (yyyy-MM-ddThh:mm:ssZ)
           example: null
+        dateAutoSuspend:
+          type: string
+          format: date
+          description: >-
+            Entitlement auto-suspension date in UTC ISO 8601 format. Null if no auto-suspension
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: null
         notificationUrl:
           type: string
           format: url
@@ -2302,11 +2327,6 @@ components:
             entitlement information in EntitlementGetResponse format.
           example: >-
             https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
-        patchReason:
-          type: string
-          description: |-
-            Accepts the defined enums.
-            - "RemoveDateExpiry": allows for the dateExpiry to be removed
         externalEntitlementId:
           type: string
           description: |-
@@ -2479,6 +2499,13 @@ components:
             Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
             (yyyy-MM-ddThh:mm:ssZ)
           example: '0001-01-01T00:00:00Z'
+        dateAutoSuspend:
+          type: string
+          format: date
+          description: >-
+            Entitlement auto-suspension date in UTC ISO 8601 format. Null if no auto-suspension
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: null
         dateFailed:
           type: string
           format: date-time
@@ -2570,6 +2597,13 @@ components:
                   Entitlement expiry date in UTC ISO 8601 format. Null if no
                   expiry (yyyy-MM-ddThh:mm:ssZ)
                 example: '0001-01-01T00:00:00Z'
+              dateAutoSuspend:
+                type: string
+                format: date
+                description: >-
+                  Entitlement auto-suspension date in UTC ISO 8601 format. Null if no auto-suspension
+                  (yyyy-MM-ddThh:mm:ssZ)
+                example: null
               dateFailed:
                 type: string
                 format: date-time
@@ -2717,7 +2751,7 @@ components:
             - "country": the end-users country.
             - "region": the end-users region within their country.
             - "brand": the brand of which the user originated from.
-            - "serviceFlow": the service flow for which the request originated. Valid values are Creation or Activation. If not passed Bango will treat this as Activation
+            - "serviceFlow": the service flow for which the request originated. Valid values are Creation or Activation. If not passed Bango will treat this as Activation.
       example:
         channelType: WEB_PROMOTION
         campaignRef: SUMMER_PROMO
