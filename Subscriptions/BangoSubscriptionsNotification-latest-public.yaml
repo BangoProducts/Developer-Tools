@@ -1,0 +1,411 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Bango Subscriptions API Notification
+  description: >-
+    The notification structure and reasons which the Bango Platform will send to
+    partners using Bango Subscriptions
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/BangoProducts/Bango-Subscriptions-API-Notification/1.0.0
+    
+    
+externalDocs:
+    description: Bango developer documentation
+    url: https://developer.bango.com
+
+
+security:
+- basicAuth: []
+
+paths:
+
+
+    /:
+        post:
+            tags:
+            - notification
+            summary: Notification
+            description: |-
+                Used to notify partners of changes to their subscriptions. You must provide Bango with a notificationUrl as part of your onboarding
+
+            operationId: notify-subscription
+            parameters:
+              - name: X-SequenceIdentifier
+                in: header
+                description: >-
+                  Notification sequence identifier used by the system. Value will conform to the snowflake IDs definition.
+                schema:
+                  type: string
+            requestBody:
+                $ref: '#/components/requestBodies/NotificationBody'
+            
+            responses:
+                200:
+                    description: ""
+                    content:
+                        application/json:
+                            schema:
+                                allOf:
+                                    - $ref: '#/components/schemas/SuccessResponse'
+            
+
+components:
+  requestBodies: 
+    NotificationBody:
+      description: Notification body
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Notification'
+              - $ref: '#/components/schemas/NotificationDetails'
+              - $ref: '#/components/schemas/Subscription'
+
+  schemas:
+    SuccessResponse:
+            type: object
+            properties:
+                responseCode:
+                    description: Always 'OK'
+                    type: string
+                    enum: ['OK']
+                responseMessage:
+                    type: string
+                    example: Success
+            required:
+                - responseCode
+                - responseMessage
+    Subscription:
+      type: object
+      required: 
+      - subscriptionId
+      - externalSubscriptionid
+      - customerIdentifier
+      - productName
+      - planName
+      - phaseType
+      - status
+      - subscriptionStartDate
+      - paymentInformation
+      - billing
+      - cancelledDate
+      - extensionData
+      - extraInformation
+      properties:
+        subscriptionId:
+          type: string
+          example: 93d6f742-9204-4e58-9514-d3d53745702f
+        externalSubscriptionid:
+          type: string
+          example: my-external-identifier
+        customerIdentifier:
+          type: string
+          example: 1234567890
+        merchantAccountKey:
+          type: string
+          example: BANGO
+        productName:
+          type: string
+          example: bango-music
+        planName:
+          type: string
+          example: bango-music-3-months-free
+        
+        status:
+          type: string
+          enum: [ACTIVE,CANCELLED,PENDING]
+        activationDate:
+          type: string
+          format: date-time
+        cancelledDate:
+          type: string
+          format: date-time
+        
+        chargeInformation:
+          type: object
+          properties:
+            plan:
+              $ref: '#/components/schemas/Plan'
+            nextCharge:
+              $ref: '#/components/schemas/PaymentInformation'
+            lastCharge:
+              $ref: '#/components/schemas/PaymentInformation'
+        extensionData:
+          $ref: '#/components/schemas/ExtensionData'
+        extraInformation:
+          $ref: '#/components/schemas/ExtraInformation'
+          
+    Plan:
+      type: object
+      properties:
+        period:
+          description: |-
+                How frequently the user is billed. For the avoidance of doubt:
+
+                - BIWEEKLY = every 2 weeks
+                - BIMESTRIAL = every 2 months
+                - BIANNUAL = every 6 months
+                - BIENNIAL = every 2 years
+          type: string
+          enum:
+              - MONTHLY
+              - DAILY
+              - WEEKLY
+              - BIWEEKLY
+              - THIRTY_DAYS
+              - SIXTY_DAYS
+              - NINETY_DAYS
+              - BIMESTRIAL
+              - QUARTERLY
+              - TRIANNUAL
+              - BIANNUAL
+              - ANNUAL
+              - BIENNIAL
+              - NO_BILLING_PERIOD
+        phaseType:
+          type: string
+          example: DISCOUNT
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+    
+
+    PaymentInformation:
+      type: object
+      properties:
+        grossAmount:
+          type: number
+          format: float
+          example: 5.00
+        currencyIso3:
+          $ref: '#/components/schemas/CurrencyIso3'
+        date:
+          type: string
+          format: date-time
+    Notification:
+      type: object
+      required: 
+        - notificationReason
+      properties:
+        notificationReason:
+          type: string
+          enum: [PAYMENT_FAILURE, CREATION_SUCCESS, ACTIVATION_SUCCESS, PERIOD_RENEWAL_UPCOMING, PHASE_RENEWAL_UPCOMING, PERIOD_RENEWAL_SUCCESS, PHASE_RENEWAL_SUCCESS,TERMINATION_SUCCESS, PAYMENT_SUCCESS, TERMINATION_REQUIRED]
+    
+    NotificationDetails:
+      type: object
+      properties:
+        notification:
+          $ref: '#/components/schemas/NotificationDetail'
+    
+    NotificationDetail:
+      type: object
+      properties:
+        reasonCategory:
+          type: string
+          enum: [ATTEMPT_LIMIT_REACHED, ATTEMPT_FAILED]
+        reasonCode:
+          type: string
+          enum: [ATTEMPT_LIMIT_REACHED, GENERAL_ERROR, INTERNAL_ERROR, USER_SUSPENDED, USER_BARRED, USER_INSUFFICIENT_FUNDS, USER_EXCEEDED_LIMIT, DECLINED]
+        reasonDescription:
+          type: string
+          enum: ["Maximum payment attempts limit has been reached.", "Payment attempt failed. X retries left."]
+    ExtensionData:
+      type: object
+      example: 
+        keyA: value1
+        keyB: value2
+        keyC: value3
+    ExtraInformation:
+      type: object
+      additionalProperties:
+        type: object
+      
+
+    CurrencyIso3:
+        description: A three-character ISO 4217 currency code.
+        type: string
+        enum:
+            - AED
+            - AFN
+            - ALL
+            - AMD
+            - ANG
+            - AOA
+            - ARS
+            - AUD
+            - AWG
+            - AZN
+            - BAM
+            - BBD
+            - BDT
+            - BGN
+            - BHD
+            - BIF
+            - BMD
+            - BND
+            - BOB
+            - BRL
+            - BSD
+            - BTC
+            - BTN
+            - BWP
+            - BYR
+            - BZD
+            - CAD
+            - CDF
+            - CHF
+            - CLP
+            - CNY
+            - COP
+            - CRC
+            - CUC
+            - CUP
+            - CVE
+            - CZK
+            - DJF
+            - DKK
+            - DOP
+            - DZD
+            - EGP
+            - ERN
+            - ETB
+            - EUR
+            - FJD
+            - FKP
+            - GBP
+            - GEL
+            - GGP
+            - GHS
+            - GIP
+            - GMD
+            - GNF
+            - GTQ
+            - GYD
+            - HKD
+            - HNL
+            - HRK
+            - HTG
+            - HUF
+            - IDR
+            - ILS
+            - IMP
+            - INR
+            - IQD
+            - IRR
+            - ISK
+            - JEP
+            - JMD
+            - JOD
+            - JPY
+            - KES
+            - KGS
+            - KHR
+            - KMF
+            - KPW
+            - KRW
+            - KWD
+            - KYD
+            - KZT
+            - LAK
+            - LBP
+            - LKR
+            - LRD
+            - LSL
+            - LTL
+            - LVL
+            - LYD
+            - MAD
+            - MDL
+            - MGA
+            - MKD
+            - MMK
+            - MNT
+            - MOP
+            - MRO
+            - MUR
+            - MVR
+            - MWK
+            - MXN
+            - MYR
+            - MZN
+            - NAD
+            - NGN
+            - NIO
+            - NOK
+            - NPR
+            - NZD
+            - OMR
+            - PAB
+            - PEN
+            - PGK
+            - PHP
+            - PKR
+            - PLN
+            - PYG
+            - QAR
+            - RON
+            - RSD
+            - RUB
+            - RWF
+            - SAR
+            - SBD
+            - SCR
+            - SDG
+            - SEK
+            - SGD
+            - SHP
+            - SLL
+            - SOS
+            - SPL
+            - SRD
+            - STD
+            - SVC
+            - SYP
+            - SZL
+            - THB
+            - TJS
+            - TMT
+            - TND
+            - TOP
+            - TRY
+            - TTD
+            - TVD
+            - TWD
+            - TZS
+            - UAH
+            - UGX
+            - USD
+            - UYU
+            - UZS
+            - VEF
+            - VND
+            - VUV
+            - WST
+            - XAF
+            - XCD
+            - XDR
+            - XOF
+            - XPF
+            - YER
+            - ZAR
+            - ZMW
+            - ZWD
+        example: USD
+
+  securitySchemes:
+          basicAuth:
+            type: http
+            scheme: basic
+            description: |-
+                Base64 encoding of username:password as supplied by Bango Support
+          OAuth2:
+            type: oauth2
+            flows:
+              clientCredentials:
+                tokenUrl: 'https://oauth.partner.com/token'
+                scopes: {}
