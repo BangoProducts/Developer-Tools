@@ -12,6 +12,7 @@ info:
     * 1.0.5:
       * Updating API spec to be OpenAPI3
       * Adding the entitlementBenefits functionality to the patch entitlement method
+      * Adding extraInformation to PatchEntitlement
 paths:
   /v1/entitlement:
     post:
@@ -528,6 +529,10 @@ components:
             - SUSPENDED
             - NORMAL
             - DOWNGRADED
+        extensionData:
+          $ref: '#/components/schemas/ExtensionData'
+        extraInformation:
+          $ref: '#/components/schemas/ExtraInformation'
     EntitlementResponse:
       type: object
       properties:
