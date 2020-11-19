@@ -81,7 +81,7 @@ components:
       type: object
       required: 
       - subscriptionId
-      - externalSubscriptionid
+      - externalSubscriptionId
       - customerIdentifier
       - productName
       - planName
@@ -97,7 +97,7 @@ components:
         subscriptionId:
           type: string
           example: 93d6f742-9204-4e58-9514-d3d53745702f
-        externalSubscriptionid:
+        externalSubscriptionId:
           type: string
           example: my-external-identifier
         customerIdentifier:
