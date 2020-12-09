@@ -11,8 +11,7 @@ info:
       * Adding the support for a 201 created response for Create Entitlement
     * 1.0.5:
       * Updating API spec to be OpenAPI3
-      * Adding the entitlementBenefits functionality to the patch entitlement method
-      * Adding extraInformation to PatchEntitlement
+      * Adding resellerId to PatchEntitlement and TerminateEntitlement
 paths:
   /v1/entitlement:
     post:
@@ -505,6 +504,7 @@ components:
         - merchantEntitlementId
         - bangoUserId
         - productId
+        - resellerId
       properties:
         merchantEntitlementId:
           type: string
@@ -519,20 +519,14 @@ components:
           type: string
           description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
           example: 30_DAYS_MUSIC
-        entitlementBenefits:
+        resellerId:
           type: string
-          description: >-
-            ENUM parameter to instruct the type of benefits
-            action needed as part of the update request only if a change is required. This enum is used to
-            suspend and resume entitlements using the update method.
-          enum:
-            - SUSPENDED
-            - NORMAL
-            - DOWNGRADED
+          description: Unique reseller identifier
+          example: XYZ_RESELLER
+
         extensionData:
           $ref: '#/components/schemas/ExtensionData'
-        extraInformation:
-          $ref: '#/components/schemas/ExtraInformation'
+
     EntitlementResponse:
       type: object
       properties:
@@ -644,7 +638,7 @@ components:
         resellerId:
           type: string
           description: Unique reseller identifier as agreed with the merchant
-          example: RESELLER_XYZ
+          example: XYZ_RESELLER
         productId:
           type: string
           description: 'Entitlement product unique identifier. For example, "BangoMusic".'
@@ -713,6 +707,7 @@ components:
       type: object
       required:
         - immediate
+        - resellerId
       description: To determine if the termination is effective immediatly.
       properties:
         immediate:
@@ -741,6 +736,10 @@ components:
           type: string
           description: Description of the entitlement revoke reason
           example: Personal data stolen
+        resellerId:
+          type: string
+          description: Unique reseller identifier
+          example: XYZ_RESELLER
     EntitlementTerminateResponse:
       type: object
       description: Response for termination request
@@ -932,7 +931,7 @@ components:
         resellerId:
           type: string
           description: Unique reseller identifier as agreed with the merchant
-          example: RESELLER_XYZ
+          example: XYZ_RESELLER
         productId:
           type: string
           description: 'Entitlement product unique identifier. For example, "BangoMusic".'
