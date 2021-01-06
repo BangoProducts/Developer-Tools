@@ -18,6 +18,7 @@ externalDocs:
 
 security:
 - basicAuth: []
+- OAuth2: []
 
 paths:
 
