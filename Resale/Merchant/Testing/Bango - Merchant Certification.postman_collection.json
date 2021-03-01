@@ -1,0 +1,1161 @@
+{
+	"info": {
+		"_postman_id": "7cf08bbc-4d47-4122-a29d-7d99c9341b1e",
+		"name": "Merchant - Self-certification",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Activation",
+			"item": [
+				{
+					"name": "1 - Create Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"responseCode is CLIENT_ACTION_REQUIRED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.responseCode).to.eql(\"CLIENT_ACTION_REQUIRED\");",
+									"});",
+									"",
+									"pm.test(\"Status is PENDING\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"PENDING\");",
+									"});",
+									"",
+									"pm.test(\"MerchantUrl is provided\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.parameters.Url).to.not.eql(null);",
+									"});",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"offerKey\": \"{{Offer}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Query Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status is ACTIVE\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"ACTIVE\");",
+									"})",
+									"    ;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sync Reseller Product Update",
+			"item": [
+				{
+					"name": "1 - Create Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"responseCode is CLIENT_ACTION_REQUIRED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.responseCode).to.eql(\"CLIENT_ACTION_REQUIRED\");",
+									"});",
+									"",
+									"pm.test(\"Status is PENDING\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"PENDING\");",
+									"});",
+									"",
+									"pm.test(\"MerchantUrl is provided\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.parameters.Url).to.not.eql(null);",
+									"});",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"offerKey\": \"{{Offer}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Update Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status is ACTIVE\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"ACTIVE\");",
+									"});",
+									"",
+									"pm.test(\"Product Key has been updated\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.productKey).to.eql(environment.Product2);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"entitlementId\":\"{{entitlementId}}\",\r\n\"productKey\": \"{{Product2}}\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Async Reseller Product Update",
+			"item": [
+				{
+					"name": "1 - Create Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"responseCode is CLIENT_ACTION_REQUIRED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.responseCode).to.eql(\"CLIENT_ACTION_REQUIRED\");",
+									"});",
+									"",
+									"pm.test(\"Status is PENDING\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"PENDING\");",
+									"});",
+									"",
+									"pm.test(\"MerchantUrl is provided\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.parameters.Url).to.not.eql(null);",
+									"});",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"offerKey\": \"{{Offer}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Update Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status is ACTIVE\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"ACTIVE\");",
+									"});",
+									"",
+									"pm.test(\"Product Key hasn't been updated yet\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.productKey).to.not.eql(environment.Product2);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"entitlementId\":\"{{entitlementId}}\",\r\n\"productKey\": \"{{Product2}}\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5 - Query Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status is ACTIVE\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"ACTIVE\");",
+									"});",
+									"",
+									"pm.test(\"Product Key has been updated\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.productKey).to.eql(environment.Product2);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Merchant Product Update",
+			"item": [
+				{
+					"name": "1 - Create Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"responseCode is CLIENT_ACTION_REQUIRED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.responseCode).to.eql(\"CLIENT_ACTION_REQUIRED\");",
+									"});",
+									"",
+									"pm.test(\"Status is PENDING\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"PENDING\");",
+									"});",
+									"",
+									"pm.test(\"MerchantUrl is provided\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.parameters.Url).to.not.eql(null);",
+									"});",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"offerKey\": \"{{Offer}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4 - Query Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status is ACTIVE\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"ACTIVE\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sync Termination - Immediate",
+			"item": [
+				{
+					"name": "1 - Create Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"responseCode is CLIENT_ACTION_REQUIRED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.responseCode).to.eql(\"CLIENT_ACTION_REQUIRED\");",
+									"});",
+									"",
+									"pm.test(\"Status is PENDING\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"PENDING\");",
+									"});",
+									"",
+									"pm.test(\"MerchantUrl is provided\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.parameters.Url).to.not.eql(null);",
+									"});",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"offerKey\": \"{{Offer}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Terminate Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status is REVOKED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"REVOKED\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/Entitlement/revoke/{{entitlementId}}",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"Entitlement",
+								"revoke",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Async Termination (EoBC)",
+			"item": [
+				{
+					"name": "1 - Create Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"responseCode is CLIENT_ACTION_REQUIRED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.responseCode).to.eql(\"CLIENT_ACTION_REQUIRED\");",
+									"});",
+									"",
+									"pm.test(\"Status is PENDING\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"PENDING\");",
+									"});",
+									"",
+									"pm.test(\"MerchantUrl is provided\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.parameters.Url).to.not.eql(null);",
+									"});",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"offerKey\": \"{{Offer}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Terminate Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Status is ACTIVE\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"ACTIVE\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/Entitlement/cancel/{{entitlementId}}",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"Entitlement",
+								"cancel",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6 - Query Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status is REVOKED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"REVOKED\");",
+									"})",
+									"    ;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Async Termination (Immediate)",
+			"item": [
+				{
+					"name": "1 - Create Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"responseCode is CLIENT_ACTION_REQUIRED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.responseCode).to.eql(\"CLIENT_ACTION_REQUIRED\");",
+									"});",
+									"",
+									"pm.test(\"Status is PENDING\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"PENDING\");",
+									"});",
+									"",
+									"pm.test(\"MerchantUrl is provided\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.parameters.Url).to.not.eql(null);",
+									"});",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"offerKey\": \"{{Offer}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Terminate Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Status is ACTIVE\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"ACTIVE\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/Entitlement/revoke/{{entitlementId}}",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"Entitlement",
+								"revoke",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5 - Query Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status is REVOKED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"REVOKED\");",
+									"})",
+									"    ;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Merchant Termination",
+			"item": [
+				{
+					"name": "1 - Create Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"responseCode is CLIENT_ACTION_REQUIRED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.responseCode).to.eql(\"CLIENT_ACTION_REQUIRED\");",
+									"});",
+									"",
+									"pm.test(\"Status is PENDING\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"PENDING\");",
+									"});",
+									"",
+									"pm.test(\"MerchantUrl is provided\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.parameters.Url).to.not.eql(null);",
+									"});",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"offerKey\": \"{{Offer}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4 - Query Entitlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status is REVOKED\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"REVOKED\");",
+									"})",
+									"    ;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{BasicAuth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
+							"host": [
+								"{{ResaleAPIEndpoint}}"
+							],
+							"path": [
+								"entitlement",
+								"{{entitlementId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
