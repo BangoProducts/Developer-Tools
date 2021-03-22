@@ -30,9 +30,12 @@ paths:
             summary: Notification
             description: |-
                 Used to notify partners of changes to their subscriptions. You must provide Bango with a notificationUrl as part of your onboarding
-
+            
             operationId: notify-subscription
-              
+            parameters:
+             -   $ref: '#/components/parameters/ApiVersionHeader'
+                
+
             requestBody:
                 $ref: '#/components/requestBodies/NotificationBody'
             
@@ -47,6 +50,16 @@ paths:
             
 
 components:
+  parameters:
+    ApiVersionHeader:
+            name: Accept
+            in: header
+            description: The Accept header is used to identify which version of our API you are using
+            required: false
+            schema:
+                type: string
+            example: "1.0"
+  
   requestBodies: 
     NotificationBody:
       description: Notification body
@@ -101,6 +114,9 @@ components:
         merchantAccountKey:
           type: string
           example: BANGO
+        partnerAccountKey:
+          type: string
+          example: ABC_PARTNER
         productName:
           type: string
           example: bango-music
