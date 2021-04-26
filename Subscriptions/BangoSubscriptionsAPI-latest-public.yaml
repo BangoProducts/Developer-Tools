@@ -179,8 +179,6 @@ paths:
                     $ref: '#/components/responses/ErrorBadRequest'
                 401:
                     $ref: '#/components/responses/ErrorUnauthorized'
-                409:
-                    $ref: '#/components/responses/ErrorConflict'
                 429:
                     $ref: '#/components/responses/ErrorTooManyRequests'
                 500:
