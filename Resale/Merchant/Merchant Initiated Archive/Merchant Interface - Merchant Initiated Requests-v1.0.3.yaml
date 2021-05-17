@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.0.4
+  version: "1.0.3"
   title: Resale Merchant - Server API
   description: |
     Changelog
@@ -8,11 +8,6 @@ info:
     * 1.0.3: 
       * Updating API spec to be OpenAPI3
       * Adding the entitlementBenefits functionality to the patch entitlement method
-    * 1.0.4:
-      * Adding financeData support to patch and activate entitlement methods and all responses
-security:
-  - basic: []
-
 paths:
   '/v1/echo/{echoRequestId}':
     post:
@@ -123,7 +118,6 @@ paths:
           schema:
             type: string
             format: uuid
-        -   $ref: '#/components/parameters/InvoiceMode'
       tags:
         - Entitlement
       responses:
@@ -324,29 +318,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EntitlementUpdate'
-            examples:    
-              ProductUpdate:
-                value:
-                  productKey: BangoMusic2
-              Suspend:
-                value:
-                  entitlementBenefits: SUSPENDED
-              Resume:
-                value:
-                  entitlementBenefits: NORMAL
-              InvoiceInformation:
-                value:
-                  invoiceInformation: [
-                    {
-                      "eventName": "ABC_EVENT",
-                      "eventTimestamp": "yyyy-MM-ddThh:mm:ssZ",
-                      "productId": "60_DAYS_MUSIC"
-                    }
-                  ]
-                  
         description: The entitlement activation JSON.
         required: true
-          
   '/v1/merchant/entitlement/activate/{merchantEntitlementId}':
     post:
       summary: Activate an entitlement
@@ -589,21 +562,9 @@ paths:
         required: true
 components:
   securitySchemes:
-    basic:
+    BasicAuth:
       type: http
-      description: Basic authentication
       scheme: basic
-  parameters:
-        InvoiceMode:
-            name: invoice
-            in: header
-            schema:
-                type: string
-                default: NONE
-                enum:
-                    - FULL
-                    - NONE
-  
   schemas:
     ResponseObject:
       type: object
@@ -720,8 +681,6 @@ components:
           example: '2019-10-14T15:34:49Z'
         merchantExtensionData:
           type: object
-        financeData:
-          $ref: '#/components/schemas/FinanceDataInput'
     EntitlementUpdate:
       type: object
       required:
@@ -742,8 +701,6 @@ components:
             - DOWNGRADED
         merchantExtensionData:
           type: object
-        financeData:
-          $ref: '#/components/schemas/FinanceDataInput'
     EntitlementTerminate:
       type: object
       required:
@@ -781,8 +738,6 @@ components:
           example: Personal data stolen
         merchantExtensionData:
           type: object
-        financeData:
-          $ref: '#/components/schemas/FinanceDataInput'
     EntitlementGetResponse:
       type: object
       properties:
@@ -858,17 +813,8 @@ components:
           format: date-time
           description: >-
             Date and time when the entitlement was suspended, in UTC ISO 8601.
-            Null if the entitlement hasn't ever been resumed before. Format (yyyy-MM-ddThh:mm:ssZ)
+            Null if status is not Suspended. format (yyyy-MM-ddThh:mm:ssZ)
           example: null
-        dateAutoSuspend:
-          type: string
-          format: date-time
-          description: >-
-            Date and time when the entitlement will be automatically suspended at the request of the reseller, in UTC ISO 8601.
-            Null if date is not set. format (yyyy-MM-ddThh:mm:ssZ)
-          example: null
-        financeData:
-          $ref: '#/components/schemas/FinanceDataOutput'
     EntitlementResponse:
       type: object
       properties:
@@ -944,17 +890,8 @@ components:
           format: date-time
           description: >-
             Date and time when the entitlement was suspended, in UTC ISO 8601.
-            Null if the entitlement hasn't ever been resumed before. Format (yyyy-MM-ddThh:mm:ssZ)
+            Null if status is not Suspended. format (yyyy-MM-ddThh:mm:ssZ)
           example: null
-        dateAutoSuspend:
-          type: string
-          format: date-time
-          description: >-
-            Date and time when the entitlement will be automatically suspended at the request of the reseller, in UTC ISO 8601.
-            Null if date is not set. format (yyyy-MM-ddThh:mm:ssZ)
-          example: null
-        financeData:
-          $ref: '#/components/schemas/FinanceDataOutput'
     EntitlementActivateResponse:
       type: object
       properties:
@@ -1030,10 +967,8 @@ components:
           format: date-time
           description: >-
             Date and time when the entitlement was suspended, in UTC ISO 8601.
-            Null if the entitlement hasn't ever been resumed before. Format (yyyy-MM-ddThh:mm:ssZ)
+            Null if status is not Suspended. format (yyyy-MM-ddThh:mm:ssZ)
           example: null
-        financeData:
-          $ref: '#/components/schemas/FinanceDataOutput'
     EntitlementTerminateResponse:
       type: object
       properties:
@@ -1108,126 +1043,9 @@ components:
           format: date-time
           description: >-
             Date and time when the entitlement was suspended, in UTC ISO 8601.
-            Null if the entitlement hasn't ever been resumed before. Format (yyyy-MM-ddThh:mm:ssZ)
+            Null if status is not Suspended. format (yyyy-MM-ddThh:mm:ssZ)
           example: null
-        dateAutoSuspend:
-          type: string
-          format: date-time
-          description: >-
-            Date and time when the entitlement will be automatically suspended at the request of the reseller, in UTC ISO 8601.
-            Null if date is not set. Format (yyyy-MM-ddThh:mm:ssZ)
-          example: null  
-        financeData:
-          $ref: '#/components/schemas/FinanceDataOutput'
-    
-        
-          
-    FinanceDataInput:
-      type: object
-      required:  
-        - type
-        - timestamp
-      properties:
-        type:
-          type: string
-          description: >- 
-            the type of finance event
-          enum:
-            - order
-            - return
-            - adjustment
-            - renew
-        timestamp:
-          type: string
-          format: date-time
-          description: >- 
-            UTC ISO 8601
-        retailCurrency:
-          type: string
-          description: >- 
-            ISO 3
-        retailPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        retailPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the retailPrice
-        offerPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        offerPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the offerPrice
-        notes:
-          type: string
-          description: >- 
-            255 length limit
-          
-    FinanceDataOutput:
-      type: object
-      required:  
-        - source
-        - type
-        - timestamp
-      properties:
-        source:
-          type: string
-          description: >- 
-            the party who added the finance event
-          enum:
-            - Merchant
-            - Reseller
-        type:
-          type: string
-          description: >- 
-            the type of finance event
-          enum:
-            - order
-            - return
-            - adjustment
-            - renew
-        timestamp:
-          type: string
-          format: date-time
-          description: >- 
-            UTC ISO 8601
-        retailCurrency:
-          type: string
-          description: >- 
-            ISO 3
-        retailPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        retailPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the retailPrice
-        offerPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        offerPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the offerPrice
-        notes:
-          type: string
-          description: >- 
-            255 length limit
 servers:
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/BangoProducts/MerchantInterface_Server_API/1.0.4
+    url: https://virtserver.swaggerhub.com/BangoProducts/MerchantInterface_Server_API/1.0.3
