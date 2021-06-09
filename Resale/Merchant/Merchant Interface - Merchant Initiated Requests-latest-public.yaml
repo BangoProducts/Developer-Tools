@@ -45,7 +45,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EchoResponse'
-              example:
+              examples:
                 OK:
                   value:
                     responseCode: OK
@@ -57,7 +57,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
-              example:
+              examples:
                 InvalidAPIRequest:
                   value:
                     responseCode: BAD_REQUEST
@@ -68,7 +68,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
-              example:
+              examples:
                 Unauthorized:
                   value:
                     responseCode: UNAUTHORIZED
@@ -79,7 +79,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
-              example:
+              examples:
                 TooManyRequests:
                   value:
                     responseCode: TOO_MANY_REQUESTS
@@ -90,7 +90,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
-              example:
+              examples:
                 InternalError:
                   value:
                     responseCode: INTERNAL_ERROR
@@ -101,7 +101,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
-              example:
+              examples:
                 ServiceUnavailable:
                   value:
                     responseCode: SERVICE_UNAVAILABLE
