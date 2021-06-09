@@ -9,7 +9,11 @@ info:
       * Updating API spec to be OpenAPI3
       * Adding the entitlementBenefits functionality to the patch entitlement method
     * 1.0.4:
-      * Adding financeData support to patch and activate entitlement methods and all responses
+      * Adding `financeData` to:
+        * `POST /v1/entitlement/activate/{merchantEntitlementId}`
+        * `PATCH /v1/entitlement/{merchantEntitlementId}` 
+        * `POST /v1/entitlement/terminate/{merchantEntitlementId}`
+        * All response objects 
 security:
   - basic: []
 
@@ -123,7 +127,6 @@ paths:
           schema:
             type: string
             format: uuid
-        -   $ref: '#/components/parameters/InvoiceMode'
       tags:
         - Entitlement
       responses:
@@ -139,7 +142,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
-              example:
+              examples:
                 InvalidAPIRequest:
                   value:
                     responseCode: BAD_REQUEST
@@ -150,7 +153,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
-              example:
+              examples:
                 Unauthorized:
                   value:
                     responseCode: UNAUTHORIZED
@@ -161,7 +164,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
-              example:
+              examples:
                 NotFound:
                   value:
                     responseCode: NOT_FOUND
@@ -172,7 +175,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
-              example:
+              examples:
                 TooManyRequests:
                   value:
                     responseCode: TOO_MANY_REQUESTS
@@ -183,7 +186,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
-              example:
+              examples:
                 InternalError:
                   value:
                     responseCode: INTERNAL_ERROR
@@ -194,7 +197,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
-              example:
+              examples:
                 ServiceUnavailable:
                   value:
                     responseCode: SERVICE_UNAVAILABLE
@@ -593,16 +596,7 @@ components:
       type: http
       description: Basic authentication
       scheme: basic
-  parameters:
-        InvoiceMode:
-            name: invoice
-            in: header
-            schema:
-                type: string
-                default: NONE
-                enum:
-                    - FULL
-                    - NONE
+ 
   
   schemas:
     ResponseObject:
