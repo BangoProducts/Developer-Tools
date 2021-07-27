@@ -547,10 +547,10 @@ components:
         bangoUserId:
           type: string
           description: User unique identifier.
-        productKey:
+        productId:
           type: string
           description: >-
-            Entitlement  product unique identifier. For example,
+            Entitlement product unique identifier. For example,
             "30_DAYS_MUSIC".
         entitlementDisplayName:
           type: string
