@@ -330,7 +330,7 @@ paths:
             examples:    
               ProductUpdate:
                 value:
-                  productKey: BangoMusic2
+                  productId: BangoMusic2
               Suspend:
                 value:
                   entitlementBenefits: SUSPENDED
