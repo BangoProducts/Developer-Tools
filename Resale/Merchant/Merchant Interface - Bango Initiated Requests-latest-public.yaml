@@ -4,21 +4,21 @@ info:
   title: Resale Merchant - Client API
   description: |
     Changelog
-    * 1.0.3: Initial release
-    * 1.0.4:
-      * Adding extensionData to PatchEntitlement
-      * Adding offerId and customerIdentifier to CheckEligibility
-      * Adding the support for a 201 created response for Create Entitlement
-    * 1.0.5:
-      * Updating API spec to be OpenAPI3
-      * Adding resellerId to PatchEntitlement and TerminateEntitlement
-    * 1.0.6:
-      * Adding customerId to the CreateEntitlement and PatchEntitlement
     * 1.0.7:
       * Adding entitlementBenefits to PatchEntitlement
       * Adding extraInformation to PatchEntitlement
       * Deprecating `POST /v1/entitlement/suspend/{merchantEntitlementId}
       * Deprecating `POST /v1/entitlement/resume/{merchantEntitlementId}
+    * 1.0.6:
+      * Adding customerId to the CreateEntitlement and PatchEntitlement
+    * 1.0.5:
+      * Updating API spec to be OpenAPI3
+      * Adding resellerId to PatchEntitlement and TerminateEntitlement
+    * 1.0.4:
+      * Adding extensionData to PatchEntitlement
+      * Adding offerId and customerIdentifier to CheckEligibility
+      * Adding the support for a 201 created response for Create Entitlement
+    * 1.0.3: Initial release
 paths:
   /v1/entitlement:
     post:
@@ -180,172 +180,7 @@ paths:
               $ref: '#/components/schemas/EntitlementUpdate'
         description: The entitlement JSON you want to update
         required: true
-  '/v1/entitlement/suspend/{merchantEntitlementId}':
-    post:
-      summary: Suspend Entitlement
-      description: >
-        Request sent to Merchant to Suspend an Entitlement. The requests will be
-        sent only for Entitlements already in ACTIVE status. Expected responses
-        as defined below.
-      parameters:
-        - name: X-RequestIdentifier
-          in: header
-          description: Request unique identifier. This id should be used for idempotency.
-          schema:
-            type: string
-        - name: merchantEntitlementId
-          in: path
-          description: Unique identifier used on activation.
-          required: true
-          schema:
-            type: string
-            format: uuid
-      tags:
-        - Entitlement
-      responses:
-        '200':
-          description: Entitlement suspended successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseObject'
-        '201':
-          description: Request created and queued.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RequestCreated'
-        '202':
-          description: Request accepted.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RequestAccepted'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequest'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unauthorized'
-        '404':
-          description: Entitlement not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFound'
-        '409':
-          description: Operation invalid for the current state of the entitlement.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvalidState'
-        '429':
-          description: Too many requests
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TooManyRequests'
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InteralServerError'
-        '503':
-          description: Service unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceUnavailable'
-  '/v1/entitlement/resume/{merchantEntitlementId}':
-    post:
-      summary: Resume Entitlement
-      description: >
-        Request that is sent to merchant to resume a suspended entitlement. The
-        request would be sent only for those Entitlements already in the
-        SUSPENDED status. Expected responses as defined below.
-      parameters:
-        - name: X-RequestIdentifier
-          in: header
-          description: Request unique identifier. This id should be used for idempotency.
-          schema:
-            type: string
-        - name: merchantEntitlementId
-          in: path
-          description: Unique identifier used on activation.
-          required: true
-          schema:
-            type: string
-            format: uuid
-      tags:
-        - Entitlement
-      responses:
-        '200':
-          description: Entitlement resumed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseObject'
-        '201':
-          description: Request created and queued.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RequestCreated'
-        '202':
-          description: Request accepted.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RequestAccepted'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequest'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unauthorized'
-        '404':
-          description: Entitlement not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFound'
-        '409':
-          description: Operation invalid for the current state of the entitlement.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvalidState'
-        '429':
-          description: Too many requests
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TooManyRequests'
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InteralServerError'
-        '503':
-          description: Service unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceUnavailable'
+
   '/v1/entitlement/terminate/{merchantEntitlementId}':
     post:
       summary: Terminate Entitlement
