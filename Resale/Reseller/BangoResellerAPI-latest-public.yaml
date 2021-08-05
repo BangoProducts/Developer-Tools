@@ -3,6 +3,7 @@ info:
   title: Bango Reseller API
   description: >
     Changelog
+    
     * 1.0.21: 
       * Adding financeData support to create and patch entitlement methods and all responses
       * Adding renewalInformation support into extraInformation
