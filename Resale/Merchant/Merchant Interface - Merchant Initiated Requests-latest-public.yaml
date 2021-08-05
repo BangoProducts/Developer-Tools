@@ -14,6 +14,7 @@ info:
         * `PATCH /v1/entitlement/{merchantEntitlementId}` 
         * `POST /v1/entitlement/terminate/{merchantEntitlementId}`
         * All response objects 
+        * Adding `ACTIVE_ENDING` as a new `status`
 security:
   - basic: []
 
@@ -805,6 +806,7 @@ components:
               - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
               - "SUSPENDED": The entitlement has been suspended.
               - "FAILED": The entitlement failed
+              - "ACTIVE_ENDING": The entitlement is ending at the end of the current period.
         dateCreated:
           type: string
           format: date-time
@@ -891,6 +893,7 @@ components:
               - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
               - "SUSPENDED": The entitlement has been suspended.
               - "FAILED": The entitlement failed
+              - "ACTIVE_ENDING": The entitlement is ending at the end of the current period.
         dateCreated:
           type: string
           format: date-time
@@ -977,6 +980,7 @@ components:
               - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
               - "SUSPENDED": The entitlement has been suspended.
               - "FAILED": The entitlement failed
+              - "ACTIVE_ENDING": The entitlement is ending at the end of the current period.
         dateCreated:
           type: string
           format: date-time
@@ -1056,6 +1060,7 @@ components:
               - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
               - "SUSPENDED": The entitlement has been suspended.
               - "FAILED": The entitlement failed
+              - "ACTIVE_ENDING": The entitlement is ending at the end of the current period.
         dateCreated:
           type: string
           format: date-time
