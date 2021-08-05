@@ -3,42 +3,38 @@ info:
   title: Bango Reseller API
   description: >
     Changelog
-    * 1.0.21: 
-      * Adding financeData support to create and patch entitlement methods and all responses
-      * Adding renewalInformation support into extraInformation
-      * Adding `ACTIVE-ENDING` as a new `status`
-    * 1.0.20: 
-      * Adding dateAutoSuspend functionality to create and patch entitlement methods
-      * Adding dateAutoSuspend parameter to response objects when parameter has a value set
-    * 1.0.19:
-      * Adding the entitlementBenefits functionality to the patch entitlement method
-    * 1.0.18:
-      * Adding ExternalEntitlementId to the create and patch request
-      * Adding ExternalEntitlementId to the responses
-      * Adding the new GET call in v1/entitlement to retrieve Entitlement information using ExternalEntitlementId
-    * 1.0.17:
-      * Updating API spec to be OpenAPI3
+
+    * 1.0.6: Initial release
+
+    * 1.0.11: Added EntitlementReport
+
+    * 1.0.12: Added SuspendEntitlement and ResumeEntitlement methods
+
+    * 1.0.13: Added ResumedDate into the EntitlementObject. Date is set when
+    using the ResumeEntitlement method
+
+    * 1.0.14: Added a new optional object called extraInformation which contains
+    an object called clientDevice
+
+    * 1.0.15
+      * Removing support for ACTIVATION_ status'
+      * Extended extraInformation to include communicationInformation and source objects
     * 1.0.16:
       * Added CheckEligibility method
       * Adding the support for a 201 created response for Create Entitlement
       * Adding serviceFlow parameter to extraInformation source object
-    * 1.0.15
-      * Removing support for ACTIVATION_ status'
-      * Extended extraInformation to include communicationInformation and source objects
-    * 1.0.14: Added a new optional object called extraInformation which contains
-    an object called clientDevice
-    * 1.0.13: Added ResumedDate into the EntitlementObject. Date is set when
-    using the ResumeEntitlement method
-    * 1.0.12: Added SuspendEntitlement and ResumeEntitlement methods
-    * 1.0.11: Added EntitlementReport
-    * 1.0.6: Initial release
-
-  version: 1.0.21
-
-externalDocs:
-    description: Bango developer documentation
-    url: https://developer.bango.com
-
+    * 1.0.17:
+      * Updating API spec to be OpenAPI3
+    * 1.0.18:
+      * Adding ExternalEntitlementId to the create and patch request
+      * Adding ExternalEntitlementId to the responses
+      * Adding the new GET call in v1/entitlement to retrieve Entitlement information using ExternalEntitlementId
+    * 1.0.19:
+      * Adding the entitlementBenefits functionality to the patch entitlement method
+    * 1.0.20: 
+      * Adding dateAutoSuspend functionality to create and patch entitlement methods
+      * Adding dateAutoSuspend parameter to response objects when parameter has a value set
+  version: 1.0.20
 security:
   - basic: []
 paths:
@@ -466,9 +462,6 @@ paths:
                       region: East Anglia
                       brand: BrandABC
                       serviceFlow: Activation
-                    renewalInformation:
-                      startDate: "2021-06-22T17:35:38.929Z"
-                      frequency: MONTHLY
         description: The entitlement JSON you want to create
         required: true
     patch:
@@ -1648,7 +1641,7 @@ paths:
                     dateResumed: null
                     responseCode: OK
                     responseMessage: Success
-                    status: ACTIVE-ENDING
+                    status: CANCELLED
                     externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
                       additionalProp1: string
@@ -2199,15 +2192,13 @@ paths:
 servers:
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/BangoProducts/Reseller-API/1.0.21
+    url: https://virtserver.swaggerhub.com/BangoProducts/Reseller-API/1.0.20
 components:
   securitySchemes:
     basic:
       type: http
       description: Basic authentication
       scheme: basic
- 
-        
   schemas:
     EntitlementCreate:
       type: object
@@ -2282,8 +2273,6 @@ components:
             additionalCustomData3: additionalCustomDataValue3
         extraInformation:
           $ref: '#/components/schemas/ExtraEntitlementInfo'
-        financeData:
-          $ref: '#/components/schemas/FinanceDataInput'
     EntitlementUpdate:
       type: object
       required:
@@ -2365,8 +2354,6 @@ components:
             additionalCustomData3: additionalCustomDataValue3
         extraInformation:
           $ref: '#/components/schemas/ExtraEntitlementInfo'
-        financeData:
-          $ref: '#/components/schemas/FinanceDataInput'
     EntitlementReport:
       type: object
       description: List of filters applied to retrieve a list of existing entitlements
@@ -2457,19 +2444,6 @@ components:
           type: string
     EntitlementResponse:
       type: object
-      required:
-      - entitlementId
-      - customerIdentifier
-      - productKey
-      - offerKey
-      - merchantAccountKey
-      - dateCreated
-      - dateActivated
-      - dateEnded
-      - dateExpiry
-      - responseCode
-      - responseMessage
-      - status
       properties:
         entitlementId:
           type: string
@@ -2562,14 +2536,6 @@ components:
         status:
           type: string
           example: ACTIVE
-          enum:
-                  - ACTIVE
-                  - CANCELLED
-                  - REVOKED
-                  - SUSPENDED
-                  - PENDING
-                  - FAILED
-                  - ACTIVE-ENDING
           description: |-
             Entitlement status. Possible values are:
               - "ACTIVE": The entitlement has been successfully activated
@@ -2578,7 +2544,6 @@ components:
               - "SUSPENDED": The entitlement has been suspended.
               - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
               - "FAILED": The entitlement failed
-              - "ACTIVE-ENDING": The entitlement is ending at the end of the current period.
         externalEntitlementId:
           type: string
           description: |-
@@ -2594,8 +2559,6 @@ components:
           type: object
         extraInformation:
           $ref: '#/components/schemas/ExtraEntitlementInfo'
-        financeData:
-          $ref: '#/components/schemas/FinanceDataOutput'
     ResponseObject:
       type: object
       properties:
@@ -2701,13 +2664,6 @@ components:
               status:
                 type: string
                 example: ACTIVE
-                enum:
-                  - ACTIVE
-                  - CANCELLED
-                  - REVOKED
-                  - SUSPENDED
-                  - PENDING
-                  - FAILED
                 description: |-
                   Entitlement status. Possible values are:
                     - "ACTIVE": The entitlement has been successfully activated
@@ -2731,8 +2687,6 @@ components:
                     data needs
               extraInformation:
                 $ref: '#/components/schemas/ExtraEntitlementInfo'
-              financeData:
-                $ref: '#/components/schemas/FinanceDataOutput'
     CheckEligibilityResponse:
       type: object
       properties:
@@ -2807,131 +2761,6 @@ components:
         region: East Anglia
         brand: BrandABC
         serviceFlow: Creation
-    FinanceDataInput:
-      type: object
-      required:  
-        - type
-        - timestamp
-      properties:
-        type:
-          type: string
-          description: >- 
-            the type of finance event
-          enum:
-            - order
-            - return
-            - adjustment
-            - renew
-        timestamp:
-          type: string
-          format: date-time
-          description: >- 
-            UTC ISO 8601
-        retailCurrency:
-          type: string
-          description: >- 
-            ISO 3
-        retailPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        retailPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the retailPrice
-        offerPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        offerPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the offerPrice
-        notes:
-          type: string
-          description: >- 
-            255 length limit
-          
-    FinanceDataOutput:
-      type: object
-      required:  
-        - source
-        - type
-        - timestamp
-      properties:
-        source:
-          type: string
-          description: >- 
-            the party who added the finance event
-          enum:
-            - Merchant
-            - Reseller
-        type:
-          type: string
-          description: >- 
-            the type of finance event
-          enum:
-            - order
-            - return
-            - adjustment
-            - renew
-        timestamp:
-          type: string
-          format: date-time
-          description: >- 
-            UTC ISO 8601
-        retailCurrency:
-          type: string
-          description: >- 
-            ISO 3
-        retailPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        retailPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the retailPrice
-        offerPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        offerPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the offerPrice
-        notes:
-          type: string
-          description: >- 
-            255 length limit
-           
-    RenewalInformation:
-      type: object
-      properties:
-        startDate:
-          type: string
-          format: date-time
-          description: >- 
-            UTC ISO 8601
-        frequency:
-          type: string
-          enum:
-            - DAILY
-            - WEEKLY
-            - MONTHLY
-            - YEARLY
-          description: >- 
-            how frequently a renewal should be processed for the entitlement
-
-        
     ExtraEntitlementInfo:
       type: object
       properties:
@@ -2941,5 +2770,3 @@ components:
           $ref: '#/components/schemas/CommunicationInformation'
         source:
           $ref: '#/components/schemas/Source'
-        renewalInformation:
-          $ref: '#/components/schemas/RenewalInformation'

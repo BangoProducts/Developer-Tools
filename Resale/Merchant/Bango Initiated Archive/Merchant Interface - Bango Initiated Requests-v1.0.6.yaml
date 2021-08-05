@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.0.7
+  version: 1.0.6
   title: Resale Merchant - Client API
   description: |
     Changelog
@@ -14,11 +14,6 @@ info:
       * Adding resellerId to PatchEntitlement and TerminateEntitlement
     * 1.0.6:
       * Adding customerId to the CreateEntitlement and PatchEntitlement
-    * 1.0.7:
-      * Adding entitlementBenefits to PatchEntitlement
-      * Adding extraInformation to PatchEntitlement
-      * Deprecating `POST /v1/entitlement/suspend/{merchantEntitlementId}
-      * Deprecating `POST /v1/entitlement/resume/{merchantEntitlementId}
 paths:
   /v1/entitlement:
     post:
@@ -488,7 +483,7 @@ paths:
         required: true
 servers:
   - url: >-
-      https://virtserver.swaggerhub.com/BangoProducts/MerchantInterface_Client_API/1.0.7
+      https://virtserver.swaggerhub.com/BangoProducts/MerchantInterface_Client_API/1.0.6
 components:
   securitySchemes:
     BasicAuth:
@@ -530,23 +525,105 @@ components:
           type: string
           description: Unique reseller identifier
           example: XYZ_RESELLER
-        entitlementBenefits:
-          type: string
-          description: >-
-            ENUM parameter to instruct the type of benefits
-            action needed as part of the update request only if a change is required. This enum is used to
-            suspend and resume entitlements using the update method.
-          enum:
-            - SUSPENDED
-            - NORMAL
-            - DOWNGRADED
+        
         customerId:
             type: string
             description: Unique identifier representing a specific customer of the reseller not anonymised. This value will only be sent by Bango if the Merchant and Reseller both approve the sharing of this data
         extensionData:
           $ref: '#/components/schemas/ExtensionData'
-        extraInformation:
-          $ref: '#/components/schemas/ExtraInformation'
+        
+    EntitlementResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        parameters:
+          type: object
+          additionalProperties:
+            type: string
+        entitlementId:
+          type: string
+          description: Unique identifier representing a specific entitlement.
+        activationCode:
+          type: string
+          description: Code or token use for the entitlement activation.
+        bangoUserId:
+          type: string
+          description: User unique identifier.
+        productId:
+          type: string
+          description: >-
+            Entitlement  product unique identifier. For example,
+            "30_DAYS_MUSIC".
+        entitlementDisplayName:
+          type: string
+          description: 'Entitlement display name. For example, "30 days Bango music".'
+        offerKey:
+          type: string
+          description: 'Entitlement offer. For example, "BUNDLE".'
+        merchantAccountKey:
+          type: string
+          description: 'Merchant unique identifier. For example, "BANGO".'
+        status:
+          type: string
+          description: |-
+            Entitlement status. Possible values are:
+              - "ACTIVE": The entitlement has been successfully activated
+              - "CANCELLED": The entitlement has been cancelled.
+              - "REVOKED": The entitlement has been revoked. This usually happens on fraud and user contract termination cases.
+              - "SUSPENDED": The entitlement has been suspended.
+              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
+              - "EXPIRED": The time window for the user to finalize the activation process has expired.
+              - "FAILED": The entitlement failed
+        dateCreated:
+          type: string
+          format: date
+          description: >-
+            Date and time when the entitlement was created, in UTC ISO 8601
+            format (yyyy-MM-ddThh:mm:ssZ)
+        dateActivated:
+          type: string
+          format: date
+          description: >-
+            Date and time when the entitlement was activated, in UTC ISO 8601
+            format (yyyy-MM-ddThh:mm:ssZ)
+        dateExpiry:
+          type: string
+          format: date
+          description: >-
+            Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+            (yyyy-MM-ddThh:mm:ssZ)
+        dateEnded:
+          type: string
+          format: date
+          description: >-
+            Date and time when the entitlement ended due to cancellation or
+            revoke, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+        dateLastUpdated:
+          type: string
+          format: date
+          description: >-
+            Date and time when the entitlement was last modified, in UTC ISO
+            8601 format (yyyy-MM-ddThh:mm:ssZ)
+        dateSuspended:
+          type: string
+          format: date
+          description: >-
+            Date and time when the entitlement was suspended, in UTC ISO 8601.
+            Null if status is not Suspended. format (yyyy-MM-ddThh:mm:ssZ)
+        notificationUrl:
+          type: string
+          format: url
+          description: >-
+            URL where a POST notification will be sent after successful
+            subscription creation. The body of the POST request will contain the
+            entitlement information in EntitlementGetResponse format.
+          example: >-
+            https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
     EntitlementCreate:
       type: object
       required:

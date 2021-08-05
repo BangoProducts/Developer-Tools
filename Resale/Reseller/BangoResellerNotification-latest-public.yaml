@@ -1,17 +1,21 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
+  version: 1.0.1
   title: Bango Reseller API Notification
   description: >
     Changelog
-
+    
+    * 1.0.1:
+      * Add `notificationReason` enum called `METADATA_UPDATE` to `POST /`
+      * Add `status` of `ACTIVE-ENDING`
     * 1.0.0: Initial release
+    
 
 
 servers:
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/BangoProducts/Bango-Resale-API-Notification/1.0.0
+    url: https://virtserver.swaggerhub.com/BangoProducts/Bango-Resale-API-Notification/1.0.1
 
 
 
@@ -58,9 +62,9 @@ components:
             type: object
             properties:
                 responseCode:
-                    description: Always 'OK'
+                    description: Always '0'
                     type: string
-                    enum: ['OK']
+                    enum: ['0']
                 responseMessage:
                     type: string
                     example: Success
@@ -78,7 +82,6 @@ components:
         - productKey
         - merchantAccountKey
         - status
-        - externalEntitlementId
         
       properties:
         parameters:
@@ -112,12 +115,13 @@ components:
           example: ACTIVE
           description: |-
             Entitlement status. Possible values are:
-              - "ACTIVE": The entitlement has been successfully activated
-              - "CANCELLED": The entitlement has been cancelled.
-              - "REVOKED": The entitlement has been revoked. This usually happens on fraud and user contract termination cases.
-              - "SUSPENDED": The entitlement has been suspended.
-              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
-              - "FAILED": The entitlement failed
+              - "Active": The entitlement has been successfully activated
+              - "Cancelled": The entitlement has been cancelled.
+              - "Revoked": The entitlement has been revoked. This usually happens on fraud and user contract termination cases.
+              - "Suspended": The entitlement has been suspended.
+              - "Pending": The entitlement has been initiated, but the user has not yet finalized the activation process.
+              - "Failed": The entitlement failed
+              - "Active-Ending": The entitlement is ending at the end of the current period.
         activationCode:
           type: string
           description: Code or token use for the entitlement activation.
@@ -198,6 +202,9 @@ components:
         
         extraInformation:
           $ref: '#/components/schemas/ExtraEntitlementInfo'    
+        financeData:
+          $ref: '#/components/schemas/FinanceDataOutput'   
+    
     ClientDevice:
       type: object
       additionalProperties:
@@ -279,5 +286,61 @@ components:
               - "PRODUCT_UPDATE": The productKey on the entitlement has been successfully updated
               - "SUSPENSION_SUCCESS": The entitlement has been successfully suspended
               - "RESUMPTION_SUCCESS": The entitlement has been successfully resumed
-
+              - "METADATA_UPDATE": Metadata on the entitlment has been successfully updated
+    FinanceDataOutput:
+      type: object
+      required:  
+        - source
+        - type
+        - timestamp
+      properties:
+        source:
+          type: string
+          description: >- 
+            the party who added the finance event
+          enum:
+            - Merchant
+            - Reseller
+        type:
+          type: string
+          description: >- 
+            the type of finance event
+          enum:
+            - order
+            - return
+            - adjustment
+            - renew
+        timestamp:
+          type: string
+          format: date-time
+          description: >- 
+            UTC ISO 8601
+        retailCurrency:
+          type: string
+          description: >- 
+            ISO 3
+        retailPrice:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, including tax
+        retailPriceTax:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, tax included in the retailPrice
+        offerPrice:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, including tax
+        offerPriceTax:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, tax included in the offerPrice
+        notes:
+          type: string
+          description: >- 
+            255 length limit
   securitySchemes: {}
