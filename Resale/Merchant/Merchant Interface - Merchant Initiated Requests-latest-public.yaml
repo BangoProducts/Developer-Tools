@@ -14,7 +14,7 @@ info:
         * `PATCH /v1/entitlement/{merchantEntitlementId}` 
         * `POST /v1/entitlement/terminate/{merchantEntitlementId}`
         * All response objects 
-        * Adding `ACTIVE_ENDING` as a new `status`
+      * Adding `ACTIVE_ENDING` as a new `status`
 security:
   - basic: []
 
