@@ -337,15 +337,6 @@ paths:
               Resume:
                 value:
                   entitlementBenefits: NORMAL
-              InvoiceInformation:
-                value:
-                  invoiceInformation: [
-                    {
-                      "eventName": "ABC_EVENT",
-                      "eventTimestamp": "yyyy-MM-ddThh:mm:ssZ",
-                      "productId": "60_DAYS_MUSIC"
-                    }
-                  ]
                   
         description: The entitlement activation JSON.
         required: true
