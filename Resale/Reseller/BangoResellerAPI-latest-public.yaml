@@ -3,10 +3,8 @@ info:
   title: Bango Reseller API
   description: >
     Changelog
-    
     * 1.0.21: 
       * Adding financeData support to create and patch entitlement methods and all responses
-      * Adding renewalInformation support into extraInformation
       * Adding `ACTIVE-ENDING` as a new `status`
     * 1.0.20: 
       * Adding dateAutoSuspend functionality to create and patch entitlement methods
@@ -467,9 +465,7 @@ paths:
                       region: East Anglia
                       brand: BrandABC
                       serviceFlow: Activation
-                    renewalInformation:
-                      startDate: "2021-06-22T17:35:38.929Z"
-                      frequency: MONTHLY
+
         description: The entitlement JSON you want to create
         required: true
     patch:
@@ -2914,23 +2910,7 @@ components:
           description: >- 
             255 length limit
            
-    RenewalInformation:
-      type: object
-      properties:
-        startDate:
-          type: string
-          format: date-time
-          description: >- 
-            UTC ISO 8601
-        frequency:
-          type: string
-          enum:
-            - DAILY
-            - WEEKLY
-            - MONTHLY
-            - YEARLY
-          description: >- 
-            how frequently a renewal should be processed for the entitlement
+
 
         
     ExtraEntitlementInfo:
@@ -2942,5 +2922,3 @@ components:
           $ref: '#/components/schemas/CommunicationInformation'
         source:
           $ref: '#/components/schemas/Source'
-        renewalInformation:
-          $ref: '#/components/schemas/RenewalInformation'
