@@ -3,12 +3,8 @@ info:
   title: Bango Reseller API
   description: >
     Changelog
-    * 1.0.22:
-      * Adding `409 CONFLIFT` to
-        * `POST /v1/entitlement/cancel/{entitlementId}`
-        * `POST /v1/entitlement/revoke/{entitlementId}`
     * 1.0.21: 
-      * Adding financeData support to all responses
+      * Adding financeData support to create and patch entitlement methods and all responses
       * Adding `ACTIVE-ENDING` as a new `status`
     * 1.0.20: 
       * Adding dateAutoSuspend functionality to create and patch entitlement methods
@@ -36,7 +32,7 @@ info:
     * 1.0.11: Added EntitlementReport
     * 1.0.6: Initial release
 
-  version: 1.0.22
+  version: 1.0.21
 
 externalDocs:
     description: Bango developer documentation
@@ -1797,17 +1793,6 @@ paths:
                   value:
                     responseCode: NOT_FOUND
                     responseMessage: Entitlement Not Found
-        '409':
-          description: Request could not be completed due to a conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseObject'
-              examples:
-                InvalidState:
-                  value:
-                    responseCode: CONFLICT
-                    responseMessage: The requested action has been rejected due to a conflict.
         '429':
           description: Request limit reached
           content:
@@ -2049,17 +2034,6 @@ paths:
                   value:
                     responseCode: NOT_FOUND
                     responseMessage: Entitlement Not Found
-        '409':
-          description: Request could not be completed due to a conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseObject'
-              examples:
-                InvalidState:
-                  value:
-                    responseCode: CONFLICT
-                    responseMessage: The requested action has been rejected due to a conflict.
         '429':
           description: Request limit reached
           content:
@@ -2222,7 +2196,7 @@ paths:
 servers:
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/BangoProducts/Reseller-API/1.0.22
+    url: https://virtserver.swaggerhub.com/BangoProducts/Reseller-API/1.0.21
 components:
   securitySchemes:
     basic:

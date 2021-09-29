@@ -1,12 +1,9 @@
 openapi: 3.0.0
 info:
-  version: 1.0.8
+  version: 1.0.7
   title: Resale Merchant - Client API
   description: |
     Changelog
-    * 1.0.8:
-      * Adding `409 CONFLIFT` to
-        * `POST /v1/entitlement/terminate/{merchantEntitlementId}`
     * 1.0.7:
       * Adding entitlementBenefits to PatchEntitlement
       * Adding extraInformation to PatchEntitlement
@@ -239,12 +236,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFound'
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Conflict'
         '429':
           description: Too many requests
           content:
@@ -332,7 +323,7 @@ paths:
         required: true
 servers:
   - url: >-
-      https://virtserver.swaggerhub.com/BangoProducts/MerchantInterface_Client_API/1.0.8
+      https://virtserver.swaggerhub.com/BangoProducts/MerchantInterface_Client_API/1.0.7
 components:
   securitySchemes:
     BasicAuth:
@@ -620,15 +611,6 @@ components:
         responseMessage:
           type: string
           example: Operation invalid for the current state of the entitlement.
-    Conflict:
-      type: object
-      properties:
-        responseCode:
-          type: string
-          example: CONFLICT
-        responseMessage:
-          type: string
-          example: The requested action has been rejected due to a conflict.
     RequestCreated:
       type: object
       properties:
