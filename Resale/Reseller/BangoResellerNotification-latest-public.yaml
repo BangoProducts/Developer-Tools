@@ -62,7 +62,7 @@ components:
             type: object
             properties:
                 responseCode:
-                    description: 'Can be either OK or 0'
+                    description: 'If provided can be either OK or 0. Can be null'
                     type: string
                     enum: 
                     - 'OK'
