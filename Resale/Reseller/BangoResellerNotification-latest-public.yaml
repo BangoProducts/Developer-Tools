@@ -62,9 +62,11 @@ components:
             type: object
             properties:
                 responseCode:
-                    description: Always 'OK'
+                    description: 'Can be either OK or 0'
                     type: string
-                    enum: ['OK']
+                    enum: 
+                    - 'OK'
+                    - '0'
                 responseMessage:
                     type: string
                     example: Success
