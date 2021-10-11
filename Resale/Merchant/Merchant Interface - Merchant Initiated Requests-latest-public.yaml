@@ -733,9 +733,15 @@ components:
     EntitlementTerminate:
       type: object
       required:
-        - immediate
         - terminatedDate
       properties:
+        immediate:
+          type: boolean
+          description: >-
+            Determines if the termination is effective immediately. If nothing is passed, the request will default to TRUE.
+              Immediate termination results in HARD ending of the entitlement:
+              - TRUE
+              - FALSE
         terminatedDate:
           type: string
           format: date-time
