@@ -47,7 +47,7 @@ security:
 paths:
   '/v1/echo/{echoRequestId}':
     post:
-      summary: Service echo. Used to check Bango Reseller API availability.
+      summary: Service echo. Used to check Bango Resale API availability.
       operationId: echo
       parameters:
         - name: X-RequestIdentifier
@@ -1804,7 +1804,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
               examples:
-                InvalidState:
+                Conflict:
                   value:
                     responseCode: CONFLICT
                     responseMessage: The requested action has been rejected due to a conflict.
@@ -2056,7 +2056,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
               examples:
-                InvalidState:
+                Conflict:
                   value:
                     responseCode: CONFLICT
                     responseMessage: The requested action has been rejected due to a conflict.
