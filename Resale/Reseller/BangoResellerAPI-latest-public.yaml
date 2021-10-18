@@ -546,6 +546,10 @@ paths:
                         region: East Anglia
                         brand: BrandABC
                         serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
         '202':
           description: An action is required to be performed by the client
           content:
@@ -605,6 +609,10 @@ paths:
                         region: East Anglia
                         brand: BrandABC
                         serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
                 Accepted:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
@@ -656,7 +664,11 @@ paths:
                         country: United Kingdom
                         region: East Anglia
                         brand: BrandABC
-                        serviceFlow: Activation        
+                        serviceFlow: Activation     
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
         '400':
           description: Invalid API request
           content:
@@ -878,6 +890,10 @@ paths:
                         region: East Anglia
                         brand: BrandABC
                         serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
         '400':
           description: Invalid API request
           content:
@@ -1040,6 +1056,10 @@ paths:
                         region: East Anglia
                         brand: BrandABC
                         serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
         '400':
           description: Invalid API request
           content:
@@ -1680,6 +1700,10 @@ paths:
                         region: East Anglia
                         brand: BrandABC
                         serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
         '202':
           description: Entitlement cancellation request pending
           content:
@@ -1932,6 +1956,10 @@ paths:
                         region: East Anglia
                         brand: BrandABC
                         serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
         '202':
           description: Entitlement cancellation request pending
           content:
@@ -1989,6 +2017,10 @@ paths:
                         region: East Anglia
                         brand: BrandABC
                         serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
         '400':
           description: Invalid API request
           content:
@@ -2305,8 +2337,7 @@ components:
             additionalCustomData3: additionalCustomDataValue3
         extraInformation:
           $ref: '#/components/schemas/ExtraEntitlementInfo'
-        financeData:
-          $ref: '#/components/schemas/FinanceDataInput'
+
     EntitlementUpdate:
       type: object
       required:
@@ -2388,8 +2419,7 @@ components:
             additionalCustomData3: additionalCustomDataValue3
         extraInformation:
           $ref: '#/components/schemas/ExtraEntitlementInfo'
-        financeData:
-          $ref: '#/components/schemas/FinanceDataInput'
+
     EntitlementReport:
       type: object
       description: List of filters applied to retrieve a list of existing entitlements
@@ -2830,54 +2860,6 @@ components:
         region: East Anglia
         brand: BrandABC
         serviceFlow: Creation
-    FinanceDataInput:
-      type: object
-      required:  
-        - type
-        - timestamp
-      properties:
-        type:
-          type: string
-          description: >- 
-            the type of finance event
-          enum:
-            - order
-            - return
-            - adjustment
-            - renew
-        timestamp:
-          type: string
-          format: date-time
-          description: >- 
-            UTC ISO 8601
-        retailCurrency:
-          type: string
-          description: >- 
-            ISO 3
-        retailPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        retailPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the retailPrice
-        offerPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        offerPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the offerPrice
-        notes:
-          type: string
-          description: >- 
-            255 length limit
           
     FinanceDataOutput:
       type: object
