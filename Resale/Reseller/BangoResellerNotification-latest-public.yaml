@@ -7,6 +7,7 @@ info:
     
     * 1.0.1:
       * Add `notificationReason` enum called `METADATA_UPDATE` to `POST /`
+      * Add `notificationReason` enum called `TERMINATION_PENDING` to `POST /`
       * Add `status` of `ACTIVE-ENDING`
     * 1.0.0: Initial release
     
@@ -281,7 +282,7 @@ components:
           $ref: '#/components/schemas/Source'
     Notification:
           type: string
-          enum: [ACTIVATION_SUCCESS,TERMINATION_SUCCESS,PRODUCT_UPDATE,SUSPENSION_SUCCESS,RESUMPTION_SUCCESS]  
+          enum: [ACTIVATION_SUCCESS,TERMINATION_SUCCESS,PRODUCT_UPDATE,SUSPENSION_SUCCESS,RESUMPTION_SUCCESS,METADATA_UPDATE, TERMINATION_PENDING]  
           description: |-
               - "ACTIVATION_SUCCESS": The entitlement has been successfully activated
               - "TERMINATION_SUCCESS": The entitlement has been successfully terminated
@@ -289,6 +290,7 @@ components:
               - "SUSPENSION_SUCCESS": The entitlement has been successfully suspended
               - "RESUMPTION_SUCCESS": The entitlement has been successfully resumed
               - "METADATA_UPDATE": Metadata on the entitlment has been successfully updated
+              - "TERMINATION_PENDING": The entitlement has been marked for termination at a future date
     FinanceDataOutput:
       type: object
       required:  
