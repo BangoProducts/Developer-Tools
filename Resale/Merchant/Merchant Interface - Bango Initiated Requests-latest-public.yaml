@@ -5,7 +5,7 @@ info:
   description: |
     Changelog
     * 1.0.8:
-      * Adding `409 CONFLIFT` to
+      * Adding `409 CONFLICT` to
         * `POST /v1/entitlement/terminate/{merchantEntitlementId}`
     * 1.0.7:
       * Adding entitlementBenefits to PatchEntitlement
