@@ -4,7 +4,7 @@ info:
   description: >
     Changelog
     * 1.0.22:
-      * Adding `409 CONFLIFT` to
+      * Adding `409 CONFLICT` to
         * `POST /v1/entitlement/cancel/{entitlementId}`
         * `POST /v1/entitlement/revoke/{entitlementId}`
     * 1.0.21: 
