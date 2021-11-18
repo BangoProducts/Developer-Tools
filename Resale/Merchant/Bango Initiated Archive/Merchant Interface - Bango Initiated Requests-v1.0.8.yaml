@@ -1,49 +1,27 @@
 openapi: 3.0.0
 info:
-  version: 1.1.0
+  version: 1.0.8
   title: Resale Merchant - Client API
   description: |
     Changelog
-    * 1.1.0:
-      * Removing `extensionData` from `POST /v1/entitlement`
-      * Removing `POST /v1/entitlement/suspend/{merchantEntitlementId}` and `POST /v1/entitlement/resume/{merchantEntitlementId}`
-      * Removing `merchantExtensionData` from response object
-      * Adding `bangoUserId`, `productId`, `offerId`, `customerId`, `merchantExtensionData` and `extraInformation` to  `POST /v1/entitlement/terminate/{merchantEntitlementId}`
-      * Adding `merchantExtensionData` to request object:
-        * `POST /v1/entitlement`
-        * `PATCH /v1/entitlement`
-        * `POST /v1/entitlement/terminate/{merchantEntitlementId}`
-        * `POST /v1/entitlement/checkeligibility` 
-      * Adding `financeData` to request object:
-        * `POST /v1/entitlement`
-        * `PATCH /v1/entitlement`
-        * `POST /v1/entitlement/terminate/{merchantEntitlementId}`
-      * Adding `status` to request object:
-        * `POST /v1/entitlement`
-        * `PATCH /v1/entitlement`
-        * `POST /v1/entitlement/terminate/{merchantEntitlementId}`
-      * Adding `merchantBangoExtensionData` to request object
     * 1.0.8:
-      * Adding `409 CONFLIFT` to
+      * Adding `409 CONFLICT` to
         * `POST /v1/entitlement/terminate/{merchantEntitlementId}`
     * 1.0.7:
-      * Adding `entitlementBenefits` to `PATCH /v1/entitlement`
-      * Adding `extraInformation` to `PATCH /v1/entitlement`
+      * Adding entitlementBenefits to PatchEntitlement
+      * Adding extraInformation to PatchEntitlement
+      * Deprecating `POST /v1/entitlement/suspend/{merchantEntitlementId}
+      * Deprecating `POST /v1/entitlement/resume/{merchantEntitlementId}
     * 1.0.6:
-      * Adding customerId to the `POST /v1/entitlement` and `PATCH /v1/entitlement`
+      * Adding customerId to the CreateEntitlement and PatchEntitlement
     * 1.0.5:
       * Updating API spec to be OpenAPI3
-      * Adding resellerId to `PATCH /v1/entitlement` and `POST /v1/entitlement/terminate/{merchantEntitlementId}`
+      * Adding resellerId to PatchEntitlement and TerminateEntitlement
     * 1.0.4:
-      * Adding `extensionData` to `PATCH /v1/entitlement`
-      * Adding `offerId` and `customerIdentifier` to `POST /v1/entitlement/checkeligibility`
-      * Adding the support for a `201 created` response for `POST /v1/entitlement`
-    * 1.0.3: Initial release 
-  contact:
-        name: Bango Support
-        url: 'https://bango.com'
-        email: support@bango.com
-  termsOfService: 'https://bango.com/privacy'
+      * Adding extensionData to PatchEntitlement
+      * Adding offerId and customerIdentifier to CheckEligibility
+      * Adding the support for a 201 created response for Create Entitlement
+    * 1.0.3: Initial release
 paths:
   /v1/entitlement:
     post:
@@ -354,7 +332,7 @@ paths:
         required: true
 servers:
   - url: >-
-      https://virtserver.swaggerhub.com/BangoProducts/MerchantInterface_Client_API/1.1.0
+      https://virtserver.swaggerhub.com/BangoProducts/MerchantInterface_Client_API/1.0.8
 components:
   securitySchemes:
     BasicAuth:
@@ -409,34 +387,10 @@ components:
         customerId:
             type: string
             description: Unique identifier representing a specific customer of the reseller not anonymised. This value will only be sent by Bango if the Merchant and Reseller both approve the sharing of this data
-        offerId:
-          type: string
-          description: >-
-            The offer given to the user for the merchant service. For example,
-            "FREE_FOR_6_MONTHS".
-          example: FREE_FOR_6_MONTHS
-        status:
-          type: string
-          example: ACTIVE
-          enum:
-                  - ACTIVE
-                  - SUSPENDED
-                  - PENDING
-                  - ACTIVE-ENDING
-          description: |-
-            Entitlement status. Possible values are:
-              - "ACTIVE": The entitlement has been successfully activated
-              - "SUSPENDED": The entitlement has been suspended.
-              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
-              - "ACTIVE-ENDING": The entitlement is ending at the end of the current period.
-        merchantExtensionData:
-          $ref: '#/components/schemas/MerchantExtensionData'
+        extensionData:
+          $ref: '#/components/schemas/ExtensionData'
         extraInformation:
-          $ref: '#/components/schemas/ExtraEntitlementInfo'
-        financeData:
-          $ref: '#/components/schemas/FinanceDataOutput'
-        merchantBangoExtensionData:
-          $ref: '#/components/schemas/MerchantBangoExtensionData'
+          $ref: '#/components/schemas/ExtraInformation'
     EntitlementCreate:
       type: object
       required:
@@ -470,28 +424,11 @@ components:
         customerId:
             type: string
             description: Unique identifier representing a specific customer of the reseller not anonymised. This value will only be sent by Bango if the Merchant and Reseller both approve the sharing of this data
-        status:
-          type: string
-          example: PENDING
-          enum:
-                  - ACTIVE
-                  - SUSPENDED
-                  - PENDING
-                  - ACTIVE-ENDING
-          description: |-
-            Entitlement status. Possible values are:
-              - "ACTIVE": The entitlement has been successfully activated
-              - "SUSPENDED": The entitlement has been suspended.
-              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
-              - "ACTIVE-ENDING": The entitlement is ending at the end of the current period.
-        merchantExtensionData:
-          $ref: '#/components/schemas/MerchantExtensionData'
+        
+        extensionData:
+          $ref: '#/components/schemas/ExtensionData'
         extraInformation:
-          $ref: '#/components/schemas/ExtraEntitlementInfo'
-        financeData:
-          $ref: '#/components/schemas/FinanceDataOutput'
-        merchantBangoExtensionData:
-          $ref: '#/components/schemas/MerchantBangoExtensionData'
+          $ref: '#/components/schemas/ExtraInformation'
     EntitlementCreate202Response:
       type: object
       required:
@@ -514,6 +451,8 @@ components:
           format: date-time
           description: The expiry date for when the URL will no longer be active
           example: '2020-01-28T14:15:03Z'
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
     EntitlementCreate200Response:
       type: object
       required:
@@ -525,6 +464,8 @@ components:
             Unique identifier representing the entitlement as identified by the
             merchant. Value must be URL friendly.
           example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
     EntitlementCreate201Response:
       type: object
       required:
@@ -536,6 +477,8 @@ components:
             Unique identifier representing the entitlement as identified by the
             merchant. Value must be URL friendly.
           example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
     EntitlementTerminate:
       type: object
       required:
@@ -568,49 +511,10 @@ components:
           type: string
           description: Description of the entitlement revoke reason
           example: Personal data stolen
-        bangoUserId:
-          type: string
-          description: Unique identifier representing a specific customer of the reseller as a Bango anonymised value.
-          example: '1549053185'
         resellerId:
           type: string
-          description: Unique reseller identifier as agreed with the merchant
+          description: Unique reseller identifier
           example: XYZ_RESELLER
-        productId:
-          type: string
-          description: 'Entitlement product unique identifier. For example, "BangoMusic".'
-          example: BangoMusic
-        offerId:
-          type: string
-          description: >-
-            The offer given to the user for the merchant service. For example,
-            "FREE_FOR_6_MONTHS".
-          example: FREE_FOR_6_MONTHS
-        customerId:
-            type: string
-            description: Unique identifier representing a specific customer of the reseller not anonymised. This value will only be sent by Bango if the Merchant and Reseller both approve the sharing of this data
-        status:
-          type: string
-          example: PENDING
-          enum:
-                  - ACTIVE
-                  - SUSPENDED
-                  - PENDING
-                  - ACTIVE-ENDING
-          description: |-
-            Entitlement status. Possible values are:
-              - "ACTIVE": The entitlement has been successfully activated
-              - "SUSPENDED": The entitlement has been suspended.
-              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
-              - "ACTIVE-ENDING": The entitlement is ending at the end of the current period.
-        merchantExtensionData:
-          $ref: '#/components/schemas/MerchantExtensionData'
-        extraInformation:
-          $ref: '#/components/schemas/ExtraEntitlementInfo'
-        financeData:
-          $ref: '#/components/schemas/FinanceDataOutput'
-        merchantBangoExtensionData:
-          $ref: '#/components/schemas/MerchantBangoExtensionData'
     EntitlementTerminateResponse:
       type: object
       description: Response for termination request
@@ -627,7 +531,8 @@ components:
           description: >-
             Date and time when the entitlement was or will be terminated, in UTC
             ISO 8601. format (yyyy-MM-ddThh:mm:ssZ)
-
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
     ResponseObject:
       type: object
       properties:
@@ -637,6 +542,8 @@ components:
         responseMessage:
           type: string
           example: Success
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
     BadRequest:
       type: object
       properties:
@@ -664,15 +571,6 @@ components:
         responseMessage:
           type: string
           example: Entitlement not found.
-    Conflict:
-      type: object
-      properties:
-        responseCode:
-          type: string
-          example: CONFLICT
-        responseMessage:
-          type: string
-          example: The requested action has been rejected due to a conflict.
     TooManyRequests:
       type: object
       properties:
@@ -722,6 +620,15 @@ components:
         responseMessage:
           type: string
           example: Operation invalid for the current state of the entitlement.
+    Conflict:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: CONFLICT
+        responseMessage:
+          type: string
+          example: The requested action has been rejected due to a conflict.
     RequestCreated:
       type: object
       properties:
@@ -731,7 +638,8 @@ components:
         responseMessage:
           type: string
           example: Request created and queued.
-
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
     RequestAccepted:
       type: object
       properties:
@@ -741,7 +649,35 @@ components:
         responseMessage:
           type: string
           example: Request accepted
-
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
+    ExtensionData:
+      type: object
+      additionalProperties:
+        type: string
+        description: >-
+          Accepts a dynamic list of key-value pairs to cover custom data needs
+          (optional). We recommend sending the following values:
+            - "price": the price charged to the user in each billing cycle
+            - "currencyIso3": the currency code from the ISO 4217 currency code list
+            - "channelType": channel used for the sale. Recommended values are:
+              - "WEB_PROMOTION": website promotion
+              - "POINT_OF_SALE": physical store sale
+              - "SMS_PROMOTION": SMS promotion
+              - "EMAIL_PROMOTION": Email promotion
+            - "channelSource": Sale origin. For example, in case of WEB_PROMOTION, which website
+            - "campaignKey": Marketing campaign identifier. For example, "SUMMER_PROMO"
+            - "referrer": Sale referrer. For example, "SEARCH_ENGINE", "CUSTOMER_RECOMMENDATION" or "SOCIAL_MEDIA"
+      example:
+        price: '9.99'
+        currencyIso3: GBP
+        channelType: WEB_PROMOTION
+        channelSource: 'https://bango.com/promo'
+        campaignKey: SUMMER_PROMO
+        referrer: SEARCH_ENGINE
+        additionalCustomData1: additionalCustomDataValue1
+        additionalCustomData2: additionalCustomDataValue2
+        additionalCustomData3: additionalCustomDataValue3
     ExtraInformation:
       type: object
       additionalProperties:
@@ -758,15 +694,6 @@ components:
         merchantCustomData1: merchantCustomDataValue1
         merchantCustomData2: merchantCustomDataValue2
         merchantCustomData3: merchantCustomDataValue3
-    MerchantBangoExtensionData:
-      type: object
-      additionalProperties:
-        type: string
-        description: Contains a defined list of key-value pairs to cover static custom data needs
-      example:
-        merchantCustomData1: merchantBangoCustomDataValue1
-        merchantCustomData2: merchantBangoCustomDataValue2
-        merchantCustomData3: merchantBangoCustomDataValue3
     CheckEligibilityRequest:
       type: object
       required:
@@ -797,10 +724,6 @@ components:
           type: string
           description: 'Entitlement offer unique identifier. For example, "6_MONTHS_ON_US".'
           example: 6_MONTHS_ON_US
-        merchantExtensionData:
-          $ref: '#/components/schemas/MerchantExtensionData'
-        merchantBangoExtensionData:
-          $ref: '#/components/schemas/MerchantBangoExtensionData'
     CheckEligibilityResponse:
       type: object
       properties:
@@ -818,131 +741,3 @@ components:
             to be sent by the merchant. Examples:
               - "User has an existing subscription"
           example: User is eligible for this Entitlement
-    ClientDevice:
-      type: object
-      additionalProperties:
-        type: string
-        description: >-
-          When the clientDevice object is present the type is a mandatory key.
-          The clientDevice object will only be returned if data has been
-          provided.
-            - "type": the type of the device. For example, "STB", "MOBILE", "DESKTOP", "TABLET"
-            - "id": the unique identifier for the users device
-            - "typeId": the common identifier for the type of device
-            - "modelName": the device model name
-            - "modelNumber": the device model number
-            - "serialNumber": the serial number of the device
-            - "osType": the OS type of the device
-            - "osVersion": the OS version of the device
-            - "macAddress": the mac address of the device
-            - "browser": the browser being used
-      example:
-        type: STB
-        id: bc449c9e-406f-4399-a3ff-8671a27ac410
-        typeId: P49AJFND8NFN23NANGAJG
-        modelName: STB Model X7
-        modelNumber: IAH45IAOF/5
-        serialNumber: JHFJHA43JNFA9393GFD
-        osType: Linux
-        osVersion: 10.3.8
-        macAddress: 4A-0F-99-F2-D3-DD
-        browser: Firefox
-    CommunicationInformation:
-      type: object
-      additionalProperties:
-        type: string
-        description: |-
-          Accepts the defined key-value pairs.
-            - "emailAddress": the end-users email address.
-            - "msisdn": the end-users mobile number in international format.
-      example:
-        emailAddress: 123@abc.co.uk
-        msisdn: '441234567890'
-    Source:
-      type: object
-      additionalProperties:
-        type: string
-        description: |-
-          Accepts the defined key-value pairs.
-            - "channelType": the source channel of the entitlement request.
-            - "campaignRef": the campaign reference that the user clicked on.
-            - "referrer": where the user request originated from.
-            - "bundleId": a string identifier for the bundle which the OTT service is part of.
-            - "country": the end-users country.
-            - "region": the end-users region within their country.
-            - "brand": the brand of which the user originated from.
-            - "serviceFlow": the service flow for which the request originated. Valid values are Creation or Activation. If not passed Bango will treat this as Activation.
-      example:
-        channelType: WEB_PROMOTION
-        campaignRef: SUMMER_PROMO
-        referrer: SEARCH_ENGINE
-        bundleId: BundleABC123
-        country: United Kingdom
-        region: East Anglia
-        brand: BrandABC
-        serviceFlow: Creation
-    ExtraEntitlementInfo:
-      type: object
-      properties:
-        clientDevice:
-          $ref: '#/components/schemas/ClientDevice'
-        communicationInformation:
-          $ref: '#/components/schemas/CommunicationInformation'
-        source:
-          $ref: '#/components/schemas/Source'
-    FinanceDataOutput:
-      type: object
-      required:  
-        - source
-        - type
-        - timestamp
-      properties:
-        source:
-          type: string
-          description: >- 
-            the party who added the finance event
-          enum:
-            - Merchant
-            - Reseller
-        type:
-          type: string
-          description: >- 
-            the type of finance event
-          enum:
-            - order
-            - return
-            - adjustment
-            - renew
-        timestamp:
-          type: string
-          format: date-time
-          description: >- 
-            UTC ISO 8601
-        retailCurrency:
-          type: string
-          description: >- 
-            ISO 3
-        retailPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        retailPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the retailPrice
-        offerPrice:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, including tax
-        offerPriceTax:
-          type: number
-          format: double
-          description: >- 
-            as per standard price element, tax included in the offerPrice
-        notes:
-          type: string
-          description: >- 
-            255 length limit
