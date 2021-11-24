@@ -514,7 +514,7 @@ paths:
                     dateSuspended: null
                     dateResumed: null
                     responseCode: OK
-                    responseMessage: Subscription updated successfully
+                    responseMessage: Success
                     status: ACTIVE
                     externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                     extensionData: 
@@ -557,62 +557,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/EntitlementResponse'
               examples:
-                ClientActionRequired:
-                  value:
-                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
-                    productKey: BangoMusic
-                    entitlementDisplayName: 30 days Bango music
-                    offerKey: null
-                    merchantAccountKey: BANGO
-                    activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
-                    dateActivated: "2020-06-22T17:36:01Z"
-                    dateEnded: "0001-01-01T00:00:00Z"
-                    dateExpiry: "0001-01-01T00:00:00Z"
-                    dateAutoSuspend: null
-                    dateFailed: "0001-01-01T00:00:00Z"
-                    dateSuspended: null
-                    dateResumed: null
-                    responseCode: CLIENT_ACTION_REQUIRED
-                    responseMessage: An action is required to be performed by the client.
-                    status: ACTIVE
-                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
-                    extensionData: 
-                      additionalProp1: string
-                      additionalProp2: string
-                      additionalProp3: string
-                    parameters:
-                      Action: NAVIGATE_TO_URL
-                      Url: https://example.com/?entitlementId=a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    extraInformation:
-                      clientDevice:
-                        type: STB
-                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
-                        typeId: P49AJFND8NFN23NANGAJG
-                        modelName: STB Model X7
-                        modelNumber: IAH45IAOF/5
-                        serialNumber: JHFJHA43JNFA9393GFD
-                        osType: Linux
-                        osVersion: 10.3.8
-                        macAddress: 4A-0F-99-F2-D3-DD
-                        browser: Firefox
-                      communicationInformation:
-                        emailAddress: 123@abc.co.uk
-                        msisdn: 441234567890
-                      source: 
-                        channelType: WEB_PROMOTION
-                        campaignRef: SUMMER_PROMO
-                        referrer: SEARCH_ENGINE
-                        bundleId: BundleABC123
-                        country: United Kingdom
-                        region: East Anglia
-                        brand: BrandABC
-                        serviceFlow: Activation
-                    financeData: 
-                      source: "Merchant"
-                      type: "order"
-                      timestamp: "2021-10-18T11:09:44Z"
                 Accepted:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
@@ -669,6 +613,63 @@ paths:
                       source: "Merchant"
                       type: "order"
                       timestamp: "2021-10-18T11:09:44Z"
+                ClientActionRequired:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: 4407123456789
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.929Z"
+                    dateActivated: "2020-06-22T17:36:01Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: CLIENT_ACTION_REQUIRED
+                    responseMessage: An action is required to be performed by the client.
+                    status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                      Action: NAVIGATE_TO_URL
+                      Url: https://example.com/?entitlementId=a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
+        
         '400':
           description: Invalid API request
           content:
