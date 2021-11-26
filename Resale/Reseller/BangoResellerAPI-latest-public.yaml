@@ -2662,8 +2662,10 @@ components:
       properties:
         responseCode:
           type: string
+          example: OK
         responseMessage:
           type: string
+          example: Success
         entitlements:
           type: array
           items:
