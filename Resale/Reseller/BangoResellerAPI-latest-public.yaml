@@ -160,7 +160,7 @@ paths:
                 OK:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -217,7 +217,7 @@ paths:
                 Created:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -273,7 +273,7 @@ paths:
                 ClientActionRequired:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -427,13 +427,13 @@ paths:
             examples:    
               BaseRequest:
                 value:
-                  customerIdentifier: 4407123456789
+                  customerIdentifier: "4407123456789"
                   merchantAccountKey: BANGO
                   productKey: BangoMusic
                   notificationUrl: https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
               ExtendedRequest:
                 value:
-                  customerIdentifier: 4407123456789
+                  customerIdentifier: "4407123456789"
                   merchantAccountKey: BANGO
                   productKey: BangoMusic
                   notificationUrl: https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
@@ -499,7 +499,7 @@ paths:
                 OK:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -560,7 +560,7 @@ paths:
                 Accepted:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -616,7 +616,7 @@ paths:
                 ClientActionRequired:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -844,7 +844,7 @@ paths:
                 OK:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1010,7 +1010,7 @@ paths:
                 OK:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1280,7 +1280,7 @@ paths:
                 OK:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1465,7 +1465,7 @@ paths:
                 OK:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1654,7 +1654,7 @@ paths:
                 OK:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1715,7 +1715,7 @@ paths:
                 Accepted:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1910,7 +1910,7 @@ paths:
                 OK:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1971,7 +1971,7 @@ paths:
                 Accepted:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
-                    customerIdentifier: 4407123456789
+                    customerIdentifier: "4407123456789"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -2355,7 +2355,7 @@ components:
         customerIdentifier:
           type: string
           description: User unique identifier.
-          example: '4407123456789'
+          example: "4407123456789"
         productKey:
           type: string
           description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
@@ -2430,7 +2430,7 @@ components:
         customerIdentifier:
           type: string
           description: User unique identifier.
-          example: '+4407123456789'
+          example: "4407123456789"
         productKey:
           type: string
           description: 'Entitlement product unique identifier. For example, "BangoMusic".'
@@ -2487,7 +2487,7 @@ components:
         customerIdentifier:
           type: string
           description: User unique identifier.
-          example: '4407123456789'
+          example: "4407123456789"
         merchantAccountKey:
           type: string
           description: 'Merchant unique identifier. For example, "BANGO".'
@@ -2532,7 +2532,7 @@ components:
         customerIdentifier:
           type: string
           description: User unique identifier.
-          example: '4407123456789'
+          example: "4407123456789"
         productKey:
           type: string
           description: 'Entitlement  product unique identifier. For example, "BangoMusic".'
@@ -2735,7 +2735,7 @@ components:
               customerIdentifier:
                 type: string
                 description: User unique identifier.
-                example: '4407123456789'
+                example: "4407123456789"
               productKey:
                 type: string
                 description: >-
