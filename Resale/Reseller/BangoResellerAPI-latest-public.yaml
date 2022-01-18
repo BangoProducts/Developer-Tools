@@ -2646,6 +2646,15 @@ components:
             type: string
         parameters:
           type: object
+          properties:
+            Action:
+              type: string
+              description: The action the reseller should take next
+              enum: 
+                - NAVIGATE_TO_URL
+            Url:
+              type: string
+              description: The url that the reseller must redirect the user to when the `Action` of `NAVIGATE_TO_URL` is provided
         extraInformation:
           $ref: '#/components/schemas/ExtraEntitlementInfo'
         financeData:
