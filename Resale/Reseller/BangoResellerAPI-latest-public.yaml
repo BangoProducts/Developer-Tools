@@ -2403,6 +2403,10 @@ components:
           type: string
           description: |-
             ENUM parameter for the Reseller to instruct the type of benefits action needed as part of the update request. This enum is used to suspend and resume entitlements using the update method.
+            
+            • You must use `SUSPENDED` when you want to suspend the end-users access to the merchants product/service. The entitlement must be `ACTIVE` to successfully carry out this changed.
+            
+            • You must use `NORMAL` when you want to resume the end-users access to the merchants product/service. The entitlement must be `SUSPENDED` to successfully carry out this changed.
           enum:
             - SUSPENDED
             - NORMAL
