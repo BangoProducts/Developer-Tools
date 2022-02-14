@@ -2898,7 +2898,6 @@ components:
           enum:
             - order
             - return
-            - adjustment
             - renew
         timestamp:
           type: string
