@@ -362,10 +362,12 @@ components:
       scheme: basic
     OAuth2:
       type: oauth2
+      description: Bango uses https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
       flows:
         clientCredentials:
           tokenUrl: 'https://oauth.merchant.com/token'
-          scopes: {}
+          scopes:
+            any: grants Bango access to the merchant system based on merchant defined rules
     AWSToken:
       type: apiKey
       name: AWSTokenAuthorization
