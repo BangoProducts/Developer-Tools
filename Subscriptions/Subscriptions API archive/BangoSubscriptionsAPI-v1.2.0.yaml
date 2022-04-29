@@ -1,20 +1,12 @@
 openapi: 3.0.1
 info:
     title: Bango Subscriptions API
-    version: 1.4.0
+    version: 1.2.0
     description: |-
         Manage user subscriptions to products and services.
 
         ### Change log
-        - 1.4.0: 
-            - Adding Plan Management API methods
-              - Add `POST /plan`
-              - Add `GET /plan/{planName}`
-              - Add `GET /plan/{planId}`
-              - Add `GET /plans`
-            - Support for additional character types  as the first character of `planName`'s 
-        - 1.3.0:
-            - Add `productName` update functionality to `PUT /subscription/{subscriptionId}`
+
         - 1.2.0:
             - Move to OpenAPI 3.0.1 and refactor
             - Synchronize with API behavior
@@ -39,11 +31,9 @@ tags:
       description: Service availability
     - name: subscriptions
       description: Subscription management
-    - name: plans
-      description: Plan management
 
 servers:
-- url: https://virtserver.swaggerhub.com/BangoProducts/Subscriptions-API/1.4.0
+- url: https://virtserver.swaggerhub.com/BangoProducts/Subscriptions-API/1.2.0
 
 security:
 - basicAuth: []
@@ -175,7 +165,7 @@ paths:
             -   $ref: '#/components/parameters/IdempotencyHeader'
             -   $ref: '#/components/parameters/SubscriptionId'
             requestBody:
-              $ref: '#/components/requestBodies/SubscriptionUpdate'
+                $ref: '#/components/requestBodies/SubscriptionUpdate'
             responses:
                 200:
                     description: Subscription found and updated
@@ -319,7 +309,6 @@ paths:
                 required: true
                 schema:
                     $ref: '#/components/schemas/BangoUserId'
-            -   $ref: '#/components/parameters/AuditMode'
             responses:
                 200:
                     description: Subscriptions found
@@ -380,144 +369,7 @@ paths:
                     $ref: '#/components/responses/ErrorUnexpected'
                 503:
                     $ref: '#/components/responses/ErrorUnavailable'
-                    
-    /plan:
-        post:
-            tags:
-            - plans
-            summary: Create a plan
-            description: |-
-                Use this endpoint to create a subscription plan in the Bango Platform.
 
-                
-            operationId: post-plan
-            parameters:
-            -   $ref: '#/components/parameters/IdempotencyHeader'
-            requestBody:
-                $ref: '#/components/requestBodies/PlanCreate'
-            responses:
-                200:
-                    description: Plan created successfully
-                    content:
-                        application/json:
-                            schema:
-                                allOf:
-                                    - $ref: '#/components/schemas/SuccessResponse'
-                                    - $ref: '#/components/schemas/Plan'
-                400:
-                    $ref: '#/components/responses/ErrorBadRequest'
-                401:
-                    $ref: '#/components/responses/ErrorUnauthorized'
-                409:
-                    $ref: '#/components/responses/ErrorConflict'
-                429:
-                    $ref: '#/components/responses/ErrorTooManyRequests'
-                500:
-                    $ref: '#/components/responses/ErrorUnexpected'
-                503:
-                    $ref: '#/components/responses/ErrorUnavailable'
-    /plan/name/{planName}:
-        get:
-            tags:
-            - plans
-            summary: Retrieve a plan by name
-            description: |-
-                Use this endpoint to retrieve a subscription plan using the planName.
-            operationId: get-plan-by-name
-            parameters:
-              - name: planName
-                in: path
-                description: The unique identifier for the plan detailing the prices and offer periods associated with the subscription.
-                required: true
-                schema:
-                    $ref: '#/components/schemas/PlanName'
-            responses:
-                200:
-                    description: Plan found
-                    content:
-                        application/json:
-                            schema:
-                                allOf:
-                                    - $ref: '#/components/schemas/SuccessResponse'
-                                    - $ref: '#/components/schemas/Plan'
-                400:
-                    $ref: '#/components/responses/ErrorBadRequest'
-                401:
-                    $ref: '#/components/responses/ErrorUnauthorized'
-                404:
-                    $ref: '#/components/responses/ErrorPlanNotFound'
-                429:
-                    $ref: '#/components/responses/ErrorTooManyRequests'
-                500:
-                    $ref: '#/components/responses/ErrorUnexpected'
-                503:
-                    $ref: '#/components/responses/ErrorUnavailable'
-    /plan/{planId}:
-      get:
-          tags:
-          - plans
-          summary: Retrieve a plan by id
-          description: |-
-              Use this endpoint to retrieve a plan using the id.
-          operationId: get-plan-by-id
-          parameters:
-            - name: planId
-              in: path
-              description: The unique identifier generated by Bango for a plan. This is a globally unique, opaque string
-              required: true
-              schema:
-                type: string
-                format: uuid
-          responses:
-              200:
-                  description: Plan found
-                  content:
-                      application/json:
-                          schema:
-                              allOf:
-                                  - $ref: '#/components/schemas/SuccessResponse'
-                                  - $ref: '#/components/schemas/Plan'
-              400:
-                  $ref: '#/components/responses/ErrorBadRequest'
-              401:
-                  $ref: '#/components/responses/ErrorUnauthorized'
-              404:
-                  $ref: '#/components/responses/ErrorPlanNotFound'
-              429:
-                  $ref: '#/components/responses/ErrorTooManyRequests'
-              500:
-                  $ref: '#/components/responses/ErrorUnexpected'
-              503:
-                  $ref: '#/components/responses/ErrorUnavailable'                
-    /plans:
-      get:
-          tags:
-          - plans
-          summary: Retrieve all plans
-          description: |-
-              Use this endpoint to retrieve all subscription plans you have in the Bango Platform.
-          operationId: get-plans
-          
-          responses:
-              200:
-                  description: Plans found
-                  content:
-                      application/json:
-                          schema:
-                              allOf:
-                                  - $ref: '#/components/schemas/ReturnPlans'
-              400:
-                  $ref: '#/components/responses/ErrorBadRequest'
-              401:
-                  $ref: '#/components/responses/ErrorUnauthorized'
-              404:
-                  $ref: '#/components/responses/ErrorPlanNotFound'
-              429:
-                  $ref: '#/components/responses/ErrorTooManyRequests'
-              500:
-                  $ref: '#/components/responses/ErrorUnexpected'
-              503:
-                  $ref: '#/components/responses/ErrorUnavailable'                
 components:
     parameters:
         AuditMode:
@@ -530,10 +382,6 @@ components:
                     - FULL
                     - MINIMAL
                     - NONE
-            description: |- 
-                  - FULL will return ...
-                  - MINIMAL will return only `UPDATE` audit events
-                  - NONE will return no audit events
 
         IdempotencyHeader:
             name: X-RequestIdentifier
@@ -597,6 +445,7 @@ components:
                             - productName
                             - entitlementStartDate
                             - billingStartDate
+
         SubscriptionUpdate:
             description: Data for changing a subscription's plan.
             required: true
@@ -607,10 +456,6 @@ components:
                         properties:
                             merchantAccountKey:
                                 $ref: '#/components/schemas/MerchantAccountKey'
-                            productName:
-                                allOf:
-                                  - $ref: '#/components/schemas/ProductName'
-                                  - description: When attempting a productName update, a planName must also be specified. The product catalog defines these identifiers
                             planName:
                                 $ref: '#/components/schemas/PlanName'
                             billingPolicy:
@@ -628,31 +473,8 @@ components:
                                 $ref: '#/components/schemas/ExtensionData'
                         required:
                             - merchantAccountKey
-
-        PlanCreate:
-            description: Data for initializing a plan. 
-              If the productName already exists in the Bango Platform, the plan will be added within the existing productName. Else a new productName will be created for this plan and future plans.
-              
-              planPhases will be added using the sequenceId specified. For more information see the PlanPhases schema.
-            required: true
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            productName:
-                                $ref: '#/components/schemas/ProductName'
-                                
-                            planName:
-                                $ref: '#/components/schemas/PlanName'
-                            planPhases:
-                              type: array
-                              items:
-                                  $ref: '#/components/schemas/PlanPhase'
-                        required:
                             - planName
-                            - productName
-                            - planPhases
+
 
     responses:
         ErrorBadRequest:
@@ -702,24 +524,7 @@ components:
                                 enum: ['ALREADY_EXISTS']
                             responseMessage:
                                 type: string
-                                example: A plan with the same name already exists
-                        required:
-                            - responseCode
-                            - responseMessage
-        ErrorPlanNotFound:
-            description: Plan not found
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            responseCode:
-                                description: Always 'NOT_FOUND'
-                                type: string
-                                enum: ['NOT_FOUND']
-                            responseMessage:
-                                type: string
-                                example: Plan not found
+                                example: A subscription with the same externalKey already exists
                         required:
                             - responseCode
                             - responseMessage
@@ -1144,6 +949,8 @@ components:
                 An optional unique identifier for the subscription, meaningful to the API consumer. This must be a globally unique, opaque string.
 
                 Use this identifier as an alternative to the `subscriptionId` assigned by Bango.
+
+                When you use the Bango Subscriptions API with the Bango Resale API for resellers, set this value to the Bango Resale entitlement ID.
             type: string
             example: 'my-external-identifier'
 
@@ -1167,27 +974,6 @@ components:
                     type: string
                     format: date
 
-            
-        PhaseDuration:
-            description: |
-              How long a phase lasts, in ISO 8601 format. If omitted or the empty string, this will be ignored. Only the EVERGREEN phase will last forever.
-      
-              ISO 8601 supports durations using several units simultaneously. For example, you can define a duration of 2 months and 1 week using "P2M1W". Bango supports this for full flexibility, but note that durations including hours and minutes may round up to the nearest day. Typically, durations are measured in weeks or months and use no other units.
-              
-              Bango Subscription plans can be set to use both D (day) & M (month) for periods. T (time) is not supported.
-      
-              See https://en.wikipedia.org/wiki/ISO_8601#Durations
-            type: string
-            format: iso-8601-duration
-            example: P3M
-        
-        PhaseType:
-            type: string
-            enum:
-                - TRIAL
-                - DISCOUNT
-                - FIXEDTERM
-                - EVERGREEN
         PhasePrice:
             description: Pricing information for a phase.
             type: object
@@ -1205,82 +991,22 @@ components:
                 recurringPrice:
                     type: number
                     example: 0.0
-        
-        Plan:
-            description: A subscription plan record in the Bango Platform
-            type: object
-            properties:
-              planId:
-                    $ref: '#/components/schemas/PlanId'
-              productName:
-                  $ref: '#/components/schemas/ProductName'
-              planName:
-                  $ref: '#/components/schemas/PlanName'
-              planPhases:
-                type: array
-                items:
-                    $ref: '#/components/schemas/PlanPhase'
-        PlanId:
-            description: The unique identifier generated by Bango for a plan. This is a globally unique, opaque string
+
+        PhaseType:
             type: string
-            format: uuid
-            example: '123e4567-e89b-12d3-a456-426614174000'
-        ReturnPlans:
-            type: object
-            properties:
-                responseCode:
-                    description: Always 'OK'
-                    type: string
-                    enum: ['OK']
-                responseMessage:
-                    type: string
-                    example: Success
-                plans:  
-                  description: Plans in the Bango Platform
-                  type: array
-                  items:
-                      $ref: '#/components/schemas/Plan'
+            enum:
+                - TRIAL
+                - DISCOUNT
+                - FIXEDTERM
+                - EVERGREEN
+
         PlanName:
-            description: The unique identifier for the plan detailing the prices and offer periods associated with the subscription. Bango use NCName type which means that the planName cannot contain several symbol characters like :, @, $, %, &, /, +, ,, ;, whitespace characters or different parenthesis.
+            description: The unique identifier for the plan detailing the prices and offer periods associated with the subscription. The product catalog defines these identifiers
             type: string
             example: bango-music-3-months-free
-        PlanPhase:
-            type: object
-            properties:
-                sequence:
-                  type: integer
-                  description: The unique sequence identifier in which the phases must be executed for the plan. This must be sequential. E.g, if you have three phases in the plan you must use 0, 1 & 2 as your sequenceId's.
-                    If you provide duplicate sequenceId's in the same plan or do not follow the sequential ordering a `400 BAD_REQUEST` will be returned.
-                  example: 0
-                billDescription:
-                  description: passed through to the payment providers system for usage on the customer bill if applicable
-                  example: Bango Music 3 months on us
-                type:
-                    $ref: '#/components/schemas/PhaseType'
-                duration:
-                    $ref: '#/components/schemas/PhaseDuration'
-                billingPeriod:
-                    $ref: '#/components/schemas/BillingPeriod'
-                price:
-                    $ref: '#/components/schemas/Price'
-            required:
-              - sequenceId
-              - type
-              - billingPeriod
-              - price
-        Price:
-            type: object
-            properties: 
-                amount:
-                  type: number
-                  example: 0.0
-                currency:
-                  $ref: '#/components/schemas/CurrencyCode'
-            required:
-              - amount
-              - currency
+
         ProductName:
-            description: The unique identifier for the product or service the user is subscribing to. The product catalog defines these identifiers. The first character of the planName can't be a number.
+            description: The unique identifier for the product or service the user is subscribing to. The product catalog defines these identifiers
             type: string
             example: bango-music
 
