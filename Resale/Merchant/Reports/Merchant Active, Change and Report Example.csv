@@ -1,0 +1,3 @@
+MerchantEntitlementId,BangoEntitlementId,Status,MerchantAccountKey,ProductKey,DisplayName,CreatedDate,ActivatedDate,SuspendedDate,ExpiryDate,LastUpdated,EndDate
+668c58e4-7966-4ff2-b1cc-9dd6d5e59702,f3508609-0a98-40c3-9851-e8821ddb449a,Active,BANGO,BangoMusic,BangoMusic Streaming,"22/01/2022 04:36:49","22/01/2022 04:36:52",,,"22/01/2022 04:36:52",
+37680640-5be7-4b2f-bd60-6c3b512cca35,c2ccab37-84ac-423b-ae68-6a7390221636,Pending,BANGO,BangoMusic,BangoMusic Streaming,"22/02/2022 14:12:35",,,,"22/02/2022 14:12:35",
