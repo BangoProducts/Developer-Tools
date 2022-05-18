@@ -132,12 +132,14 @@ components:
         dateCreated:
           type: string
           format: date-time
+          example: '2022-05-18T06:47:43.18Z'
           description: >-
             Date and time when the entitlement was created, in UTC ISO 8601
             format (yyyy-MM-ddThh:mm:ssZ)
         dateActivated:
           type: string
           format: date-time
+          example: '2022-05-18T06:47:44.01Z'
           description: >-
             Date and time when the entitlement was activated, in UTC ISO 8601
             format (yyyy-MM-ddThh:mm:ssZ)
