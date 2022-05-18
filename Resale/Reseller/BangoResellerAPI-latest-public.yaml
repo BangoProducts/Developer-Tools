@@ -166,8 +166,8 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
-                    dateActivated: "2020-06-22T17:35:59.909Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:35:59.90Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
                     dateAutoSuspend: null
@@ -223,7 +223,7 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
                     dateActivated: "0001-01-01T00:00:00Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
@@ -279,7 +279,7 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
                     dateActivated: "0001-01-01T00:00:00Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
@@ -438,8 +438,8 @@ paths:
                   productKey: BangoMusic
                   notificationUrl: https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
                   offerKey: BUNDLE
-                  dateExpiry: "2021-06-22T17:35:38.929Z"
-                  dateAutoSuspend: "2020-11-22T10:11:14.289Z"
+                  dateExpiry: "2021-06-22T17:35:38.92Z"
+                  dateAutoSuspend: "2020-11-22T10:11:14.28Z"
                   externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
                   extensionData: 
                     additionalProp1: string
@@ -505,7 +505,7 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
                     dateActivated: "2020-06-22T17:36:01Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
@@ -566,7 +566,7 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
                     dateActivated: "2020-06-22T17:36:01Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
@@ -622,7 +622,7 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
                     dateActivated: "2020-06-22T17:36:01Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
@@ -850,7 +850,7 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
                     dateActivated: "2020-06-22T17:36:01Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
@@ -1016,7 +1016,7 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
                     dateActivated: "0001-01-01T00:00:00Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
@@ -1286,8 +1286,8 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
-                    dateActivated: "2020-06-22T17:35:59.909Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:35:59.90Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
                     dateAutoSuspend: null
@@ -1471,13 +1471,13 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
-                    dateActivated: "2020-06-22T17:35:59.909Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:35:59.90Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
                     dateAutoSuspend: null
                     dateFailed: "0001-01-01T00:00:00Z"
-                    dateSuspended: "2020-06-23T08:14:41.003Z"
+                    dateSuspended: "2020-06-23T08:14:41.00Z"
                     dateResumed: null
                     responseCode: OK
                     responseMessage: Resume request pending
@@ -1660,8 +1660,8 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
-                    dateActivated: "2020-06-22T17:35:59.909Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:35:59.90Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
                     dateAutoSuspend: null
@@ -1721,7 +1721,7 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
                     dateActivated: "0001-01-01T00:00:00Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
@@ -1916,8 +1916,8 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
-                    dateActivated: "2020-06-22T17:35:59.909Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:35:59.90Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
                     dateAutoSuspend: null
@@ -1977,7 +1977,7 @@ paths:
                     offerKey: null
                     merchantAccountKey: BANGO
                     activationCode: null
-                    dateCreated: "2020-06-22T17:35:38.929Z"
+                    dateCreated: "2020-06-22T17:35:38.92Z"
                     dateActivated: "0001-01-01T00:00:00Z"
                     dateEnded: "0001-01-01T00:00:00Z"
                     dateExpiry: "0001-01-01T00:00:00Z"
