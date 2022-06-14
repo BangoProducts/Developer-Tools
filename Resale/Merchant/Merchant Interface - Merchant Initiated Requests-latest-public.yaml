@@ -728,7 +728,6 @@ components:
           enum:
             - SUSPENDED
             - NORMAL
-            - DOWNGRADED
         merchantExtensionData:
           $ref: '#/components/schemas/MerchantExtensionData'
         financeData:
