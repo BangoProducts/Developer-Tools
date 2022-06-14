@@ -2410,7 +2410,6 @@ components:
           enum:
             - SUSPENDED
             - NORMAL
-            - DOWNGRADED
         extensionData:
           type: object
           additionalProperties:
