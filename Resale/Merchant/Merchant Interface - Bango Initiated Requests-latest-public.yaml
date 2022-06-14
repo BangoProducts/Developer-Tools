@@ -414,7 +414,6 @@ components:
           enum:
             - SUSPENDED
             - NORMAL
-            - DOWNGRADED
         customerId:
             type: string
             description: Unique identifier representing a specific customer of the reseller not anonymised. This value will only be sent by Bango if the Merchant and Reseller both approve the sharing of this data
