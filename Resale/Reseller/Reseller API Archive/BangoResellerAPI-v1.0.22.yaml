@@ -3,9 +3,6 @@ info:
   title: Bango Reseller API
   description: >
     Changelog
-    
-    * 1.0.23:
-      * Adding optional sharedCustomerId to all responses
     * 1.0.22:
       * Adding `409 CONFLICT` to
         * `POST /v1/entitlement/cancel/{entitlementId}`
@@ -25,6 +22,7 @@ info:
     * 1.0.17:
       * Updating API spec to be OpenAPI3
     * 1.0.16:
+      * Added CheckEligibility method
       * Adding the support for a 201 created response for Create Entitlement
       * Adding serviceFlow parameter to extraInformation source object
     * 1.0.15
@@ -38,7 +36,7 @@ info:
     * 1.0.11: Added EntitlementReport
     * 1.0.6: Initial release
 
-  version: 1.0.23
+  version: 1.0.22
 
 externalDocs:
     description: Bango developer documentation
@@ -163,7 +161,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -221,7 +218,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -278,7 +274,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -505,7 +500,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -567,7 +561,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -624,7 +617,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -853,7 +845,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1020,7 +1011,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1291,7 +1281,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1477,7 +1466,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1667,7 +1655,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1729,7 +1716,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1925,7 +1911,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -1987,7 +1972,6 @@ paths:
                   value:
                     entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
                     customerIdentifier: "4407123456789"
-                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
                     productKey: BangoMusic
                     entitlementDisplayName: 30 days Bango music
                     offerKey: null
@@ -2153,10 +2137,125 @@ paths:
                   cancelReasonCategory: ACTIVATION_ROLLBACK
                   cancelReasonCode: FRAUD
                   cancelReasonDescription: Personal data stolen
+  /v1/entitlement/checkeligibility:
+    post:
+      summary: Check user eligibility
+      description: >-
+        Check if the user is eligible to create an entitlement for the product
+        provided in the request with the merchant.
+      operationId: checkeligibility
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: >-
+            Request unique identifier. If present, this id will be used for
+            idempotency.
+          schema:
+            type: string
+      tags:
+        - 'Check user eligibility '
+      responses:
+        '200':
+          description: User eligibility check result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckEligibilityResponse'
+              examples:
+                UserEligible:
+                  value:
+                    responseCode: OK
+                    responseMessage: Success
+                    eligible: true
+                    reason: User is eligible for this entitlement
+                UserNotEligible:
+                  value:
+                    responseCode: OK
+                    responseMessage: Success
+                    eligible: false
+                    reason: User is not eligible for this entitlement
+        '400':
+          description: Invalid API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidAPIRequest:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                NotSupported:
+                  value:
+                    responseCode: OPERATION_NOT_SUPPORTED
+                    responseMessage: Operation not supported for entitlement route.
+        '401':
+          description: IP address or access credentials are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Unauthorized:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: You have not provided adequate credentials to access this resource.
+                MessageSigningNoKey:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: No valid key found.
+                MessageSigningMissingContent:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature or header content is missing.
+                MessageSigningInvalidSignature:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature is invalid.
+        '429':
+          description: Request limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                TooManyRequests:
+                  value:
+                    responseCode: TOO_MANY_REQUESTS
+                    responseMessage: Request limit reached. Please try again later.
+        '500':
+          description: Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InternalError:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: 
+        '503':
+          description: Bango Platform undergoing maintenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                ServiceUnavailable:
+                  value:
+                    responseCode: SERVICE_UNAVAILABLE
+                    responseMessage:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckEligibility'
+        description: The entitlement JSON you want to create
+        required: true
 servers:
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/BangoProducts/Reseller-API/1.0.23
+    url: https://virtserver.swaggerhub.com/BangoProducts/Reseller-API/1.0.22
 components:
   securitySchemes:
     basic:
@@ -2381,6 +2480,29 @@ components:
         cancelReasonDescription:
           type: string
           description: Description of the entitlement cancel or revoke reason.
+    CheckEligibility:
+      type: object
+      required:
+        - customerIdentifier
+        - productKey
+        - merchantAccountKey
+      properties:
+        customerIdentifier:
+          type: string
+          description: User unique identifier.
+          example: "4407123456789"
+        merchantAccountKey:
+          type: string
+          description: 'Merchant unique identifier. For example, "BANGO".'
+          example: BANGO
+        productKey:
+          type: string
+          description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
+          example: BangoMusic
+        offerKey:
+          type: string
+          description: 'Entitlement offer unique identifier. For example, "6_MONTHS_ON_US".'
+          example: 6_MONTHS_ON_US
     EchoResponse:
       type: object
       properties:
@@ -2414,11 +2536,6 @@ components:
           type: string
           description: User unique identifier.
           example: "4407123456789"
-        sharedCustomerId:
-          type: string
-          format: uuid
-          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
-          example: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
         productKey:
           type: string
           description: 'Entitlement  product unique identifier. For example, "BangoMusic".'
@@ -2684,6 +2801,17 @@ components:
                 $ref: '#/components/schemas/ExtraEntitlementInfo'
               financeData:
                 $ref: '#/components/schemas/FinanceDataOutput'
+    CheckEligibilityResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        eligible:
+          type: boolean
+        reason:
+          type: string
     ClientDevice:
       type: object
       additionalProperties:
