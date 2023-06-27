@@ -4,6 +4,8 @@ info:
   title: Resale Merchant - Server API
   description: |
     Changelog
+    * 1.2.0:
+      * Adding optional `sharedCustomerId` to all responses
     * 1.1.0:
       * Adding `extraInformation` to `PATCH /v1/entitlement/{merchantEntitlementId}` and response object
       * Adding `merchantExtensionData` to response object
@@ -428,6 +430,10 @@ paths:
               examples:
                 response:
                   value: '1549053185'
+            sharedCustomerId:
+              examples:
+                response:
+                  value: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
             resellerId:
               examples:
                 response:
@@ -790,6 +796,11 @@ components:
           type: string
           description: User unique identifier.
           example: '1549053185'
+        sharedCustomerId:
+          type: string
+          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+          example: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
+          format: uuid
         productId:
           type: string
           description: 'Entitlement product unique identifier. For example, "BangoMusic".'
@@ -834,6 +845,11 @@ components:
           type: string
           description: User unique identifier.
           example: '1549053185'
+        sharedCustomerId:
+          type: string
+          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+          example: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
+          format: uuid
         productId:
           type: string
           description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
@@ -951,6 +967,11 @@ components:
                 type: string
                 description: User unique identifier.
                 example: '1549053185'
+              sharedCustomerId:
+                type: string
+                description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+                example: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
+                format: uuid
               productId:
                 type: string
                 description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
@@ -1059,6 +1080,11 @@ components:
           type: string
           description: User unique identifier.
           example: '1549053185'
+        sharedCustomerId:
+          type: string
+          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+          example: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
+          format: uuid
         productId:
           type: string
           description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
@@ -1168,6 +1194,11 @@ components:
           type: string
           description: User unique identifier.
           example: '1549053185'
+        sharedCustomerId:
+          type: string
+          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+          example: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
+          format: uuid
         productId:
           type: string
           description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
@@ -1270,6 +1301,11 @@ components:
           type: string
           description: User unique identifier.
           example: '1549053185'
+        sharedCustomerId:
+          type: string
+          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+          example: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
+          format: uuid
         productId:
           type: string
           description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
