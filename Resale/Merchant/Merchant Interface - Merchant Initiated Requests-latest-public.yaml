@@ -789,16 +789,15 @@ components:
       type: object
       description: List of filters applied to retrieve a list of existing entitlements
       required:
-        - bangoUserId
         - resellerId
       properties:
         bangoUserId:
           type: string
-          description: User unique identifier.
+          description: User unique identifier. Include this OR the sharedCustomerId
           example: '1549053185'
         sharedCustomerId:
           type: string
-          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup). Include this OR bangoUserId
           example: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
           format: uuid
         productId:
