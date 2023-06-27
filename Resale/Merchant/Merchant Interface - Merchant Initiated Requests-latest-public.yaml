@@ -281,10 +281,10 @@ paths:
   '/v1/merchant/entitlement/report':
     post:
       summary: >-
-        Get a list of entitlements for a bangoUserId, matching specific
+        Get a list of entitlements for a bangoUserId or sharedCustomerId, matching specific
         criteria
       description: >
-        Get a list of entitlements for a bangoUserId, matching specific
+        Get a list of entitlements for a bangoUserId or sharedCustomerId, matching specific
         criteria
       parameters:
         - name: X-RequestIdentifier
