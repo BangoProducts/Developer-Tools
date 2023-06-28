@@ -1,1 +1,2399 @@
+openapi: 3.0.0
+info:
+  title: Bango Reseller API
+  version: 1.0.0
+  description: |
+    The base URL for all endpoints is `https://resale.api.bango.com`
+security:
+  - basic: []
+paths:
+  '/v1/echo/{echoRequestId}':
+    post:
+      summary: Echo service used to check the health of the API
+      operationId: echo
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: >-
+            Optional, unique request identifier which supports idempotency
+          schema:
+            type: string
+        - name: echoRequestId
+          in: path
+          description: >-
+            An arbitrary string which is returned in the body of a successful response
+          required: true
+          schema:
+            type: string
+      tags:
+        - Echo
+      responses:
+        '200':
+          description: Echo request successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponse'
+              examples:
+                OK:
+                  value:
+                    responseCode: OK
+                    responseMessage: Success
+                    echo: Test_1234
+        '400':
+          description: Invalid API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidAPIRequest:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+        '401':
+          description: IP address or access credentials are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Unauthorized:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: You have not provided adequate credentials to access this resource.
+        '429':
+          description: Request limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                TooManyRequests:
+                  value:
+                    responseCode: TOO_MANY_REQUESTS
+                    responseMessage: Request limit reached. Please try again later.
+        '500':
+          description: Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InternalError:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: 
+        '503':
+          description: Bango Platform undergoing maintenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                ServiceUnavailable:
+                  value:
+                    responseCode: SERVICE_UNAVAILABLE
+                    responseMessage: 
+  /v1/entitlement:
+    post:
+      summary: Create a new entitlement
+      operationId: create
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: >-
+            optional, unique request identifier which supports idempotency
+          schema:
+            type: string
+      tags:
+        - Entitlement
+      responses:
+        '200':
+          description: Entitlement created and activated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                OK:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:35:59.90Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: OK
+                    responseMessage: Success
+                    status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+        '201':
+          description: Entitlement created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                Created:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "0001-01-01T00:00:00Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: CREATED
+                    responseMessage: Entitlement Created
+                    status: PENDING
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Creation
+        '202':
+          description: 'Entitlement created successfully, now pending activation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                ClientActionRequired:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "0001-01-01T00:00:00Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: CLIENT_ACTION_REQUIRED
+                    responseMessage: An action is required to be performed by the client.
+                    status: PENDING
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                      Action: NAVIGATE_TO_URL
+                      Url: https://example.com/?entitlementId=a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+        '400':
+          description: Invalid API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidAPIRequest:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                MaxEntitlementPerUser:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: "Invalid request or the request contains invalid data. Maximum number of subscriptions for user reached. Existing Active EntitlementId: f8069c89-bb3a-441c-a055-f56cccd91e1a"
+                NotSupported:
+                  value:
+                    responseCode: OPERATION_NOT_SUPPORTED
+                    responseMessage: Operation not supported for entitlement route.
+        '401':
+          description: IP address or access credentials are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Unauthorized:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: You have not provided adequate credentials to access this resource.
+                MessageSigningNoKey:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: No valid key found.
+                MessageSigningMissingContent:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature or header content is missing.
+                MessageSigningInvalidSignature:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature is invalid.
+        '403':
+          description: Unable to create entitlement for the service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                NotAvailable:
+                  value:
+                    responseCode: NOT_AVAILABLE
+                    responseMessage: No active entitlement routes found.
+        '409':
+          description: Entitlement ID already in use
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                AlreadyExists:
+                  value:
+                    responseCode: ALREADY_EXISTS
+                    responseMessage:
+        '429':
+          description: Request limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                TooManyRequests:
+                  value:
+                    responseCode: TOO_MANY_REQUESTS
+                    responseMessage: Request limit reached. Please try again later.
+        '500':
+          description: Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InternalError:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: 
+        '503':
+          description: Bango Platform undergoing maintenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                ServiceUnavailable:
+                  value:
+                    responseCode: SERVICE_UNAVAILABLE
+                    responseMessage: 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementCreate'
+            examples:    
+              BaseRequest:
+                value:
+                  customerIdentifier: "4407123456789"
+                  merchantAccountKey: BANGO
+                  productKey: BangoMusic
+                  notificationUrl: https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
+              ExtendedRequest:
+                value:
+                  customerIdentifier: "4407123456789"
+                  merchantAccountKey: BANGO
+                  productKey: BangoMusic
+                  notificationUrl: https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                  offerKey: BUNDLE
+                  dateExpiry: "2021-06-22T17:35:38.92Z"
+                  dateAutoSuspend: "2020-11-22T10:11:14.28Z"
+                  externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                  extensionData: 
+                    additionalProp1: string
+                    additionalProp2: string
+                    additionalProp3: string
+                  extraInformation:
+                    clientDevice:
+                      type: STB
+                      id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                      typeId: P49AJFND8NFN23NANGAJG
+                      modelName: STB Model X7
+                      modelNumber: IAH45IAOF/5
+                      serialNumber: JHFJHA43JNFA9393GFD
+                      osType: Linux
+                      osVersion: 10.3.8
+                      macAddress: 4A-0F-99-F2-D3-DD
+                      browser: Firefox
+                    communicationInformation:
+                      emailAddress: 123@abc.co.uk
+                      msisdn: 441234567890
+                    source: 
+                      channelType: WEB_PROMOTION
+                      campaignRef: SUMMER_PROMO
+                      referrer: SEARCH_ENGINE
+                      bundleId: BundleABC123
+                      country: United Kingdom
+                      region: East Anglia
+                      brand: BrandABC
+                      serviceFlow: Activation
 
+        description: The entitlement JSON you want to create
+        required: true
+        
+    patch:
+      summary: Update an existing entitlement
+      description: >-
+        Update an entitlement. This operation cannot be performed on
+        entitlements that are in SUSPENDED status.
+      operationId: update
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: >-
+            Request unique identifier. If present, this id will be used for
+            idempotency.
+          schema:
+            type: string
+      tags:
+        - Entitlement
+      responses:
+        '200':
+          description: Entitlement updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                OK:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:36:01Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: OK
+                    responseMessage: Success
+                    status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
+        '202':
+          description: An action is required to be performed by the client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                Accepted:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:36:01Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: ACCEPTED
+                    responseMessage: Update request accepted by merchant.
+                    status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                      Action: NAVIGATE_TO_URL
+                      Url: https://example.com/?entitlementId=a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation     
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
+                ClientActionRequired:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:36:01Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: CLIENT_ACTION_REQUIRED
+                    responseMessage: An action is required to be performed by the client.
+                    status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                      Action: NAVIGATE_TO_URL
+                      Url: https://example.com/?entitlementId=a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
+        
+        '400':
+          description: Invalid API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidAPIRequest:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                NotSupported:
+                  value:
+                    responseCode: OPERATION_NOT_SUPPORTED
+                    responseMessage: Operation not supported for entitlement route.
+        '401':
+          description: IP address or access credentials are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Unauthorized:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: You have not provided adequate credentials to access this resource.
+                MessageSigningNoKey:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: No valid key found.
+                MessageSigningMissingContent:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature or header content is missing.
+                MessageSigningInvalidSignature:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature is invalid.
+        '403':
+          description: Unable to create entitlement for the service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                NotAvailable:
+                  value:
+                    responseCode: NOT_AVAILABLE
+                    responseMessage: No active entitlement routes found.
+        '404':
+          description: Entitlement not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                NotFound:
+                  value:
+                    responseCode: NOT_FOUND
+                    responseMessage: Entitlement Not Found
+        '409':
+          description: Entitlement not in the correct state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidState:
+                  value:
+                    responseCode: INVALID_STATE
+                    responseMessage: Operation invalid for the current state of the entitlement.
+        '429':
+          description: Request limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                TooManyRequests:
+                  value:
+                    responseCode: TOO_MANY_REQUESTS
+                    responseMessage: Request limit reached. Please try again later.
+        '500':
+          description: Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InternalError:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: 
+        '503':
+          description: Bango Platform undergoing maintenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                ServiceUnavailable:
+                  value:
+                    responseCode: SERVICE_UNAVAILABLE
+                    responseMessage: 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementUpdate'
+            examples:    
+              ProductUpdate:
+                value:
+                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
+                  productKey: BangoMusic2
+              NotificationUrlUpdate:
+                value:
+                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
+                  notificationUrl: https://www.example2.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
+              CustomerIdentifierUpdate:
+                value:
+                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
+                  customerIdentifier: "4407987654321"
+              ExternalEntitlementIdUpdate:
+                value:
+                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
+                  externalEntitlementId: "c843678f-d45a-49f4-868d-2bbc445b2c2e"
+              Suspend:
+                value:
+                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
+                  entitlementBenefits: SUSPENDED
+              Resume:
+                value:
+                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
+                  entitlementBenefits: NORMAL
+              ProductUpdateAndResume:
+                value:
+                  entitlementId: a212856a-4fd5-490b-a79c-f6dc950c2497
+                  entitlementBenefits: NORMAL
+                  productKey: BangoMusic2
+        description: The entitlement JSON you want to update
+        required: true
+    get:
+      summary: Get entitlement from ExternalEntitlementId
+      description: |
+        Get information about an entitlement using external entitlement id.
+      operationId: get
+      parameters:
+      - name: X-RequestIdentifier
+        in: header
+        description: >-
+          Request unique identifier. If present, this id will be used for
+          idempotency.
+        schema:
+          type: string
+      - name: ExternalEntitlementId
+        in: header
+        description: >-
+          Unique identifier provided for the Entitlement by the Reseller. Mandatory in GET calls using ExternalEntitlementId.
+        schema:
+          type: string
+        example: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+      tags:
+        - Entitlement
+      responses:
+        '200':
+          description: Entitlement retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                OK:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:36:01Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: OK
+                    responseMessage: Subscription updated successfully
+                    status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
+        '400':
+          description: Invalid API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidAPIRequest:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                NotSupported:
+                  value:
+                    responseCode: OPERATION_NOT_SUPPORTED
+                    responseMessage: Operation not supported for entitlement route.
+        '401':
+          description: IP address or access credentials are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Unauthorized:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: You have not provided adequate credentials to access this resource.
+                MessageSigningNoKey:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: No valid key found.
+                MessageSigningMissingContent:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature or header content is missing.
+                MessageSigningInvalidSignature:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature is invalid.
+        '404':
+          description: Entitlement not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                NotFound:
+                  value:
+                    responseCode: NOT_FOUND
+                    responseMessage: Entitlement Not Found
+        '429':
+          description: Request limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                TooManyRequests:
+                  value:
+                    responseCode: TOO_MANY_REQUESTS
+                    responseMessage: Request limit reached. Please try again later.
+        '500':
+          description: Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InternalError:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: 
+        '503':
+          description: Bango Platform undergoing maintenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                ServiceUnavailable:
+                  value:
+                    responseCode: SERVICE_UNAVAILABLE
+                    responseMessage: 
+  '/v1/entitlement/{entitlementId}':
+    get:
+      summary: Get entitlement from BangoEntitlementId
+      description: |
+        Get information about an entitlement.
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: >-
+            Request unique identifier. If present, this id will be used for
+            idempotency.
+          schema:
+            type: string
+        - name: entitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - Entitlement
+      responses:
+        '200':
+          description: Entitlement retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                OK:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "0001-01-01T00:00:00Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: OK
+                    responseMessage: Success
+                    status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
+        '400':
+          description: Invalid API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidAPIRequest:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                NotSupported:
+                  value:
+                    responseCode: OPERATION_NOT_SUPPORTED
+                    responseMessage: Operation not supported for entitlement route.
+        '401':
+          description: IP address or access credentials are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Unauthorized:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: You have not provided adequate credentials to access this resource.
+                MessageSigningNoKey:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: No valid key found.
+                MessageSigningMissingContent:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature or header content is missing.
+                MessageSigningInvalidSignature:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature is invalid.
+        '404':
+          description: Entitlement not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                NotFound:
+                  value:
+                    responseCode: NOT_FOUND
+                    responseMessage: Entitlement Not Found
+        '429':
+          description: Request limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                TooManyRequests:
+                  value:
+                    responseCode: TOO_MANY_REQUESTS
+                    responseMessage: Request limit reached. Please try again later.
+        '500':
+          description: Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InternalError:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: 
+        '503':
+          description: Bango Platform undergoing maintenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                ServiceUnavailable:
+                  value:
+                    responseCode: SERVICE_UNAVAILABLE
+                    responseMessage:
+  /v1/entitlement/report:
+    post:
+      summary: >-
+        Get a list of entitlements for a customerIdentifier, matching specific
+        criteria
+      description: >
+        Get a list of entitlements for a customerIdentifier, matching specific
+        criteria
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: >-
+            Request unique identifier. If present, this id will be used for
+            idempotency.
+          schema:
+            type: string
+      tags:
+        - Entitlement
+      responses:
+        '200':
+          description: Retrieval successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementReportResponse'
+        '400':
+          description: Invalid API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidAPIRequest:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                NotSupported:
+                  value:
+                    responseCode: OPERATION_NOT_SUPPORTED
+                    responseMessage: Operation not supported for entitlement route.
+        '401':
+          description: IP address or access credentials are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Unauthorized:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: You have not provided adequate credentials to access this resource.
+                MessageSigningNoKey:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: No valid key found.
+                MessageSigningMissingContent:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature or header content is missing.
+                MessageSigningInvalidSignature:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature is invalid.
+        '429':
+          description: Request limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                TooManyRequests:
+                  value:
+                    responseCode: TOO_MANY_REQUESTS
+                    responseMessage: Request limit reached. Please try again later.
+        '500':
+          description: Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InternalError:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: 
+        '503':
+          description: Bango Platform undergoing maintenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                ServiceUnavailable:
+                  value:
+                    responseCode: SERVICE_UNAVAILABLE
+                    responseMessage:           
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementReport'
+        description: The report filters JSON.
+        required: true
+
+  '/v1/entitlement/cancel/{entitlementId}':
+    post:
+      summary: Cancel an entitlement
+      description: |
+        Cancel an entitlement
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: >-
+            Request unique identifier. If present, this id will be used for
+            idempotency.
+          schema:
+            type: string
+        - name: entitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - Entitlement
+      responses:
+        '200':
+          description: Entitlement cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                OK:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:35:59.90Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: OK
+                    responseMessage: Success
+                    status: ACTIVE-ENDING
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
+        '202':
+          description: Entitlement cancellation request pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                Accepted:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "0001-01-01T00:00:00Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: ACCEPTED
+                    responseMessage: Termination request accepted by merchant.
+                    status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+        '400':
+          description: Invalid API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidAPIRequest:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                NotSupported:
+                  value:
+                    responseCode: OPERATION_NOT_SUPPORTED
+                    responseMessage: Operation not supported for entitlement route.
+        '401':
+          description: IP address or access credentials are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Unauthorized:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: You have not provided adequate credentials to access this resource.
+                MessageSigningNoKey:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: No valid key found.
+                MessageSigningMissingContent:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature or header content is missing.
+                MessageSigningInvalidSignature:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature is invalid.
+        '403':
+          description: Unable to create entitlement for the service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                NotAvailable:
+                  value:
+                    responseCode: NOT_AVAILABLE
+                    responseMessage: No active entitlement routes found.
+        '404':
+          description: Entitlement not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                NotFound:
+                  value:
+                    responseCode: NOT_FOUND
+                    responseMessage: Entitlement Not Found
+        '409':
+          description: Request could not be completed due to a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Conflict:
+                  value:
+                    responseCode: CONFLICT
+                    responseMessage: The requested action has been rejected due to a conflict.
+        '429':
+          description: Request limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                TooManyRequests:
+                  value:
+                    responseCode: TOO_MANY_REQUESTS
+                    responseMessage: Request limit reached. Please try again later.
+        '500':
+          description: Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InternalError:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: 
+        '503':
+          description: Bango Platform undergoing maintenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                ServiceUnavailable:
+                  value:
+                    responseCode: SERVICE_UNAVAILABLE
+                    responseMessage:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementTerminate'
+            examples:    
+              BaseRequest:
+                value:
+                  cancelReasonCategory: CUSTOMER_CANCELLED
+                  cancelReasonCode: NOT_RENEWED
+                  cancelReasonDescription: The user did not renew their monthly contract
+  '/v1/entitlement/revoke/{entitlementId}':
+    post:
+      summary: Revoke an entitlement
+      description: |
+        Revoke an entitlement
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: >-
+            optional, unique request identifier which supports idempotency
+          schema:
+            type: string
+        - name: entitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - Entitlement
+      responses:
+        '200':
+          description: Entitlement revoke successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                OK:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "2020-06-22T17:35:59.90Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: OK
+                    responseMessage: Success
+                    status: REVOKED
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
+        '202':
+          description: Entitlement cancellation request pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementResponse'
+              examples:
+                Accepted:
+                  value:
+                    entitlementId: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+                    customerIdentifier: "4407123456789"
+                    sharedCustomerId: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+                    productKey: BangoMusic
+                    entitlementDisplayName: 30 days Bango music
+                    offerKey: null
+                    merchantAccountKey: BANGO
+                    activationCode: null
+                    dateCreated: "2020-06-22T17:35:38.92Z"
+                    dateActivated: "0001-01-01T00:00:00Z"
+                    dateEnded: "0001-01-01T00:00:00Z"
+                    dateExpiry: "0001-01-01T00:00:00Z"
+                    dateAutoSuspend: null
+                    dateFailed: "0001-01-01T00:00:00Z"
+                    dateSuspended: null
+                    dateResumed: null
+                    responseCode: ACCEPTED
+                    responseMessage: Termination request accepted by merchant.
+                    status: ACTIVE
+                    externalEntitlementId: "124130d2-2cbc-45a1-ab9b-dfa8b67a2e63"
+                    extensionData: 
+                      additionalProp1: string
+                      additionalProp2: string
+                      additionalProp3: string
+                    parameters:
+                    extraInformation:
+                      clientDevice:
+                        type: STB
+                        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+                        typeId: P49AJFND8NFN23NANGAJG
+                        modelName: STB Model X7
+                        modelNumber: IAH45IAOF/5
+                        serialNumber: JHFJHA43JNFA9393GFD
+                        osType: Linux
+                        osVersion: 10.3.8
+                        macAddress: 4A-0F-99-F2-D3-DD
+                        browser: Firefox
+                      communicationInformation:
+                        emailAddress: 123@abc.co.uk
+                        msisdn: 441234567890
+                      source: 
+                        channelType: WEB_PROMOTION
+                        campaignRef: SUMMER_PROMO
+                        referrer: SEARCH_ENGINE
+                        bundleId: BundleABC123
+                        country: United Kingdom
+                        region: East Anglia
+                        brand: BrandABC
+                        serviceFlow: Activation
+                    financeData: 
+                      source: "Merchant"
+                      type: "order"
+                      timestamp: "2021-10-18T11:09:44Z"
+        '400':
+          description: Invalid API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidAPIRequest:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Invalid request.
+                NotSupported:
+                  value:
+                    responseCode: OPERATION_NOT_SUPPORTED
+                    responseMessage: Operation not supported for entitlement route.
+        '401':
+          description: IP address or access credentials are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Unauthorized:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: You have not provided adequate credentials to access this resource.
+                MessageSigningNoKey:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: No valid key found.
+                MessageSigningMissingContent:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature or header content is missing.
+                MessageSigningInvalidSignature:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: Signature is invalid.
+        '403':
+          description: Unable to create entitlement for the service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                NotAvailable:
+                  value:
+                    responseCode: NOT_AVAILABLE
+                    responseMessage: No active entitlement routes found.
+        '404':
+          description: Entitlement not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                NotFound:
+                  value:
+                    responseCode: NOT_FOUND
+                    responseMessage: Entitlement Not Found
+        '409':
+          description: Request could not be completed due to a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Conflict:
+                  value:
+                    responseCode: CONFLICT
+                    responseMessage: The requested action has been rejected due to a conflict.
+        '429':
+          description: Request limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                TooManyRequests:
+                  value:
+                    responseCode: TOO_MANY_REQUESTS
+                    responseMessage: Request limit reached. Please try again later.
+        '500':
+          description: Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InternalError:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: 
+        '503':
+          description: Bango Platform undergoing maintenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                ServiceUnavailable:
+                  value:
+                    responseCode: SERVICE_UNAVAILABLE
+                    responseMessage:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementTerminate'
+            examples:    
+              BaseRequest:
+                value:
+                  cancelReasonCategory: ACTIVATION_ROLLBACK
+                  cancelReasonCode: FRAUD
+                  cancelReasonDescription: Personal data stolen
+servers:
+# Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/BangoProducts/Reseller-API/1.0.23
+components:
+  securitySchemes:
+    basic:
+      type: http
+      description: Basic authentication
+      scheme: basic
+ 
+        
+  schemas:
+    EntitlementCreate:
+      type: object
+      required:
+        - customerIdentifier
+        - productKey
+        - merchantAccountKey
+        - notificationUrl
+      properties:
+        customerIdentifier:
+          type: string
+          description: User unique identifier.
+          example: '4407123456789'
+        merchantAccountKey:
+          type: string
+          description: 'Merchant unique identifier. For example, "BANGO".'
+          example: BANGO
+        productKey:
+          type: string
+          description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
+          example: BangoMusic
+        notificationUrl:
+          type: string
+          format: url
+          description: >-
+            The endpoint where all POST notifications will be sent after 
+            subscription creation. The body of the POST request will contain the
+            entitlement information in
+            https://developer.bango.com/resale/api-ref/notifications.
+          example: >-
+            https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        entitlementDisplayName:
+          type: string
+          description: >-
+            Entitlement display name. For example, "30 days Bango music"
+            (optional).
+          example: 30 days of Bango music
+        offerKey:
+          type: string
+          description: 'Entitlement offer. For example, "BUNDLE" (optional).'
+          example: null
+        dateExpiry:
+          type: string
+          format: date
+          description: >-
+            Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        dateAutoSuspend:
+          type: string
+          format: date
+          description: >-
+            Entitlement auto-suspension date in UTC ISO 8601 format. Null if no auto-suspension
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        externalEntitlementId:
+          type: string
+          description: |-
+            External identifier for the Entitlement from the Reseller.
+          example: >-
+            124130d2-2cbc-45a1-ab9b-dfa8b67a2e63
+        extensionData:
+          type: object
+          additionalProperties:
+            type: string
+            description: >-
+              Accepts a dynamic list of key-value pairs to cover custom data
+              needs (optional).
+          example:
+            additionalCustomData1: additionalCustomDataValue1
+            additionalCustomData2: additionalCustomDataValue2
+            additionalCustomData3: additionalCustomDataValue3
+        extraInformation:
+          $ref: '#/components/schemas/ExtraEntitlementInfo'
+
+    EntitlementUpdate:
+      type: object
+      required:
+        - entitlementId
+      properties:
+        entitlementId:
+          type: string
+          description: Unique identifier representing a specific entitlement.
+          example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        activationCode:
+          type: string
+          description: Code or token use for the entitlement activation (optional).
+          example: null
+        customerIdentifier:
+          type: string
+          description: User unique identifier.
+          example: "4407123456789"
+        productKey:
+          type: string
+          description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
+          example: 30_DAYS_MUSIC
+        entitlementDisplayName:
+          type: string
+          description: >-
+            Entitlement display name. For example, "30 days Bango music"
+            (optional).
+          example: 30 days of Bango music
+        offerKey:
+          type: string
+          description: 'Entitlement offer. For example, "BUNDLE" (optional).'
+          example: BUNDLE
+        dateExpiry:
+          type: string
+          format: date
+          description: >-
+            Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        dateAutoSuspend:
+          type: string
+          format: date
+          description: >-
+            Entitlement auto-suspension date in UTC ISO 8601 format. Null if no auto-suspension
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        notificationUrl:
+          type: string
+          format: url
+          description: >-
+            The endpoint where all POST notifications will be sent after 
+            subscription creation. The body of the POST request will contain the
+            entitlement information in EntitlementGetResponse format.
+          example: >-
+            https://www.example.com/notification/a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        externalEntitlementId:
+          type: string
+          description: |-
+            External identifier for the Entitlement from the Reseller.
+          example: >-
+            124130d2-2cbc-45a1-ab9b-dfa8b67a2e63
+        entitlementBenefits:
+          type: string
+          description: |-
+            ENUM parameter for the Reseller to instruct the type of benefits action needed as part of the update request. This enum is used to suspend and resume entitlements using the update method.
+            
+            • You must use `SUSPENDED` when you want to suspend the end-users access to the merchants product/service. The entitlement must be `ACTIVE` to successfully carry out this changed.
+            
+            • You must use `NORMAL` when you want to resume the end-users access to the merchants product/service. The entitlement must be `SUSPENDED` to successfully carry out this changed.
+          enum:
+            - SUSPENDED
+            - NORMAL
+        extensionData:
+          type: object
+          additionalProperties:
+            type: string
+            description: >-
+              Accepts a dynamic list of key-value pairs to cover custom data
+              needs (optional).
+          example:
+            additionalCustomData1: additionalCustomDataValue1
+            additionalCustomData2: additionalCustomDataValue2
+            additionalCustomData3: additionalCustomDataValue3
+        extraInformation:
+          $ref: '#/components/schemas/ExtraEntitlementInfo'
+
+    EntitlementReport:
+      type: object
+      description: List of filters applied to retrieve a list of existing entitlements
+      required:
+        - customerIdentifier
+      properties:
+        customerIdentifier:
+          type: string
+          description: User unique identifier.
+          example: "4407123456789"
+        productKey:
+          type: string
+          description: 'Entitlement product unique identifier. For example, "BangoMusic".'
+          example: BangoMusic
+        status:
+          type: string
+          description: |-
+            Entitlement status. Possible values are:
+              - "ACTIVE": The entitlement has been successfully activated
+              - "CANCELLED": The entitlement has been cancelled.
+              - "REVOKED": The entitlement has been revoked. This usually happens on fraud and user contract termination cases
+              - "SUSPENDED": The entitlement has been suspended.
+              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
+              - "FAILED": The entitlement failed
+          example: ACTIVE
+    EntitlementTerminate:
+      type: object
+      description: >-
+        Accepts a dynamic list of key-value pairs to cover custom data needs.
+        These will be added to the entitlement extensionData
+      properties:
+        cancelReasonCategory:
+          type: string
+          description: >-
+            Code representing the entitlement cancel or revoke reason. This code can be
+            any value, but we recommend you use one of the following codes:
+              - "CUSTOMER_CANCELLED"
+              - "CUSTOMER_CHANGED"
+              - "ACTIVATION_ROLLBACK"
+              - "REVOKED"
+        cancelReasonCode:
+          type: string
+          description: >-
+            Code representing the entitlement cancel or revoke reason. This code can be
+            any value, but we recommend you use one of the following codes:
+              - "NOT_RENEWED": The customer has not renewed the subscription
+              - "CUSTOMER_CANCELLED": The customer cancelled the subscription
+              - "PRODUCT_NO_LONGER_AVAILABLE": The reseller or merchant stopped offering this product
+              - "OTHER": Other
+              - "FRAUD": The user has not renewed the subscription
+              - "ACCOUNT_TERMINATED": The user is no longer a customer
+              - "SECURITY": For security reasons, access to this entitlement has been terminated
+              - "OTHER": Other
+        cancelReasonDescription:
+          type: string
+          description: Description of the entitlement cancel or revoke reason.
+    EchoResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+        echo:
+          type: string
+    EntitlementResponse:
+      type: object
+      required:
+      - entitlementId
+      - customerIdentifier
+      - productKey
+      - offerKey
+      - merchantAccountKey
+      - dateCreated
+      - dateActivated
+      - dateEnded
+      - dateExpiry
+      - responseCode
+      - responseMessage
+      - status
+      properties:
+        entitlementId:
+          type: string
+          description: Unique identifier representing a specific entitlement.
+          example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        customerIdentifier:
+          type: string
+          description: User unique identifier.
+          example: "4407123456789"
+        sharedCustomerId:
+          type: string
+          format: uuid
+          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+          example: "414b3019-0c28-4d14-9c5f-6217b8bd1e3e"
+        productKey:
+          type: string
+          description: 'Entitlement  product unique identifier. For example, "BangoMusic".'
+          example: BangoMusic
+        entitlementDisplayName:
+          type: string
+          description: 'Entitlement display name. For example, "30 days Bango music".'
+          example: 30 days Bango music
+        offerKey:
+          type: string
+          description: 'Entitlement offer. For example, "BUNDLE".'
+          example: null
+        merchantAccountKey:
+          type: string
+          description: 'Merchant unique identifier. For example, "BANGO".'
+          example: BANGO
+        activationCode:
+          type: string
+          description: Code or token use for the entitlement activation.
+          example: null
+        dateCreated:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement was created, in UTC ISO 8601
+            format (yyyy-MM-ddThh:mm:ssZ)
+        dateActivated:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement was activated, in UTC ISO 8601
+            format (yyyy-MM-ddThh:mm:ssZ)
+        dateEnded:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement ended due to cancellation or
+            revoke, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+          example: '0001-01-01T00:00:00Z'
+        dateExpiry:
+          type: string
+          format: date-time
+          description: >-
+            Entitlement expiry date in UTC ISO 8601 format. Null if no expiry
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: '0001-01-01T00:00:00Z'
+        dateAutoSuspend:
+          type: string
+          format: date
+          description: >-
+            Entitlement auto-suspension date in UTC ISO 8601 format. Null if no auto-suspension
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        dateFailed:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement failed, in UTC ISO 8601 format
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: '0001-01-01T00:00:00Z'
+        dateSuspended:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement was suspended, in UTC ISO 8601.
+            format (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        dateResumed:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement was resumed, in UTC ISO 8601.
+            format (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        responseCode:
+          type: string
+          example: OK
+        responseMessage:
+          type: string
+          example: Success
+        status:
+          type: string
+          example: ACTIVE
+          enum:
+                  - ACTIVE
+                  - CANCELLED
+                  - REVOKED
+                  - SUSPENDED
+                  - PENDING
+                  - FAILED
+                  - ACTIVE-ENDING
+          description: |-
+            Entitlement status. Possible values are:
+              - "ACTIVE": The entitlement has been successfully activated
+              - "CANCELLED": The entitlement has been cancelled.
+              - "REVOKED": The entitlement has been revoked. This usually happens on fraud and user contract termination cases.
+              - "SUSPENDED": The entitlement has been suspended.
+              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
+              - "FAILED": The entitlement failed
+              - "ACTIVE-ENDING": The entitlement is ending at the end of the current period.
+        externalEntitlementId:
+          type: string
+          description: |-
+            External identifier for the Entitlement from the Reseller.
+          example: >-
+            124130d2-2cbc-45a1-ab9b-dfa8b67a2e63
+        extensionData:
+          type: object
+          description: Accepts a dynamic list of key-value pairs to cover custom data needs
+          additionalProperties:
+            type: string
+        parameters:
+          type: object
+          properties:
+            Action:
+              type: string
+              description: The action the reseller should take next
+              enum: 
+                - NAVIGATE_TO_URL
+            Url:
+              type: string
+              description: The url that the reseller must redirect the user to when the `Action` of `NAVIGATE_TO_URL` is provided
+        extraInformation:
+          $ref: '#/components/schemas/ExtraEntitlementInfo'
+        financeData:
+          $ref: '#/components/schemas/FinanceDataOutput'
+    ResponseObject:
+      type: object
+      properties:
+        responseCode:
+          type: string
+        responseMessage:
+          type: string
+    EntitlementReportResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: OK
+        responseMessage:
+          type: string
+          example: Success
+        entitlements:
+          type: array
+          items:
+            type: object
+            properties:
+              dateCreated:
+                type: string
+                format: date-time
+                description: >-
+                  Date and time when the entitlement was created, in UTC ISO
+                  8601 format (yyyy-MM-ddThh:mm:ssZ)
+              dateActivated:
+                type: string
+                format: date-time
+                description: >-
+                  Date and time when the entitlement was activated, in UTC ISO
+                  8601 format (yyyy-MM-ddThh:mm:ssZ)
+              dateExpiry:
+                type: string
+                format: date-time
+                description: >-
+                  Entitlement expiry date in UTC ISO 8601 format. Null if no
+                  expiry (yyyy-MM-ddThh:mm:ssZ)
+                example: '0001-01-01T00:00:00Z'
+              dateAutoSuspend:
+                type: string
+                format: date
+                description: >-
+                  Entitlement auto-suspension date in UTC ISO 8601 format. Null if no auto-suspension
+                  (yyyy-MM-ddThh:mm:ssZ)
+                example: null
+              dateFailed:
+                type: string
+                format: date-time
+                description: >-
+                  Date and time when the entitlement failed, in UTC ISO 8601
+                  format (yyyy-MM-ddThh:mm:ssZ)
+                example: '0001-01-01T00:00:00Z'
+              dateEnded:
+                type: string
+                format: date-time
+                description: >-
+                  Date and time when the entitlement ended due to cancellation
+                  or revoke, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+                example: '0001-01-01T00:00:00Z'
+              dateSuspended:
+                type: string
+                format: date-time
+                description: >-
+                  Date and time when the entitlement was suspended, in UTC ISO
+                  8601. format (yyyy-MM-ddThh:mm:ssZ)
+                example: null
+              dateResumed:
+                type: string
+                format: date-time
+                description: >-
+                  Date and time when the entitlement was resumed, in UTC ISO
+                  8601. format (yyyy-MM-ddThh:mm:ssZ)
+                example: null
+              entitlementId:
+                type: string
+                description: Unique identifier representing a specific entitlement.
+              activationCode:
+                type: string
+                description: Code or token use for the entitlement activation.
+                example: null
+              customerIdentifier:
+                type: string
+                description: User unique identifier.
+                example: "4407123456789"
+              productKey:
+                type: string
+                description: >-
+                  Entitlement  product unique identifier. For example,
+                  "BangoMusic".
+                example: BangoMusic
+              entitlementDisplayName:
+                type: string
+                description: 'Entitlement display name. For example, "30 days Bango music".'
+                example: 30 days Bango music
+              offerKey:
+                type: string
+                description: 'Entitlement offer. For example, "BUNDLE".'
+                example: null
+              merchantAccountKey:
+                type: string
+                description: 'Merchant unique identifier. For example, "BANGO".'
+                example: Bango
+              status:
+                type: string
+                example: ACTIVE
+                enum:
+                  - ACTIVE
+                  - CANCELLED
+                  - REVOKED
+                  - SUSPENDED
+                  - PENDING
+                  - FAILED
+                description: |-
+                  Entitlement status. Possible values are:
+                    - "ACTIVE": The entitlement has been successfully activated
+                    - "CANCELLED": The entitlement has been cancelled.
+                    - "REVOKED": The entitlement has been revoked. This usually happens on fraud and user contract termination cases
+                    - "SUSPENDED": The entitlement has been suspended.
+                    - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process
+                    - "FAILED": The entitlement failed
+              externalEntitlementId:
+                type: string
+                description: |-
+                  External identifier for the Entitlement from the Reseller.
+                example: >-
+                  124130d2-2cbc-45a1-ab9b-dfa8b67a2e63
+              extensionDataList:
+                type: object
+                additionalProperties:
+                  type: string
+                  description: >-
+                    Accepts a dynamic list of key-value pairs to cover custom
+                    data needs
+              extraInformation:
+                $ref: '#/components/schemas/ExtraEntitlementInfo'
+              financeData:
+                $ref: '#/components/schemas/FinanceDataOutput'
+    ClientDevice:
+      type: object
+      additionalProperties:
+        type: string
+        description: >-
+          When the clientDevice object is present the type is a mandatory key.
+          The clientDevice object will only be returned if data has been
+          provided.
+            - "type": the type of the device. For example, "STB", "MOBILE", "DESKTOP", "TABLET"
+            - "id": the unique identifier for the users device
+            - "typeId": the common identifier for the type of device
+            - "modelName": the device model name
+            - "modelNumber": the device model number
+            - "serialNumber": the serial number of the device
+            - "osType": the OS type of the device
+            - "osVersion": the OS version of the device
+            - "macAddress": the mac address of the device
+            - "browser": the browser being used
+      example:
+        type: STB
+        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+        typeId: P49AJFND8NFN23NANGAJG
+        modelName: STB Model X7
+        modelNumber: IAH45IAOF/5
+        serialNumber: JHFJHA43JNFA9393GFD
+        osType: Linux
+        osVersion: 10.3.8
+        macAddress: 4A-0F-99-F2-D3-DD
+        browser: Firefox
+    CommunicationInformation:
+      type: object
+      additionalProperties:
+        type: string
+        description: |-
+          Accepts the defined key-value pairs.
+            - "emailAddress": the end-users email address.
+            - "msisdn": the end-users mobile number in international format.
+      example:
+        emailAddress: 123@abc.co.uk
+        msisdn: '441234567890'
+    Source:
+      type: object
+      additionalProperties:
+        type: string
+        description: |-
+          Accepts the defined key-value pairs.
+            - "channelType": the source channel of the entitlement request.
+            - "campaignRef": the campaign reference that the user clicked on.
+            - "referrer": where the user request originated from.
+            - "bundleId": a string identifier for the bundle which the OTT service is part of.
+            - "country": the end-users country.
+            - "region": the end-users region within their country.
+            - "brand": the brand of which the user originated from.
+            - "serviceFlow": the service flow for which the request originated. Valid values are Creation or Activation. If not passed Bango will treat this as Activation.
+      example:
+        channelType: WEB_PROMOTION
+        campaignRef: SUMMER_PROMO
+        referrer: SEARCH_ENGINE
+        bundleId: BundleABC123
+        country: United Kingdom
+        region: East Anglia
+        brand: BrandABC
+        serviceFlow: Creation
+          
+    FinanceDataOutput:
+      type: object
+      required:  
+        - source
+        - type
+        - timestamp
+      properties:
+        source:
+          type: string
+          description: >- 
+            the party who added the finance event
+          enum:
+            - Merchant
+            - Reseller
+        type:
+          type: string
+          description: >- 
+            the type of finance event
+          enum:
+            - order
+            - return
+            - renew
+        timestamp:
+          type: string
+          format: date-time
+          description: >- 
+            UTC ISO 8601
+        retailCurrency:
+          type: string
+          description: >- 
+            ISO 3
+        retailPrice:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, including tax
+        retailPriceTax:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, tax included in the retailPrice
+        offerPrice:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, including tax
+        offerPriceTax:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, tax included in the offerPrice
+        notes:
+          type: string
+          description: >- 
+            255 length limit
+           
+
+
+        
+    ExtraEntitlementInfo:
+      type: object
+      properties:
+        clientDevice:
+          $ref: '#/components/schemas/ClientDevice'
+        communicationInformation:
+          $ref: '#/components/schemas/CommunicationInformation'
+        source:
+          $ref: '#/components/schemas/Source'
