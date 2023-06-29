@@ -1,0 +1,295 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Reseller Notifications
+  description: |-
+    Bango uses notifications to tell you about changes to your entitlements which can be merchant-initiated, or reseller-initiated. 
+    Use these notifications ensure your records stay in sync with Bango's entitlement state.
+
+paths: 
+  '{notificationUrl}':
+    post:
+      summary: Entitlement Notifications
+      operationId: Entitlement Notifications
+      tags: 
+        - Notifications
+      description: |-
+        Bango notifications are sent to the `notificationUrl` you provided when creating an entitlement. We do not add any parameters to the url or change it in any way.     
+      requestBody:
+        $ref: '#/components/requestBodies/NotificationBody'            
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Success'
+
+components:
+  requestBodies: 
+    NotificationBody:
+      description: Notification body
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Success'
+              - $ref: '#/components/schemas/Entitlement'
+  schemas: 
+    Success:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: OK
+        responseMessage:
+          type: string
+          example: Success
+
+    Entitlement:
+      type: object
+      required:
+        - entitlementId
+        - customerIdentifier
+        - productKey
+        - merchantAccountKey
+        - status
+      properties:
+        parameters:
+          type: object
+        entitlementId:
+          type: string
+          description: Unique identifier representing a specific entitlement.
+          example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        customerIdentifier:
+          type: string
+          description: User unique identifier.
+          example: '4407123456789'
+        productKey:
+          type: string
+          description: 'Entitlement  product unique identifier. For example, "BangoMusic".'
+          example: BangoMusic
+        entitlementDisplayName:
+          type: string
+          description: 'Entitlement display name. For example, "30 days Bango music".'
+          example: 30 days Bango music
+        offerKey:
+          type: string
+          description: 'Entitlement offer. For example, "BUNDLE".'
+          example: null
+        merchantAccountKey:
+          type: string
+          description: 'Merchant unique identifier. For example, "BANGO".'
+          example: BANGO
+        status:
+          type: string
+          example: ACTIVE
+          description: |-
+            Entitlement status. Possible values are:
+              - "Active": The entitlement has been successfully activated
+              - "Cancelled": The entitlement has been cancelled.
+              - "Revoked": The entitlement has been revoked. This usually happens on fraud and user contract termination cases.
+              - "Suspended": The entitlement has been suspended.
+              - "Pending": The entitlement has been initiated, but the user has not yet finalized the activation process.
+              - "Failed": The entitlement failed
+              - "Active-Ending": The entitlement is ending at the end of the current period.
+        activationCode:
+          type: string
+          description: Code or token use for the entitlement activation.
+          example: null
+        dateCreated:
+          type: string
+          format: date-time
+          example: '2022-05-18T06:47:43.18Z'
+          description: >-
+            Date and time when the entitlement was created, in UTC ISO 8601
+            format (yyyy-MM-ddThh:mm:ssZ)
+        dateActivated:
+          type: string
+          format: date-time
+          example: '2022-05-18T06:47:44.01Z'
+          description: >-
+            Date and time when the entitlement was activated, in UTC ISO 8601
+            format (yyyy-MM-ddThh:mm:ssZ)
+        dateEnded:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement ended due to cancellation or
+            revoke, in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ)
+          example: '0001-01-01T00:00:00Z'
+        dateFailed:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement failed, in UTC ISO 8601 format
+            (yyyy-MM-ddThh:mm:ssZ)
+          example: '0001-01-01T00:00:00Z'
+        dateLastUpdated:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement was last updated, in UTC ISO 8601.
+            format (yyyy-MM-ddThh:mm:ssZ)
+          example: null
+        notificationReason:
+           $ref: '#/components/schemas/Notification'
+        externalEntitlementId:
+          type: string
+          description: |-
+            External identifier for the Entitlement from the Reseller.
+          example: >-
+            124130d2-2cbc-45a1-ab9b-dfa8b67a2e63
+        extensionData:
+          type: object
+          description: Accepts a dynamic list of key-value pairs to cover custom data needs
+          additionalProperties:
+            type: string       
+        extraInformation:
+          $ref: '#/components/schemas/ExtraEntitlementInfo'    
+        financeData:
+          $ref: '#/components/schemas/FinanceDataOutput'   
+
+    CommunicationInformation:
+      type: object
+      additionalProperties:
+        type: string
+        description: |-
+          Accepts the defined key-value pairs shown below:
+            - "emailAddress": the end-users email address.
+            - "msisdn": the end-users mobile number in international format.
+      example:
+        emailAddress: 123@abc.co.uk
+        msisdn: '441234567890'
+
+    ClientDevice:
+      type: object
+      additionalProperties:
+        type: string
+        description: >-
+          When the clientDevice object is present the type is a mandatory key.
+          The clientDevice object will only be returned if data has been
+          provided.
+            - "type": the type of the device. For example, "STB", "MOBILE", "DESKTOP", "TABLET"
+            - "id": the unique identifier for the users device
+            - "typeId": the common identifier for the type of device
+            - "modelName": the device model name
+            - "modelNumber": the device model number
+            - "serialNumber": the serial number of the device
+            - "osType": the OS type of the device
+            - "osVersion": the OS version of the device
+            - "macAddress": the mac address of the device
+            - "browser": the browser being used
+      example:
+        type: STB
+        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+        typeId: P49AJFND8NFN23NANGAJG
+        modelName: STB Model X7
+        modelNumber: IAH45IAOF/5
+        serialNumber: JHFJHA43JNFA9393GFD
+        osType: Linux
+        osVersion: 10.3.8
+        macAddress: 4A-0F-99-F2-D3-DD
+        browser: Firefox
+
+    Source:
+      type: object
+      additionalProperties:
+        type: string
+        description: |-
+          Accepts the defined key-value pairs shown below:
+            - "channelType": the source channel of the entitlement request.
+            - "campaignRef": the campaign reference that the user clicked on.
+            - "referrer": where the user request originated from.
+            - "bundleId": a string identifier for the bundle which the OTT service is part of.
+            - "country": the end-users country.
+            - "region": the end-users region within their country.
+            - "brand": the brand of which the user originated from.
+            - "serviceFlow": the service flow for which the request originated. Valid values are Creation or Activation. If not passed Bango will treat this as Activation
+      example:
+        channelType: WEB_PROMOTION
+        campaignRef: SUMMER_PROMO
+        referrer: SEARCH_ENGINE
+        bundleId: BundleABC123
+        country: United Kingdom
+        region: East Anglia
+        brand: BrandABC
+        serviceFlow: Creation
+    ExtraEntitlementInfo:
+      type: object
+      properties:
+        clientDevice:
+          $ref: '#/components/schemas/ClientDevice'
+        communicationInformation:
+          $ref: '#/components/schemas/CommunicationInformation'
+        source:
+          $ref: '#/components/schemas/Source'
+
+    Notification:
+          type: string
+          enum: [ACTIVATION_SUCCESS, PRODUCT_UPDATE, METADATA_UPDATE, TERMINATION_PENDING, TERMINATION_SUCCESS, ACCOUNT_UNLINKED, ACCOUNT_LINKED]  
+          description: |-
+              - "ACTIVATION_SUCCESS": The entitlement has been activated
+              - "PRODUCT_UPDATE": The productKey on the entitlement has been updated
+              - "METADATA_UPDATE": Metadata on the entitlment has been updated
+              - "TERMINATION_PENDING": The entitlement has been marked for termination at a future date
+              - "TERMINATION_SUCCESS": The entitlement has been terminated
+              - "ACCOUNT_UNLINKED": The entitlement has been unlinked from its (merchant-side) account. Entitlement may be inaccessible by the customer and recovery action is required
+              - "ACCOUNT_LINKED": The entitlement has been linked to a (merchant-side) account
+    FinanceDataOutput:
+      type: object
+      required:  
+        - source
+        - type
+        - timestamp
+      properties:
+        source:
+          type: string
+          description: >- 
+            the party who added the finance event
+          enum:
+            - Merchant
+        type:
+          type: string
+          description: >- 
+            the type of finance event
+          enum:
+            - order
+            - return
+            - adjustment
+            - renew
+        timestamp:
+          type: string
+          format: date-time
+          description: >- 
+            UTC ISO 8601
+        retailCurrency:
+          type: string
+          description: >- 
+            ISO 3
+        retailPrice:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, including tax
+        retailPriceTax:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, tax included in the retailPrice
+        offerPrice:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, including tax
+        offerPriceTax:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, tax included in the offerPrice
+        notes:
+          type: string
+          description: >- 
+            255 length limit
+  securitySchemes: {}
