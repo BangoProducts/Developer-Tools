@@ -488,7 +488,7 @@ paths:
               $ref: '#/components/schemas/EntitlementActivate'
         description: The entitlement activation JSON.
         required: true
-  '/v1/merchant/entitlement/notify':
+  '/v1/merchant/entitlement/notify/{merchantEntitlementId}':
     post:
       summary: Send a notification
       description: |
@@ -501,6 +501,13 @@ paths:
             idempotency.
           schema:
             type: string
+        - name: merchantEntitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          schema:
+            type: string
+            format: uuid
       tags:
         - Entitlement
       responses:
@@ -762,13 +769,8 @@ components:
     Notify:
       type: object
       required:
-        - merchantEntitlementId
         - notification
       properties:
-        merchantEntitlementId:
-          type: string
-          format: uuid
-          description: The unique identifier of the entitlement provided by the merchant following a create request
         notification:
           type: string
           format: enum
