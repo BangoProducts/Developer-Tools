@@ -1,0 +1,1092 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Resale Merchant - Client API
+
+paths:
+  /v1/entitlement:
+    post:
+      summary: Create entitlement
+      description: >-
+        Request that is sent to the merchant to create a new Entitlement and
+        return Activation URL and related parameters to be sent to the user.
+        Expected responses as defined below.
+      operationId: create
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: Request unique identifier. This id should be used for idempotency.
+          schema:
+            type: string
+      tags:
+        - Entitlement
+      responses:
+        '200':
+          description: Entitlement created and activated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementCreate200Response'
+        '201':
+          description: Entitlement created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementCreate201Response'
+        '202':
+          description: An action is required to be performed by the client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementCreate202Response'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '409':
+          description: Already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlreadyExists'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequests'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InteralServerError'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementCreate'
+        description: The entitlement JSON sent to merchant to create a subscription
+        required: true
+    patch:
+      summary: Update entitlement details
+      description: >-
+        Request sent to the merchant to update entitlement information like
+        Product detail. Expected responses as defined below.
+      operationId: update
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: Request unique identifier. This id should be used for idempotency.
+          schema:
+            type: string
+      tags:
+        - Entitlement
+      responses:
+        '200':
+          description: Entitlement updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+        '201':
+          description: Request created and queued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestCreated'
+        '202':
+          description: Request accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestAccepted'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '404':
+          description: Entitlement not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '409':
+          description: Operation invalid for the current state of the entitlement.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidState'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequests'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InteralServerError'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementUpdate'
+        description: The entitlement JSON you want to update
+        required: true
+
+  '/v1/entitlement/activationInfo/{merchantEntitlementId}':
+    post:
+      summary: Request activation information
+      description: >
+        This endpoint is used to request activation information for entitlements in a PENDING status. This endpoint is used for new requests as well as refresh requests for expired activation information.
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: Request unique identifier. This id should be used for idempotency.
+          schema:
+            type: string
+        - name: merchantEntitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - Entitlement
+      responses:
+        '200':
+          description: Activation information provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivationInfoResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '404':
+          description: Entitlement not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conflict'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequests'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InteralServerError'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivationInfo'
+        description: The activation information request JSON.
+
+  '/v1/entitlement/terminate/{merchantEntitlementId}':
+    post:
+      summary: Terminate entitlement
+      description: >
+        Request sent to merchant to end an entitlement. The body contains a flag
+        called "IMMEDIATE" that marks if the request is for a HARD / SOFT
+        termination.
+          - Immediate = true is an instruction for the merchant to terminate the entitlement effective immediately.
+          - Immediate = false is an instruction for the merchant to terminate the entitlement at the end of it's current billing lifecycle.
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: Request unique identifier. This id should be used for idempotency.
+          schema:
+            type: string
+        - name: merchantEntitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - Entitlement
+      responses:
+        '200':
+          description: Entitlement terminated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementTerminateResponse'
+        '202':
+          description: Request accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestAccepted'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '404':
+          description: Entitlement not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conflict'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequests'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InteralServerError'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitlementTerminate'
+        description: The entitlement revoke JSON.
+  /v1/entitlement/checkeligibility:
+    post:
+      summary: Check user eligibility
+      description: >-
+        Request that is sent to the merchant to check if the user is eligible to
+        create an entitlement for the product provided in the request.
+      operationId: checkeligibility
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: Request unique identifier. This id should be used for idempotency.
+          schema:
+            type: string
+      tags:
+        - Eligibility
+      responses:
+        '200':
+          description: Valid User eligibility response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckEligibilityResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequests'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InteralServerError'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckEligibilityRequest'
+        description: >-
+          The check eligibility JSON sent to merchant to check is user is
+          eligible for a subscription
+        required: true
+servers:
+  - url: >-
+      https://virtserver.swaggerhub.com/BangoProducts/MerchantInterface_Client_API/1.1.0
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    OAuth2:
+      type: oauth2
+      description: Bango uses https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://oauth.merchant.com/token'
+          scopes:
+            any: grants Bango access to the merchant system based on merchant defined rules
+    AWSToken:
+      type: apiKey
+      name: AWSTokenAuthorization
+      in: header
+  schemas:
+    EntitlementUpdate:
+      type: object
+      required:
+        - merchantEntitlementId
+        - bangoUserId
+        - productId
+        - resellerId
+      properties:
+        merchantEntitlementId:
+          type: string
+          description: Unique identifier used on activation
+          example: 6e37a4b5-8cb9-465b-88a9-ad5eb02596be
+          format: uuid
+        bangoUserId:
+          type: string
+          description: 'Unique user identifier, as identified by Bango'
+          example: '1549053185'
+        sharedCustomerId:
+          type: string
+          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+          example: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
+          format: uuid
+        productId:
+          type: string
+          description: 'Entitlement product unique identifier. For example, "30_DAYS_MUSIC".'
+          example: 30_DAYS_MUSIC
+        resellerId:
+          type: string
+          description: Unique reseller identifier
+          example: XYZ_RESELLER
+        entitlementBenefits:
+          type: string
+          description: >-
+            ENUM parameter to instruct the type of benefits
+            action needed as part of the update request only if a change is required. This enum is used to
+            suspend and resume entitlements using the update method.
+          enum:
+            - SUSPENDED
+            - NORMAL
+        customerId:
+            type: string
+            description: Unique identifier representing a specific customer of the reseller not anonymised. This value will only be sent by Bango if the Merchant and Reseller both approve the sharing of this data
+        offerId:
+          type: string
+          description: >-
+            The offer given to the user for the merchant service. For example,
+            "FREE_FOR_6_MONTHS".
+          example: FREE_FOR_6_MONTHS
+        status:
+          type: string
+          example: ACTIVE
+          enum:
+                  - ACTIVE
+                  - SUSPENDED
+                  - PENDING
+                  - ACTIVE-ENDING
+          description: |-
+            Entitlement status. Possible values are:
+              - "ACTIVE": The entitlement has been successfully activated
+              - "SUSPENDED": The entitlement has been suspended.
+              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
+              - "ACTIVE-ENDING": The entitlement is ending at the end of the current period.
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
+        extraInformation:
+          $ref: '#/components/schemas/ExtraEntitlementInfo'
+        financeData:
+          $ref: '#/components/schemas/FinanceDataOutput'
+        merchantBangoExtensionData:
+          $ref: '#/components/schemas/MerchantBangoExtensionData'
+    EntitlementCreate:
+      type: object
+      required:
+        - requestId
+        - bangoUserId
+        - resellerId
+        - productId
+      properties:
+        requestId:
+          type: string
+          description: Unique identifier representing a specific entitlement.
+          example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        bangoUserId:
+          type: string
+          description: Unique identifier representing a specific customer of the reseller as a Bango anonymised value.
+          example: '1549053185'
+        sharedCustomerId:
+          type: string
+          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+          example: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
+          format: uuid
+        resellerId:
+          type: string
+          description: Unique reseller identifier as agreed with the merchant
+          example: XYZ_RESELLER
+        productId:
+          type: string
+          description: 'Entitlement product unique identifier. For example, "BangoMusic".'
+          example: BangoMusic
+        offerId:
+          type: string
+          description: >-
+            The offer given to the user for the merchant service. For example,
+            "FREE_FOR_6_MONTHS".
+          example: FREE_FOR_6_MONTHS
+        customerId:
+            type: string
+            description: Unique identifier representing a specific customer of the reseller not anonymised. This value will only be sent by Bango if the Merchant and Reseller both approve the sharing of this data
+        status:
+          type: string
+          example: PENDING
+          enum:
+                  - ACTIVE
+                  - SUSPENDED
+                  - PENDING
+                  - ACTIVE-ENDING
+          description: |-
+            Entitlement status. Possible values are:
+              - "ACTIVE": The entitlement has been successfully activated
+              - "SUSPENDED": The entitlement has been suspended.
+              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
+              - "ACTIVE-ENDING": The entitlement is ending at the end of the current period.
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
+        extraInformation:
+          $ref: '#/components/schemas/ExtraEntitlementInfo'
+        financeData:
+          $ref: '#/components/schemas/FinanceDataOutput'
+        merchantBangoExtensionData:
+          $ref: '#/components/schemas/MerchantBangoExtensionData'
+    EntitlementCreate202Response:
+      type: object
+      required:
+        - merchantEntitlementId
+        - activationUrl
+        - expiry
+      properties:
+        merchantEntitlementId:
+          type: string
+          description: >-
+            Unique identifier representing the entitlement as identified by the
+            merchant. Value must be URL friendly.
+          example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        activationUrl:
+          type: string
+          description: URL which the user can follow through to activate the entitlement.
+          example: 'https://merchant-website.com/new-entitlement/activation-url'
+        expiryTime:
+          type: string
+          format: date-time
+          description: The expiry date for when the URL will no longer be active
+          example: '2020-01-28T14:15:03Z'
+    EntitlementCreate200Response:
+      type: object
+      required:
+        - merchantEntitlementId
+      properties:
+        merchantEntitlementId:
+          type: string
+          description: >-
+            Unique identifier representing the entitlement as identified by the
+            merchant. Value must be URL friendly.
+          example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+    EntitlementCreate201Response:
+      type: object
+      required:
+        - merchantEntitlementId
+      properties:
+        merchantEntitlementId:
+          type: string
+          description: >-
+            Unique identifier representing the entitlement as identified by the
+            merchant. Value must be URL friendly.
+          example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+    ActivationInfoResponse:
+      type: object
+      required:
+        - merchantEntitlementId
+      properties:
+        merchantEntitlementId:
+          type: string
+          description: >-
+            Unique identifier representing the entitlement as identified by the
+            merchant. Value must be URL friendly.
+          example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        activationUrl:
+          type: string
+          description: URL which the user can follow through to activate the entitlement. For content providers who support an activation code rather than a url, you could return `activationCode` instead of `activationUrl`
+          example: 'https://merchant-website.com/new-entitlement/activation-url'
+        expiryTime:
+          type: string
+          format: date-time
+          description: The expiry date for when the URL will no longer be active
+          example: '2020-01-28T14:15:03Z'
+    EntitlementTerminate:
+      type: object
+      required:
+        - immediate
+      description: To determine if the termination is effective immediatly.
+      properties:
+        immediate:
+          type: boolean
+          description: >-
+            Determines if the termination is effective immediately. Immediate
+            termination results in HARD edning of the subscription:
+              - TRUE
+              - FALSE
+        reasonCode:
+          type: string
+          description: >-
+            Code representing the entitlement revoke reason. This code can be
+            any value, but we recommend you use one of the following codes:
+              - "FRAUD": The user has not renewed the subscription
+              - "ACCOUNT_TERMINATED": The user is no longer a customer
+              - "SECURITY": For security reasons, access to this entitlement has been terminated
+              - "OTHER": Other
+          example: FRAUD
+        reasonCategory:
+          type: string
+          description: >-
+            String representing the category to which a set of reason codes
+            belong to.
+        reasonDescription:
+          type: string
+          description: Description of the entitlement revoke reason
+          example: Personal data stolen
+        bangoUserId:
+          type: string
+          description: Unique identifier representing a specific customer of the reseller as a Bango anonymised value.
+          example: '1549053185'
+        sharedCustomerId:
+          type: string
+          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+          example: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
+          format: uuid
+        resellerId:
+          type: string
+          description: Unique reseller identifier as agreed with the merchant
+          example: XYZ_RESELLER
+        productId:
+          type: string
+          description: 'Entitlement product unique identifier. For example, "BangoMusic".'
+          example: BangoMusic
+        offerId:
+          type: string
+          description: >-
+            The offer given to the user for the merchant service. For example,
+            "FREE_FOR_6_MONTHS".
+          example: FREE_FOR_6_MONTHS
+        customerId:
+            type: string
+            description: Unique identifier representing a specific customer of the reseller not anonymised. This value will only be sent by Bango if the Merchant and Reseller both approve the sharing of this data
+        status:
+          type: string
+          example: PENDING
+          enum:
+                  - ACTIVE
+                  - SUSPENDED
+                  - PENDING
+                  - ACTIVE-ENDING
+          description: |-
+            Entitlement status. Possible values are:
+              - "ACTIVE": The entitlement has been successfully activated
+              - "SUSPENDED": The entitlement has been suspended.
+              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
+              - "ACTIVE-ENDING": The entitlement is ending at the end of the current period.
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
+        extraInformation:
+          $ref: '#/components/schemas/ExtraEntitlementInfo'
+        financeData:
+          $ref: '#/components/schemas/FinanceDataOutput'
+        merchantBangoExtensionData:
+          $ref: '#/components/schemas/MerchantBangoExtensionData'
+    
+    ActivationInfo:
+      type: object
+      required:
+        - requestId
+        - bangoUserId
+        - resellerId
+        - productId
+        - merchantEntitlementId
+      properties:
+        requestId:
+          type: string
+          description: Unique identifier representing a specific entitlement.
+          example: a25100b8-4e0c-4e37-b921-cac9cb1e930f
+        bangoUserId:
+          type: string
+          description: Unique identifier representing a specific customer of the reseller as a Bango anonymised value.
+          example: '1549053185'
+        sharedCustomerId:
+          type: string
+          description: Bango generated id shared between reseller and merchant for this customer (contact support for setup)
+          example: 414b3019-0c28-4d14-9c5f-6217b8bd1e3e
+          format: uuid
+        resellerId:
+          type: string
+          description: Unique reseller identifier as agreed with the merchant
+          example: XYZ_RESELLER
+        productId:
+          type: string
+          description: 'Entitlement product unique identifier. For example, "BangoMusic".'
+          example: BangoMusic
+        offerId:
+          type: string
+          description: >-
+            The offer given to the user for the merchant service. For example,
+            "FREE_FOR_6_MONTHS".
+          example: FREE_FOR_6_MONTHS
+        customerId:
+            type: string
+            description: Unique identifier representing a specific customer of the reseller not anonymised. This value will only be sent by Bango if the Merchant and Reseller both approve the sharing of this data
+        status:
+          type: string
+          example: PENDING
+          enum:
+                  - ACTIVE
+                  - SUSPENDED
+                  - PENDING
+                  - ACTIVE-ENDING
+          description: |-
+            Entitlement status. Possible values are:
+              - "ACTIVE": The entitlement has been successfully activated
+              - "SUSPENDED": The entitlement has been suspended.
+              - "PENDING": The entitlement has been initiated, but the user has not yet finalized the activation process.
+              - "ACTIVE-ENDING": The entitlement is ending at the end of the current period.
+        merchantEntitlementId:
+          type: string
+          example: 6e37a4b5-8cb9-465b-88a9-ad5eb02596b
+          description: Unique identifier of the entitlement provided by the merchant on creation.
+        options:
+          type: array
+          items:
+            type: string
+            example: "SHORT_LIVED_TOKEN"
+          description: |-
+            Array of optional enum values to determine the type of activation information requested. Available options are 'SHORT_LIVED_TOKEN' and 'LONG_LIVED_TOKEN'.
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
+        extraInformation:
+          $ref: '#/components/schemas/ExtraEntitlementInfo'
+        financeData:
+          $ref: '#/components/schemas/FinanceDataOutput'
+        merchantBangoExtensionData:
+          $ref: '#/components/schemas/MerchantBangoExtensionData'
+    
+    EntitlementTerminateResponse:
+      type: object
+      description: Response for termination request
+      properties:
+        responseCode:
+          type: string
+          example: OK
+        responseMessage:
+          type: string
+          example: Success
+        terminationDate:
+          type: string
+          format: date-time
+          description: >-
+            Date and time when the entitlement was or will be terminated, in UTC
+            ISO 8601. format (yyyy-MM-ddThh:mm:ssZ)
+
+    ResponseObject:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: OK
+        responseMessage:
+          type: string
+          example: Success
+    BadRequest:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: BAD_REQUEST
+        responseMessage:
+          type: string
+          example: Invalid request.
+    Unauthorized:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: UNAUTHORIZED
+        responseMessage:
+          type: string
+          example: Invalid access credentials.
+    NotFound:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: NOT_FOUND
+        responseMessage:
+          type: string
+          example: Entitlement not found.
+    Conflict:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: CONFLICT
+        responseMessage:
+          type: string
+          example: The requested action has been rejected due to a conflict.
+    TooManyRequests:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: TOO_MANY_REQUESTS
+        responseMessage:
+          type: string
+          example: Request limit reached. Please try again later.
+    InteralServerError:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: INTERNAL_ERROR
+        responseMessage:
+          type: string
+          example: >-
+            The server encountered an unexpected condition which prevented it
+            from fulfilling the request.
+    ServiceUnavailable:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: SERVICE_UNAVAILABLE
+        responseMessage:
+          type: string
+          example: >-
+            The server is undergoing maintenance and is not available. Please,
+            try again later.
+    AlreadyExists:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: ALREADY_EXISTS
+        responseMessage:
+          type: string
+          example: Entitlement already exists.
+    InvalidState:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: INVALID_STATE
+        responseMessage:
+          type: string
+          example: Operation invalid for the current state of the entitlement.
+    RequestCreated:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: CLIENT_ACTION_REQUIRED
+        responseMessage:
+          type: string
+          example: Request created and queued.
+
+    RequestAccepted:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          example: ACCEPTED
+        responseMessage:
+          type: string
+          example: Request accepted
+
+    ExtraInformation:
+      type: object
+      additionalProperties:
+        type: object
+        description: >-
+          A dynamic list of objects which the reseller partner may provide
+          useful data for the entitlement.
+    MerchantExtensionData:
+      type: object
+      additionalProperties:
+        type: string
+        description: Accepts a dynamic list of key-value pairs to cover custom data needs
+      example:
+        merchantCustomData1: merchantCustomDataValue1
+        merchantCustomData2: merchantCustomDataValue2
+        merchantCustomData3: merchantCustomDataValue3
+    MerchantBangoExtensionData:
+      type: object
+      additionalProperties:
+        type: string
+        description: Contains a defined list of key-value pairs to cover static custom data needs
+      example:
+        merchantCustomData1: merchantBangoCustomDataValue1
+        merchantCustomData2: merchantBangoCustomDataValue2
+        merchantCustomData3: merchantBangoCustomDataValue3
+    CheckEligibilityRequest:
+      type: object
+      required:
+        - bangoUserId
+        - customerId
+        - resellerId
+        - productId
+      properties:
+        bangoUserId:
+          type: string
+          description: >-
+            Unique identifier which Bango holds that representing a specific
+            customer of the reseller.
+          example: '1549053185'
+        customerId:
+          type: string
+          description: Unique identifier representing a specific customer of the reseller.
+          example: abc@email.co.uk
+        resellerId:
+          type: string
+          description: Unique reseller identifier as agreed with the merchant
+          example: XYZ_RESELLER
+        productId:
+          type: string
+          description: 'Entitlement product unique identifier. For example, "BangoMusic".'
+          example: BangoMusic
+        offerId:
+          type: string
+          description: 'Entitlement offer unique identifier. For example, "6_MONTHS_ON_US".'
+          example: 6_MONTHS_ON_US
+        merchantExtensionData:
+          $ref: '#/components/schemas/MerchantExtensionData'
+        merchantBangoExtensionData:
+          $ref: '#/components/schemas/MerchantBangoExtensionData'
+    CheckEligibilityResponse:
+      type: object
+      properties:
+        eligible:
+          type: boolean
+          description: |-
+            Eligibility status. Possible values are:
+              - true: The user is eligible for the Entitlement
+              - false: The user is not eligible for the Entitlement
+          example: true
+        reason:
+          type: string
+          description: >-
+            Reason for the eligibility response. This is not a mandatory value
+            to be sent by the merchant. Examples:
+              - "User has an existing subscription"
+          example: User is eligible for this Entitlement
+    ClientDevice:
+      type: object
+      additionalProperties:
+        type: string
+        description: >-
+          When the clientDevice object is present the type is a mandatory key.
+          The clientDevice object will only be returned if data has been
+          provided.
+            - "type": the type of the device. For example, "STB", "MOBILE", "DESKTOP", "TABLET"
+            - "id": the unique identifier for the users device
+            - "typeId": the common identifier for the type of device
+            - "modelName": the device model name
+            - "modelNumber": the device model number
+            - "serialNumber": the serial number of the device
+            - "osType": the OS type of the device
+            - "osVersion": the OS version of the device
+            - "macAddress": the mac address of the device
+            - "browser": the browser being used
+      example:
+        type: STB
+        id: bc449c9e-406f-4399-a3ff-8671a27ac410
+        typeId: P49AJFND8NFN23NANGAJG
+        modelName: STB Model X7
+        modelNumber: IAH45IAOF/5
+        serialNumber: JHFJHA43JNFA9393GFD
+        osType: Linux
+        osVersion: 10.3.8
+        macAddress: 4A-0F-99-F2-D3-DD
+        browser: Firefox
+    CommunicationInformation:
+      type: object
+      additionalProperties:
+        type: string
+        description: |-
+          Accepts the defined key-value pairs.
+            - "emailAddress": the end-users email address.
+            - "msisdn": the end-users mobile number in international format.
+      example:
+        emailAddress: 123@abc.co.uk
+        msisdn: '441234567890'
+    Source:
+      type: object
+      additionalProperties:
+        type: string
+        description: |-
+          Accepts the defined key-value pairs.
+            - "channelType": the source channel of the entitlement request.
+            - "campaignRef": the campaign reference that the user clicked on.
+            - "referrer": where the user request originated from.
+            - "bundleId": a string identifier for the bundle which the OTT service is part of.
+            - "country": the end-users country.
+            - "region": the end-users region within their country.
+            - "brand": the brand of which the user originated from.
+            - "serviceFlow": the service flow for which the request originated. Valid values are Creation or Activation. If not passed Bango will treat this as Activation.
+      example:
+        channelType: WEB_PROMOTION
+        campaignRef: SUMMER_PROMO
+        referrer: SEARCH_ENGINE
+        bundleId: BundleABC123
+        country: United Kingdom
+        region: East Anglia
+        brand: BrandABC
+        serviceFlow: Creation
+    ExtraEntitlementInfo:
+      type: object
+      properties:
+        clientDevice:
+          $ref: '#/components/schemas/ClientDevice'
+        communicationInformation:
+          $ref: '#/components/schemas/CommunicationInformation'
+        source:
+          $ref: '#/components/schemas/Source'
+    FinanceDataOutput:
+      type: object
+      required:  
+        - source
+        - type
+        - timestamp
+      properties:
+        source:
+          type: string
+          description: >- 
+            the party who added the finance event
+          enum:
+            - Merchant
+            - Reseller
+        type:
+          type: string
+          description: >- 
+            the type of finance event
+          enum:
+            - order
+            - return
+            - renew
+        timestamp:
+          type: string
+          format: date-time
+          description: >- 
+            UTC ISO 8601
+        retailCurrency:
+          type: string
+          description: >- 
+            ISO 3
+        retailPrice:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, including tax
+        retailPriceTax:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, tax included in the retailPrice
+        offerPrice:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, including tax
+        offerPriceTax:
+          type: number
+          format: double
+          description: >- 
+            as per standard price element, tax included in the offerPrice
+        notes:
+          type: string
+          description: >- 
+            255 length limit
