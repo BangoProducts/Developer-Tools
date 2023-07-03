@@ -1080,7 +1080,8 @@ paths:
             Bango generated unique identifier of the entitlement 
           required: true
           schema:
-            type: string uuid
+            type: string
+            format: uuid
       tags:
         - Entitlement
       responses:
@@ -1873,7 +1874,8 @@ components:
       type: object
       properties:
         options:
-          type: string []
+          type: string
+          format: array
           description: Optional properties for the type of activation token being requested. Available options are `SHORT_LIVED_TOKEN` or `LONG_LIVED_TOKEN`
           example: [SHORT_LIVED_TOKEN]
 
@@ -2486,4 +2488,3 @@ components:
           $ref: '#/components/schemas/ClientDevice'
         source:
           $ref: '#/components/schemas/Source'
-
