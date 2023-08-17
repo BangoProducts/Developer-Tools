@@ -26,13 +26,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "{{ResaleAPIEndpoint}}/echo/12345",
 							"host": [
@@ -57,7 +51,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -82,7 +75,8 @@
 									"var jsonData = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
 									"postman.setEnvironmentVariable(\"ActivationURL\", jsonData.parameters.Url);"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -100,7 +94,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"offerKey\": \"{{Offer}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}"
+							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"offerKey\": \"{{Offer}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n"
 						},
 						"url": {
 							"raw": "{{ResaleAPIEndpoint}}/entitlement",
@@ -140,10 +134,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -213,10 +203,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -243,7 +229,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -268,7 +253,8 @@
 									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
 									"postman.setEnvironmentVariable(\"ActivationURL\", jsonData.parameters.Url);",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -278,10 +264,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -354,10 +336,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -401,11 +379,6 @@
 								"key": "Content-Type",
 								"type": "text",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -436,7 +409,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -462,7 +434,8 @@
 									"postman.setEnvironmentVariable(\"ActivationURL\", jsonData.parameters.Url);",
 									"",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -472,10 +445,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -553,10 +522,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -582,7 +547,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -597,7 +561,8 @@
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.productKey).to.eql(environment.Product2);",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -608,11 +573,6 @@
 								"key": "Content-Type",
 								"type": "text",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -639,7 +599,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -665,7 +624,8 @@
 									"postman.setEnvironmentVariable(\"ActivationURL\", jsonData.parameters.Url);",
 									"",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -675,10 +635,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -758,10 +714,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{MerchantAuth}}"
 							}
 						],
 						"body": {
@@ -788,7 +740,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -803,7 +754,8 @@
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.productKey).to.eql(environment.Product2);",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -813,10 +765,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{MerchantAuth}}"
 							}
 						],
 						"url": {
@@ -831,6 +779,41 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "{{MerchantPassword}}",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "{{MerchantUsername}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -877,10 +860,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Basic UmVzYWxlRGVtb0FjY291bnQ6WmFqRlpjZEtTc2I2U3Q="
 							}
 						],
 						"body": {
@@ -954,11 +933,6 @@
 								"key": "Content-Type",
 								"type": "text",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -990,7 +964,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -1015,7 +988,8 @@
 									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
 									"postman.setEnvironmentVariable(\"ActivationURL\", jsonData.parameters.Url);",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1025,10 +999,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -1069,10 +1039,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -1127,7 +1093,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -1138,7 +1103,8 @@
 									"    pm.expect(jsonData.status).to.eql(\"REVOKED\");",
 									"})",
 									"    ;"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1149,11 +1115,6 @@
 								"key": "Content-Type",
 								"type": "text",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -1180,7 +1141,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -1203,7 +1163,8 @@
 									"",
 									"var jsonData = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1213,10 +1174,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -1257,10 +1214,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{MerchantAuth}}"
 							}
 						],
 						"body": {
@@ -1288,7 +1241,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -1299,7 +1251,8 @@
 									"    pm.expect(jsonData.status).to.eql(\"REVOKED\");",
 									"})",
 									"    ;"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1310,11 +1263,6 @@
 								"key": "Content-Type",
 								"type": "text",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -1330,6 +1278,41 @@
 					},
 					"response": []
 				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "{{MerchantPassword}}",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "{{MerchantUsername}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
@@ -1341,7 +1324,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -1366,7 +1348,8 @@
 									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
 									"postman.setEnvironmentVariable(\"ActivationURL\", jsonData.parameters.Url);",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1376,10 +1359,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -1447,10 +1426,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -1497,10 +1472,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -1527,7 +1498,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -1552,7 +1522,8 @@
 									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
 									"postman.setEnvironmentVariable(\"ActivationURL\", jsonData.parameters.Url);",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1562,10 +1533,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -1633,10 +1600,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -1683,10 +1646,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -1713,7 +1672,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -1738,7 +1696,8 @@
 									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
 									"postman.setEnvironmentVariable(\"ActivationURL\", jsonData.parameters.Url);",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1748,10 +1707,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -1820,29 +1775,26 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"entitlementId\":\"{{entitlementId}}\",\r\n\"entitlementBenefits\": \"SUSPENDED\"\r\n}\r\n\r\n"
+							"raw": ""
 						},
 						"url": {
-							"raw": "{{ResaleAPIEndpoint}}/entitlement/",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/suspend/{{entitlementId}}",
 							"host": [
 								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
 								"entitlement",
-								""
+								"suspend",
+								"{{entitlementId}}"
 							]
 						}
 					},
@@ -1875,11 +1827,6 @@
 								"key": "Content-Type",
 								"type": "text",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -1916,29 +1863,26 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"entitlementId\":\"{{entitlementId}}\",\r\n\"entitlementBenefits\": \"NORMAL\"\r\n}\r\n"
+							"raw": ""
 						},
 						"url": {
-							"raw": "{{ResaleAPIEndpoint}}/entitlement/",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/resume/{{entitlementId}}",
 							"host": [
 								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
 								"entitlement",
-								""
+								"resume",
+								"{{entitlementId}}"
 							]
 						}
 					},
@@ -1950,7 +1894,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -1960,7 +1903,8 @@
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.status).to.eql(\"ACTIVE\");",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1970,10 +1914,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -2000,7 +1940,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -2025,7 +1964,8 @@
 									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
 									"postman.setEnvironmentVariable(\"ActivationURL\", jsonData.parameters.Url);",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2035,10 +1975,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -2107,29 +2043,26 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"entitlementId\":\"{{entitlementId}}\",\r\n\"entitlementBenefits\": \"SUSPENDED\"\r\n}\r\n\r\n"
+							"raw": ""
 						},
 						"url": {
-							"raw": "{{ResaleAPIEndpoint}}/entitlement/",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/suspend/{{entitlementId}}",
 							"host": [
 								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
 								"entitlement",
-								""
+								"suspend",
+								"{{entitlementId}}"
 							]
 						}
 					},
@@ -2162,11 +2095,6 @@
 								"key": "Content-Type",
 								"type": "text",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -2203,29 +2131,26 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"entitlementId\":\"{{entitlementId}}\",\r\n\"entitlementBenefits\": \"NORMAL\"\r\n}\r\n"
+							"raw": ""
 						},
 						"url": {
-							"raw": "{{ResaleAPIEndpoint}}/entitlement/",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/resume/{{entitlementId}}",
 							"host": [
 								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
 								"entitlement",
-								""
+								"resume",
+								"{{entitlementId}}"
 							]
 						}
 					},
@@ -2237,7 +2162,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -2247,7 +2171,8 @@
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.status).to.eql(\"ACTIVE\");",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2257,10 +2182,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -2277,6 +2198,41 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{TestResellerPassword}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{TestResellerUsername}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
