@@ -781,21 +781,6 @@
 					"response": []
 				}
 			],
-			"auth": {
-				"type": "basic",
-				"basic": [
-					{
-						"key": "password",
-						"value": "{{MerchantPassword}}",
-						"type": "string"
-					},
-					{
-						"key": "username",
-						"value": "{{MerchantUsername}}",
-						"type": "string"
-					}
-				]
-			},
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1279,21 +1264,6 @@
 					"response": []
 				}
 			],
-			"auth": {
-				"type": "basic",
-				"basic": [
-					{
-						"key": "password",
-						"value": "{{MerchantPassword}}",
-						"type": "string"
-					},
-					{
-						"key": "username",
-						"value": "{{MerchantUsername}}",
-						"type": "string"
-					}
-				]
-			},
 			"event": [
 				{
 					"listen": "prerequest",
@@ -2205,12 +2175,12 @@
 		"basic": [
 			{
 				"key": "password",
-				"value": "{{TestResellerPassword}}",
+				"value": "{{ResellerPassword}}",
 				"type": "string"
 			},
 			{
 				"key": "username",
-				"value": "{{TestResellerUsername}}",
+				"value": "{{ResellerUsername}}",
 				"type": "string"
 			}
 		]

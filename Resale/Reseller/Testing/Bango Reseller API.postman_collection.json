@@ -3011,12 +3011,12 @@
 		"basic": [
 			{
 				"key": "password",
-				"value": "{{TestResellerPassword}}",
+				"value": "{{ResellerPassword}}",
 				"type": "string"
 			},
 			{
 				"key": "username",
-				"value": "{{TestResellerUsername}}",
+				"value": "{{ResellerUsername}}",
 				"type": "string"
 			}
 		]
