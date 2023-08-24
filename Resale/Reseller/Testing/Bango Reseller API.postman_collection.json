@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "80a6e12a-bfb1-4afd-b8d7-45226c7f6fcc",
-		"name": "Bango Reseller API_V0.3",
+		"_postman_id": "6d76e61b-262a-45a8-bea7-624c531ede8f",
+		"name": "Bango Reseller API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -48,20 +48,13 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/echo/1234",
+							"raw": "{{ResaleAPIEndpoint}}/echo/1234",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"echo",
 								"1234"
 							]
@@ -113,13 +106,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n",
@@ -130,12 +117,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -174,20 +160,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/23e88d7f-2ff4-4d23-bcdf-98fe237a42a3",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/23e88d7f-2ff4-4d23-bcdf-98fe237a42a3",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"23e88d7f-2ff4-4d23-bcdf-98fe237a42a3"
 							]
@@ -254,20 +233,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -320,13 +292,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n",
@@ -337,12 +303,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -381,20 +346,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -454,13 +412,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n\"customerIdentifier\": \"{{customerIdentifier}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}",
@@ -471,12 +423,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -515,20 +466,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -581,13 +525,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n",
@@ -598,12 +536,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -642,20 +579,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -722,20 +652,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -780,13 +703,7 @@
 					],
 					"request": {
 						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"entitlementId\": \"{{entitlementId}}\",\r\n  \"offerKey\": \"{{OfferKey}}\"\r\n}",
@@ -797,12 +714,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -851,13 +767,7 @@
 					],
 					"request": {
 						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"entitlementId\": \"{{entitlementId}}\",\r\n  \"dateExpiry\": \"{{dateExpiry}}\"\r\n}",
@@ -868,13 +778,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
-								"entitlement"
+								"entitlement",
+								"{{entitlementId}}"
 							]
 						}
 					},
@@ -930,13 +840,7 @@
 					],
 					"request": {
 						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"entitlementId\": \"{{entitlementId}}\",\r\n  \"entitlementDisplayName\": \"Entitlement1\"\r\n}",
@@ -947,12 +851,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -1015,13 +918,7 @@
 					],
 					"request": {
 						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"entitlementId\": \"{{entitlementId}}\",\r\n  \"customerIdentifier\": \"{{customerIdentifier}}chng001\"\r\n}",
@@ -1032,13 +929,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
-								"entitlement"
+								"entitlement",
+								"{{entitlementId}}"
 							]
 						}
 					},
@@ -1105,13 +1002,7 @@
 					],
 					"request": {
 						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"entitlementId\": \"{{entitlementId}}\",\r\n  \"productKey\": \"Product1\"\r\n}",
@@ -1122,12 +1013,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -1177,13 +1067,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n",
@@ -1194,12 +1078,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -1238,20 +1121,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -1318,20 +1194,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -1376,13 +1245,7 @@
 					],
 					"request": {
 						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n\"entitlementId\": \"{{entitlementId}}\", \r\n\"productKey\": \"TwoStepUpdate\"\r\n}\r\n",
@@ -1393,12 +1256,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -1442,13 +1304,7 @@
 					],
 					"request": {
 						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{MerchantBasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"productId\": \"TwoStepUpdate\"\r\n}",
@@ -1459,12 +1315,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/merchant/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/merchant/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"merchant",
 								"entitlement",
 								"{{entitlementId}}"
@@ -1510,20 +1365,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -1573,13 +1421,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n",
@@ -1590,12 +1432,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -1634,20 +1475,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -1714,20 +1548,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -1767,20 +1594,13 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/cancel/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/cancel/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"cancel",
 								"{{entitlementId}}"
@@ -1834,13 +1654,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n",
@@ -1851,12 +1665,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -1895,20 +1708,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -1975,20 +1781,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -2028,20 +1827,13 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/revoke/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/revoke/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"revoke",
 								"{{entitlementId}}"
@@ -2093,16 +1885,10 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{AsyncTermProduct}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n",
+							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2110,12 +1896,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -2154,20 +1939,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -2242,12 +2020,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -2287,20 +2064,13 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/cancel/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/cancel/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"cancel",
 								"{{entitlementId}}"
@@ -2354,13 +2124,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{MerchantBasicAuth}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"terminatedDate\": \"{{timestamp}}\",\r\n  \"reasonCategory\": \"ACTIVATION_ROLLBACK\",\r\n  \"reasonCode\": \"FRAUD\",\r\n  \"reasonDescription\": \"Personal data stolen\",\r\n  \"merchantExtensionData\": {}\r\n}",
@@ -2371,12 +2135,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/merchant/entitlement/terminate/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/merchant/entitlement/terminate/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"merchant",
 								"entitlement",
 								"terminate",
@@ -2435,16 +2198,10 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{AsyncTermProduct}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n",
+							"raw": "{\r\n\"customerIdentifier\": \"{{$guid}}\", \r\n\"productKey\": \"{{Product}}\", \r\n\"merchantAccountKey\": \"{{Merchant}}\", \r\n\"notificationUrl\": \"http://bango.com\" \r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2452,12 +2209,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement"
 							]
 						}
@@ -2496,20 +2252,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -2518,7 +2267,7 @@
 					"response": []
 				},
 				{
-					"name": "9.3. Navigate to activation URL Copy",
+					"name": "9.3. Navigate to activation URL",
 					"event": [
 						{
 							"listen": "test",
@@ -2576,20 +2325,13 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"{{entitlementId}}"
 							]
@@ -2629,20 +2371,13 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{BaseURL}}/v1/entitlement/revoke/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/entitlement/revoke/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"entitlement",
 								"revoke",
 								"{{entitlementId}}"
@@ -2696,13 +2431,7 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{MerchantBasicAuth}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"terminatedDate\": \"{{timestamp}}\",\r\n  \"reasonCategory\": \"ACTIVATION_ROLLBACK\",\r\n  \"reasonCode\": \"FRAUD\",\r\n  \"reasonDescription\": \"Personal data stolen\",\r\n  \"merchantExtensionData\": {}\r\n}",
@@ -2713,12 +2442,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseURL}}/v1/merchant/entitlement/terminate/{{entitlementId}}",
+							"raw": "{{ResaleAPIEndpoint}}/merchant/entitlement/terminate/{{entitlementId}}",
 							"host": [
-								"{{BaseURL}}"
+								"{{ResaleAPIEndpoint}}"
 							],
 							"path": [
-								"v1",
 								"merchant",
 								"entitlement",
 								"terminate",
@@ -2746,7 +2474,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -2771,7 +2498,8 @@
 									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
 									"postman.setEnvironmentVariable(\"ActivationURL\", jsonData.parameters.Url);",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2781,10 +2509,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -2909,11 +2633,6 @@
 								"key": "Content-Type",
 								"type": "text",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -2955,10 +2674,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -2985,7 +2700,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -2995,7 +2709,8 @@
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.status).to.eql(\"ACTIVE\");",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -3005,10 +2720,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -3035,7 +2746,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -3060,7 +2770,8 @@
 									"postman.setEnvironmentVariable(\"entitlementId\", jsonData.entitlementId);",
 									"postman.setEnvironmentVariable(\"ActivationURL\", jsonData.parameters.Url);",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -3070,10 +2781,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -3147,10 +2854,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -3198,11 +2901,6 @@
 								"key": "Content-Type",
 								"type": "text",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -3244,10 +2942,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"body": {
@@ -3274,7 +2968,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -3284,7 +2977,8 @@
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.status).to.eql(\"ACTIVE\");",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -3294,10 +2988,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{BasicAuth}}"
 							}
 						],
 						"url": {
@@ -3314,6 +3004,41 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{ResellerPassword}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{ResellerUsername}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
