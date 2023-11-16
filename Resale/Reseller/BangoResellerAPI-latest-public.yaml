@@ -40,7 +40,7 @@ info:
     * 1.0.11: Added EntitlementReport
     * 1.0.6: Initial release
 
-  version: 1.0.23
+  version: 1.0.24
 
 externalDocs:
     description: Bango developer documentation
