@@ -4,6 +4,8 @@ info:
   description: >
     Changelog
     
+    * 1.0.24:
+      * Adding /notify endpoint for async notification actioned confirmation
     * 1.0.23:
       * Adding optional sharedCustomerId to all responses
     * 1.0.22:
@@ -1632,7 +1634,7 @@ paths:
                   value:
                     responseCode: SERVICE_UNAVAILABLE
                     responseMessage:
-      
+  
   '/v1/entitlement/cancel/{entitlementId}':
     post:
       summary: Cancel an entitlement
@@ -2153,6 +2155,109 @@ paths:
                   cancelReasonCategory: ACTIVATION_ROLLBACK
                   cancelReasonCode: FRAUD
                   cancelReasonDescription: Personal data stolen
+
+  '/v1/entitlement/notify/{entitlementId}':
+    post:
+      summary: Send a notification
+      description: |
+        Send a notification
+      parameters:
+        - name: X-RequestIdentifier
+          in: header
+          description: >-
+            Request unique identifier. If present, this id will be used for
+            idempotency.
+          schema:
+            type: string
+        - name: entitlementId
+          in: path
+          description: Unique identifier used on activation.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - Send a notification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notify'
+            examples:    
+              BaseRequest:
+                value:
+                  notification:
+                    'NOTIFICATION_ACTIONED'
+                  notificationId:
+                    '123456'
+      responses:
+        '200':
+          description: Echo request successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponse'
+              examples:
+                OK:
+                  value:
+                    responseCode: OK
+                    responseMessage: Success
+        '400':
+          description: Invalid API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InvalidAPIRequest:
+                  value:
+                    responseCode: BAD_REQUEST
+                    responseMessage: Validation failure reason
+        '401':
+          description: IP address or access credentials are invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                Unauthorized:
+                  value:
+                    responseCode: UNAUTHORIZED
+                    responseMessage: You have not provided adequate credentials to access this resource.
+        '429':
+          description: Request limit reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                TooManyRequests:
+                  value:
+                    responseCode: TOO_MANY_REQUESTS
+                    responseMessage: Request limit reached. Please try again later.
+        '500':
+          description: Unexpected server issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                InternalError:
+                  value:
+                    responseCode: INTERNAL_ERROR
+                    responseMessage: 
+        '503':
+          description: Bango Platform undergoing maintenance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseObject'
+              examples:
+                ServiceUnavailable:
+                  value:
+                    responseCode: SERVICE_UNAVAILABLE
+                    responseMessage: 
+
 servers:
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
@@ -2381,6 +2486,19 @@ components:
         cancelReasonDescription:
           type: string
           description: Description of the entitlement cancel or revoke reason.
+    Notify:
+      type: object
+      required:
+        - notification
+      properties:
+        notification:
+          type: string
+          description: Currently only supports NOTIFICATION_ACTIONED.
+          example: 'NOTIFICATION_ACTIONED'
+        notificationId:
+          type: string
+          description: 'The notificationId from the notification actioned'
+          example: '123456'
     EchoResponse:
       type: object
       properties:
