@@ -2192,7 +2192,7 @@ paths:
                     '123456'
       responses:
         '200':
-          description: Echo request successful
+          description: Notification request successful
           content:
             application/json:
               schema:
